@@ -1,0 +1,47 @@
+﻿<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="nav-container">
+            <a href="@Url.Action("Index", "Home")" class="logo">
+                <i class="fas fa-shield-alt"></i>
+                Scammy
+            </a>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="@Url.Action("Index", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">Home</a></li>
+                    <li><a href="@Url.Action("ScamReports", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "ScamReports" ? "active" : "")">Scam Reports</a></li>
+                    <li><a href="@Url.Action("Articles", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Articles" ? "active" : "")">Education</a></li>
+                    <li><a href="@Url.Action("Analytics", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Analytics" ? "active" : "")">Analytics</a></li>
+                    <li><a href="@Url.Action("Submit", "Report")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Submit" ? "active" : "")">Submit Report</a></li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a href="@Url.Action("Dashboard", "Admin")">Admin</a></li>
+                    }
+                    @if (User.IsInRole("Analyst"))
+                    {
+                        <li><a href="@Url.Action("Dashboard", "Analyst")">Analyst</a></li>
+                    }
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search scams..." />
+                </div>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="@Url.Action("Logout", "Account")" class="btn btn-outline">Logout (@User.Identity.Name)</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline">Login</a>
+                    <a href="@Url.Action("Register", "Account")" class="btn btn-primary">Sign Up</a>
+                }
+            </div>
+        </div>
+    </div>
+</header>

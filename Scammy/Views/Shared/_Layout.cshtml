@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title Scammy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="@Url.Content("~/css/styles.css")" rel="stylesheet" />
+
+
+
+</head>
+<body>
+    @Html.Partial("_Header")
+
+    @RenderSection("Hero", required: false)
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Newsletter", required: false)
+
+
+    @Html.Partial("_Footer")
+
+    <script src="~/Scripts/script.js"></script>
+</body>
+</html>
