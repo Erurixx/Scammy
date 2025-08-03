@@ -1,5 +1,5 @@
 # Scammy - A Cloud-Based Platform for Online Job Scam Reporting and Awareness
-Scammy is a cloud-based web application designed to combat the growing problem of online job scams. The platform allows users to report suspicious job advertisements, access scam awareness articles, and explore scam trends. It is developed as part of a university cloud computing assignment to demonstrate the integration of cloud services, database solutions, and role-based access. This system features three distinct user roles—Jobseeker, Admin, and Analyst—each responsible for different functionalities. It is hosted on AWS infrastructure and utilizes cloud-native services such as EC2, RDS, and optionally S3 and CloudWatch.
+Scammy is a cloud-based web application designed to combat the growing problem of online job scams. The platform allows users to report suspicious job advertisements, access scam awareness articles, and explore scam trends. It is developed as part of a university cloud computing assignment to demonstrate the integration of cloud services, database solutions, and role-based access. This system features three distinct user roles—Jobseeker, Admin, and Analyst—each responsible for different functionalities. It is hosted on AWS infrastructure and utilizes cloud-native services.
 
 # Key Features
 Jobseeker:
