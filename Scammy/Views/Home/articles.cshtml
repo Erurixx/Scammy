@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Articles";
+    ViewBag.Title = "Awareness Hub";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -24,6 +24,13 @@
                     <h4>Safety Guides</h4>
                     <p>Expert-written guides and tips to help you identify and avoid employment fraud</p>
                     <a href="#" class="btn btn-primary">Read Tips</a>
+                </div>
+
+                <div class="role-card">
+                    <i class="fas fa-edit"></i>
+                    <h4>Manage Articles</h4>
+                    <p>Create, edit, and manage informative scam awareness posts to educate users</p>
+                    <a href="@Url.Action("ManageArticles", "Analyst")" class="btn btn-primary">Go to Dashboard</a>
                 </div>
             </div>
         </div>
