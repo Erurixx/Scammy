@@ -1,11 +1,11 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Raleway:700|Noto+Sans:400');
 
 :root {
-    --text: #f0f1f3;
-    --background: #08090a;
-    --primary: #b0b4bf;
-    --secondary: #584a5a;
-    --accent: #91788d;
+    --text: #FDF0D5; /* papaya whip - soft, readable on dark */
+    --background: #003049; /* prussian blue - elegant dark background */
+    --primary: #FFFFFF; /* white - for main buttons/text */
+    --secondary: #669BBC; /* air superiority blue - links, secondary UI */
+    --accent: #FFFFFF; /* fire brick - CTA buttons, highlights */
 }
 
 * {
@@ -62,7 +62,7 @@ small {
 }
 
 .header {
-    background: rgba(88, 74, 90, 0.95);
+    background: var(--secondary);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0,0,0,0.5);
     position: sticky;
@@ -88,16 +88,16 @@ small {
     gap: 10px;
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--accent);
+    color: var(--background);
     text-decoration: none;
     flex-shrink: 0; /* Prevent logo from shrinking */
     white-space: nowrap; /* Prevent logo text from wrapping */
-    color: cornflowerblue;
+
 }
 
     .logo i {
         font-size: 1.5rem;
-        color: cornflowerblue;
+        color: var(--background);
     }
 
 .nav-menu {
@@ -140,6 +140,8 @@ small {
     position: relative;
     margin: 10px;
 }
+
+
 
     .search-box input {
         padding: 10px 15px 10px 40px;
@@ -263,7 +265,14 @@ small {
     width: 100%;
     max-width: none;
     padding: 0 2rem;
+    
 }
+
+.banner h1, h3, p {
+    color: var(--background);
+}
+
+
 
 .hero h1 {
     margin-bottom: 1rem;
@@ -760,7 +769,7 @@ small {
 }
 
 .progress-primary {
-    background: var(--accent);
+    background: green;
 }
 
 .progress-danger {
