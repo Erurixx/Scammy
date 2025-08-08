@@ -10,15 +10,25 @@ namespace Scammy.Models
         public string Title { get; set; }
 
         [Required]
-        [DataType(DataType.MultilineText)]
+        public string Category { get; set; }
+
+        public string Excerpt { get; set; }
+
+        [Required]
         public string Content { get; set; }
 
-        public DateTime DatePosted { get; set; } = DateTime.Now;
+        public string Tags { get; set; }
 
-        public string Author { get; set; } // store analyst's username or ID
+        public string Status { get; set; }
+
+        public string ImagePath { get; set; }
+
+        public string Author { get; set; }
 
         public bool IsApproved { get; set; } = false;
 
-        public string AdminComment { get; set; } // used for rejection reasons
+        public string AdminComment { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

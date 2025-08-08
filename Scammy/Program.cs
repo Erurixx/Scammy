@@ -35,5 +35,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// ✅ Map MVC routes
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// ✅ Map API controller routes
+app.MapControllers(); // <-- this is what allows `[ApiController]` to work
+
+
 
 app.Run();
