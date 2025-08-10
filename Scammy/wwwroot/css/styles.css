@@ -234,6 +234,23 @@ small {
     padding: 8px 16px; /* Shorter padding */
 }
 
+.btn-logout {
+    color: var(--text);
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font: inherit;
+    line-height: normal;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s;
+}
+
+    .btn-logout:hover {
+        color: var(--accent);
+    }
+
 
 
 .btn-white {

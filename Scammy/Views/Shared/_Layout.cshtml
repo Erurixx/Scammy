@@ -13,6 +13,8 @@
 <body>
     @Html.Partial("_Header")
 
+
+
     @RenderSection("Hero", required: false)
 
     <main class="container">
@@ -25,5 +27,8 @@
     @Html.Partial("_Footer")
 
     <script src="~/js/ManageArticles.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
 </body>
 </html>

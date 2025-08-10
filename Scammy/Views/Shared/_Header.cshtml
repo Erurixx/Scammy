@@ -34,7 +34,10 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a href="@Url.Action("Logout", "Account")" class="btn btn-outline">Logout (@User.Identity.Name)</a>
+                    <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn-logout">Logout (@User.Identity.Name)</button>
+                    </form>
                 }
                 else
                 {

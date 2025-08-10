@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Scammy.ViewModels.RegisterViewModel
+
+@{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -14,23 +16,27 @@
                         @Html.AntiForgeryToken()
 
                         <div class="form-group mb-3">
-                            <label for="Username">Username</label>
-                            <input type="text" name="Username" id="Username" class="form-control" placeholder="Choose a username" required />
+                            @Html.LabelFor(m => m.Username)
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Choose a username", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="Email">Email</label>
-                            <input type="email" name="Email" id="Email" class="form-control" placeholder="Enter your email" required />
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email", type = "email", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="Password">Password</label>
-                            <input type="password" name="Password" id="Password" class="form-control" placeholder="Enter your password" required />
+                            @Html.LabelFor(m => m.Password)
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="ConfirmPassword">Confirm Password</label>
-                            <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="form-control" placeholder="Re-enter your password" required />
+                            @Html.LabelFor(m => m.ConfirmPassword)
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Re-enter your password", required = "required" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="text-center">
@@ -46,3 +52,17 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        @if (TempData["SuccessMessage"] != null)
+        {
+                <text>
+                    alert("@TempData["SuccessMessage"]");
+                    window.location.href = '@Url.Action("Login", "Account")';
+                </text>
+        }
+    </script>
+}
