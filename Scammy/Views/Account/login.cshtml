@@ -3,6 +3,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section id="login">
-    <!-- Paste your login form HTML here -->
+<section id="login" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <h2 class="text-center mb-4">Login</h2>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group mb-3">
+                            <label for="EmailOrUsername">Email or Username</label>
+                            <input type="text" name="EmailOrUsername" id="EmailOrUsername" class="form-control" placeholder="Enter your email or username" required />
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Password">Password</label>
+                            <input type="password" name="Password" id="Password" class="form-control" placeholder="Enter your password" required />
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <small>Don't have an account? <a href="@Url.Action("Register", "Account")">Register here</a></small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
