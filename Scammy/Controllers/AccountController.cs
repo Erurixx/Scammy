@@ -1,0 +1,17 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Scammy.Controllers
+{
+    public class AccountController : Controller
+    {
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+    }
+}
