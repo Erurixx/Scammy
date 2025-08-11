@@ -27,7 +27,6 @@ namespace Scammy.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Find user by email first
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
@@ -40,13 +39,10 @@ namespace Scammy.Controllers
                             return RedirectToAction("Index", "Home");
                     }
                 }
-
                 ModelState.AddModelError("", "Invalid login attempt.");
             }
             return View(model);
         }
-
-
 
         [HttpGet]
         public IActionResult Register() => View();
@@ -66,15 +62,18 @@ namespace Scammy.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // ✅ Assign default role as Jobseeker
+                    await _userManager.AddToRoleAsync(user, "Jobseeker");
+
                     TempData["SuccessMessage"] = "Registration successful! Please log in.";
                     return RedirectToAction("Login");
                 }
+
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
             }
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]

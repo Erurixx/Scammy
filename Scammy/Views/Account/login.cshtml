@@ -9,6 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow">
+
                 @if (TempData["RegisterSuccessMessage"] != null)
                 {
                     <div class="alert alert-success" role="alert">
@@ -16,36 +17,36 @@
                     </div>
                 }
 
-                @if (!ViewData.ModelState.IsValid)
-                {
-                    var errors = ViewData.ModelState.Values.SelectMany(v => v.Errors);
-                    if (errors.Any())
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            @foreach (var error in errors)
-                            {
-                                <p>@error.ErrorMessage</p>
-                            }
-                        </div>
-                    }
-                }
-
                 <h2 class="text-center mb-4">Login</h2>
                 <div class="card-body">
+
+                    <!-- Global error list -->
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.SelectMany(v => v.Errors).Any())
+                    {
+                        <div style="color:red; margin-bottom:1rem;">
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
                     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
 
                         <div class="form-group mb-3">
                             @Html.LabelFor(m => m.Email)
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email", type = "email", required = "required" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email", type = "email" })
+                            <!-- Removed per-field validation message -->
                         </div>
 
                         <div class="form-group mb-3">
                             @Html.LabelFor(m => m.Password)
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password", required = "required" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password" })
+                            <!-- Removed per-field validation message -->
                         </div>
 
                         <div class="text-center">
@@ -64,25 +65,4 @@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    <script>
-        @if (TempData["SuccessMessage"] != null)
-        {
-                <text>
-                    alert("@TempData["SuccessMessage"]");
-                </text>
-        }
-        else if (!ViewData.ModelState.IsValid)
-        {
-                var errors = ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                var errorMessages = string.Join("\\n", errors);
-                if (!string.IsNullOrEmpty(errorMessages))
-                {
-                        <text>
-                            alert("Login failed:\\n@errorMessages");
-                        </text>
-                }
-        }
-    </script>
 }
-

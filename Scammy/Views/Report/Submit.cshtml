@@ -1,0 +1,115 @@
+﻿@model Scammy.ViewModels.ScamReportViewModel
+
+@{
+    ViewBag.Title = "Submit Scam Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Scam type box styling */
+    .scam-type-box {
+        border: 1px solid #ccc;
+        padding: 1rem;
+        border-radius: 6px;
+        background-color: transparent; /* Removed background color */
+        margin-bottom: 1.5rem;
+    }
+
+    .scam-type-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .scam-type-item {
+        flex: 0 0 calc(33.333% - 1rem);
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<section class="form-section">
+    <div class="form-container">
+        <h2 class="text-center mb-3">Submit Scam Report</h2>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="color:green; margin-bottom:1rem;">@TempData["SuccessMessage"]</div>
+        }
+
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.SelectMany(v => v.Errors).Any())
+        {
+            <div style="color:red; margin-bottom:1rem;">
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @using (Html.BeginForm("Submit", "Report", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ScamTitle)
+                @Html.TextBoxFor(m => m.ScamTitle, new { @class = "form-control", placeholder = "Enter scam title" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.CompanyName)
+                @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", placeholder = "Enter company name" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.JobTitle)
+                @Html.TextBoxFor(m => m.JobTitle, new { @class = "form-control", placeholder = "Enter job title" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Salary)
+                @Html.TextBoxFor(m => m.Salary, new { @class = "form-control", placeholder = "Enter salary", type = "number", step = "0.01", min = "0" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Description)
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description", rows = 4 })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ContactEmail)
+                @Html.TextBoxFor(m => m.ContactEmail, new { @class = "form-control", placeholder = "Enter contact email", type = "email" })
+            </div>
+
+            <!-- Scam Types Box -->
+            <div class="form-group mb-3">
+                <label>@Html.DisplayNameFor(m => m.SelectedScamTypes)</label>
+                <div class="scam-type-box">
+                    <div class="scam-type-row">
+                        @foreach (var option in Model.ScamTypeOptions)
+                        {
+                            <div class="scam-type-item">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="scamType_@option.Id"
+                                       name="SelectedScamTypes"
+                                       value="@option.Id"
+                                       @(Model.SelectedScamTypes.Contains(option.Id) ? "checked" : "") />
+                                <label class="form-check-label ms-2" for="scamType_@option.Id">@option.Name</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ScamDate)
+                @Html.TextBoxFor(m => m.ScamDate, new { @class = "form-control", type = "date" })
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit Report</button>
+        }
+    </div>
+</section>
