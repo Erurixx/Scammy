@@ -206,7 +206,7 @@ body {
   color: #088ec3;
 }
 
-.main-blue-button a {
+/*.main-blue-button a {
   display: inline-block;
   background-color: #4771cb;
   font-size: 15px;
@@ -224,7 +224,7 @@ body {
   background-color: #fff!important;
   color: #4771cb!important;
   border-bottom: 2px solid #4771cb!important;
-}
+}*/
 
 .main-green-button a {
   display: inline-block;

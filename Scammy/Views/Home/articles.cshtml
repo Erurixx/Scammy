@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "Articles";
+    ViewData["Title"] = "Articles - Scam Awareness Hub";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section id="scam-reports">
+@* <section id="scam-reports">
     <div class="container">
         <div class="role-section">
             <div class="role-header" style="margin-top: 5rem;">
@@ -28,4 +28,554 @@
             </div>
         </div>
     </div>
+</section> *@
+
+<!-- Hero Banner -->
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-6 align-self-center">
+                        <div class="left-content header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="info-stat">
+                                        <h6>Published Articles:</h6>
+                                        <h4>320+</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="info-stat">
+                                        <h6>Safety Tips:</h6>
+                                        <h4>150+</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="info-stat">
+                                        <h6>Monthly Readers:</h6>
+                                        <h4>12K+</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <h2>Scam Awareness Hub</h2>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="main-green-button scroll-to-section">
+                                        <a href="#view-articles">Browse Articles</a>
+                                        <a href="#safety-tips" class="btn-outline">Read Safety Tips</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                            <img src="~/assets/images/scam-awareness-logo.png" alt="scam-awareness-logo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Hub Features -->
+<div id="hub-features" class="features section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="features-content">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="features-item first-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
+                                <div class="first-number number">
+                                    <h6>01</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>View Articles</h4>
+                                <div class="line-dec"></div>
+                                <p>Browse our comprehensive library of scam awareness articles and industry insights.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="features-item second-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
+                                <div class="second-number number">
+                                    <h6>02</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>Read Tips</h4>
+                                <div class="line-dec"></div>
+                                <p>Access quick safety tips and prevention strategies for safe job searching.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="features-item first-feature last-features-item wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+                                <div class="third-number number">
+                                    <h6>03</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>Manage Articles</h4>
+                                <div class="line-dec"></div>
+                                <p>Admin tools for content management, publishing, and maintaining article quality.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Articles Section -->
+<section id="view-articles" class="recent-scams">
+    <div class="container">
+        <div class="section-header">
+            <h2>Latest Articles</h2>
+            <p>Stay informed with expert insights and analysis on job scam trends</p>
+        </div>
+
+        <div class="scams-grid">
+            <div class="scam-card">
+                <div class="scam-header">
+                    <span class="severity-badge severity-critical">Featured</span>
+                    <span class="date-text">2 days ago</span>
+                </div>
+                <h3 class="scam-title">Remote Work Scam Trends in 2025</h3>
+                <div class="scam-meta">
+                    <div class="scam-meta-item">
+                        <i class="fas fa-user"></i>
+                        <span>Dr. Sarah Chen</span>
+                    </div>
+                    <div class="scam-meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>8 min read</span>
+                    </div>
+                    <div class="scam-meta-item">
+                        <i class="fas fa-eye"></i>
+                        <span>2.3K views</span>
+                    </div>
+                </div>
+                <p class="description-text">Comprehensive analysis of emerging remote work scam tactics and how legitimate companies are adapting their hiring processes.</p>
+                <div class="warning-flags">
+                    <span class="flag">Remote Work</span>
+                    <span class="flag">Trend Analysis</span>
+                    <span class="flag">Expert Insights</span>
+                </div>
+                <div class="text-center">
+                    <div class="main-green-button">
+                        <a href="#" class="scroll-to-section">Read Article</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scam-card">
+                <div class="scam-header">
+                    <span class="severity-badge severity-high">Popular</span>
+                    <span class="date-text">1 week ago</span>
+                </div>
+                <h3 class="scam-title">AI-Generated Fake Job Interviews</h3>
+                <div class="scam-meta">
+                    <div class="scam-meta-item">
+                        <i class="fas fa-user"></i>
+                        <span>Mark Thompson</span>
+                    </div>
+                    <div class="scam-meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>6 min read</span>
+                    </div>
+                    <div class="scam-meta-item">
+                        <i class="fas fa-eye"></i>
+                        <span>1.8K views</span>
+                    </div>
+                </div>
+                <p class="description-text">How scammers are using AI technology to create convincing fake video interviews and what to watch out for.</p>
+                <div class="warning-flags">
+                    <span class="flag">AI Technology</span>
+                    <span class="flag">Video Interviews</span>
+                    <span class="flag">Detection Guide</span>
+                </div>
+                <div class="text-center">
+                    <div class="main-green-button">
+                        <a href="#" class="scroll-to-section">Read Article</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scam-card">
+                <div class="scam-header">
+                    <span class="severity-badge severity-medium">Investigation</span>
+                    <span class="date-text">2 weeks ago</span>
+                </div>
+                <h3 class="scam-title">Cryptocurrency Job Scam Network Exposed</h3>
+                <div class="scam-meta">
+                    <div class="scam-meta-item">
+                        <i class="fas fa-user"></i>
+                        <span>Investigation Team</span>
+                    </div>
+                    <div class="scam-meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>12 min read</span>
+                    </div>
+                    <div class="scam-meta-item">
+                        <i class="fas fa-eye"></i>
+                        <span>3.1K views</span>
+                    </div>
+                </div>
+                <p class="description-text">Deep dive investigation into a sophisticated cryptocurrency job scam network that targeted tech professionals worldwide.</p>
+                <div class="warning-flags">
+                    <span class="flag">Investigation</span>
+                    <span class="flag">Cryptocurrency</span>
+                    <span class="flag">Case Study</span>
+                </div>
+                <div class="text-center">
+                    <div class="main-green-button">
+                        <a href="#" class="scroll-to-section">Read Article</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="main-green-button">
+                <a href="#" class="scroll-to-section">View All Articles</a>
+            </div>
+        </div>
+    </div>
 </section>
+
+<!-- Safety Tips Section -->
+<section id="safety-tips" class="our-services section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+                    <h6>Safety Tips</h6>
+                    <h2>Essential <span>Safety</span> Tips for <em>Job Seekers</em></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="icon">
+                                <img src="~/assets/images/info-icon.png" alt="info-icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="right-content">
+                                <h4>Verify Company Information</h4>
+                                <p>Always research the company's official website, check business registrations, and verify contact information before applying.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="icon">
+                                <img src="~/assets/images/money.png" alt="money-icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="right-content">
+                                <h4>Never Pay Upfront Fees</h4>
+                                <p>Legitimate employers never ask for money upfront for training, equipment, or background checks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.5s">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="icon">
+                                <img src="~/assets/images/personal-info.png" alt="personal-info-icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="right-content">
+                                <h4>Be Cautious with Personal Info</h4>
+                                <p>Only provide sensitive information after confirming the employer's legitimacy and during official interviews.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.6s">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="icon">
+                                <img src="~/assets/images/insticnt.png" alt="instinct-icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="right-content">
+                                <h4>Trust Your Instincts</h4>
+                                <p>If an offer seems too good to be true or feels suspicious, take time to research and verify before proceeding.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.7s">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="icon">
+                                <img src="~/assets/images/secure.png" alt="secure-communication-icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="right-content">
+                                <h4>Use Secure Communication</h4>
+                                <p>Communicate through official company channels and be wary of personal email addresses or messaging apps.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.8s">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="icon">
+                                <img src="~/assets/images/suspicious.png" alt="sus-activity-icon">
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="right-content">
+                                <h4>Report Suspicious Activity</h4>
+                                <p>Help protect others by reporting suspicious job postings and recruitment practices to relevant authorities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Article Management Dashboard -->
+    <section id="manage-articles" class="dashboard">
+        <div class="container">
+            <div class="section-header">
+                <h2>Article Management</h2>
+                <p>Create, edit, and manage scam awareness content</p>
+            </div>
+
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('published')">Published Articles</button>
+                <button class="tab-btn" onclick="switchTab('drafts')">Drafts</button>
+                <button class="tab-btn" onclick="switchTab('create')">Create New</button>
+                <button class="tab-btn" onclick="switchTab('analytics')">Analytics</button>
+            </div>
+
+            <div id="published" class="tab-content active">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Published This Month</h3>
+                            <span class="severity-badge severity-high">24</span>
+                        </div>
+                        <p class="card-description">Articles currently live and available to readers</p>
+                        <div class="card-actions">
+                            <a href="#" class="btn btn-primary">Manage</a>
+                            <a href="#" class="btn btn-outline">View All</a>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Performing</h3>
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="trending-content">
+                            <div class="trending-item">
+                                <span>Remote Work Scam Guide</span>
+                                <span class="trending-percentage">4.2K views</span>
+                            </div>
+                            <div class="trending-item">
+                                <span>LinkedIn Safety Tips</span>
+                                <span class="trending-percentage">3.8K views</span>
+                            </div>
+                            <div class="trending-item">
+                                <span>Crypto Job Scam Analysis</span>
+                                <span class="trending-percentage">2.9K views</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline btn-full-width">View Analytics</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="drafts" class="tab-content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Draft Management</h3>
+                            <div class="card-actions">
+                                <a href="#" class="btn btn-outline">Filter</a>
+                                <a href="#" class="btn btn-primary">New Draft</a>
+                            </div>
+                        </div>
+                        <div class="report-management">
+                            <div class="report-item">
+                                <div class="report-info">
+                                    <p class="report-title">TikTok Job Scam Investigation</p>
+                                    <p class="report-time">Last edited 2 hours ago</p>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="btn btn-primary btn-small">Edit</button>
+                                    <button class="btn btn-outline btn-small">Publish</button>
+                                </div>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-info">
+                                    <p class="report-title">WhatsApp Recruitment Scams</p>
+                                    <p class="report-time">Last edited 1 day ago</p>
+                                </div>
+                                <div class="report-actions">
+                                    <button class="btn btn-primary btn-small">Edit</button>
+                                    <button class="btn btn-outline btn-small">Publish</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="create" class="tab-content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Create New Article</h3>
+                        </div>
+                        <div class="form-container">
+                            <form>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="article-title">Article Title *</label>
+                                        <input type="text" id="article-title" class="form-control" placeholder="Enter article title" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="article-category">Category *</label>
+                                        <select id="article-category" class="form-control" required>
+                                            <option value="">Select category</option>
+                                            <option value="prevention">Prevention Guide</option>
+                                            <option value="analysis">Industry Analysis</option>
+                                            <option value="investigation">Investigation</option>
+                                            <option value="tips">Safety Tips</option>
+                                            <option value="news">News & Updates</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="article-content">Article Content *</label>
+                                    <textarea id="article-content" class="form-control" rows="8" placeholder="Write your article content here..." required></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-danger btn-large">
+                                        <i class="fas fa-save"></i> Save Draft
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-large">
+                                        <i class="fas fa-paper-plane"></i> Publish Article
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="analytics" class="tab-content">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Content Analytics</h3>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="analytics-stat">
+                                <h4>28.5K</h4>
+                                <p>Total Article Views</p>
+                            </div>
+                            <div class="analytics-stat success">
+                                <h4>4.8</h4>
+                                <p>Average Rating</p>
+                            </div>
+                            <div class="analytics-stat">
+                                <h4>320</h4>
+                                <p>Published Articles</p>
+                            </div>
+                            <div class="analytics-stat success">
+                                <h4>92%</h4>
+                                <p>Reader Satisfaction</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="role-sections">
+        <div class="container">
+            <div class="role-section">
+                <div class="role-header">
+                    <h3>Quick Actions</h3>
+                    <p>Access frequently used tools and resources</p>
+                </div>
+                <div class="role-grid">
+                    <div class="role-card">
+                        <i class="fas fa-plus-circle"></i>
+                        <h4>Write New Article</h4>
+                        <p>Create a new scam awareness article or safety guide for the community</p>
+                        <a href="#create" class="btn btn-primary">Create Article</a>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-edit"></i>
+                        <h4>Update Existing Content</h4>
+                        <p>Edit and update published articles to keep information current and accurate</p>
+                        <a href="#published" class="btn btn-primary">Edit Articles</a>
+                    </div>
+                    <div class="role-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>View Performance</h4>
+                        <p>Track article performance, reader engagement, and content effectiveness metrics</p>
+                        <a href="#analytics" class="btn btn-primary">View Analytics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+
+
