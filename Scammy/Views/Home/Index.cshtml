@@ -1,17 +1,8 @@
-﻿@* <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scammy</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body> *@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
 
-
-<!-- Hero Section -->
-@section Hero{
+@* @section Hero{
 
     <section class="hero">
         <div class="banner">
@@ -488,11 +479,394 @@
     </section>
 
 
-}
+} *@
 
 
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-6 align-self-center">
+                        <div class="left-content header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="info-stat">
+                                        <h6>Reports Submitted:</h6>
+                                        <h4>2,000+</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="info-stat">
+                                        <h6>Scams Detected:</h6>
+                                        <h4>1,200+</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="info-stat">
+                                        <h6>Articles Published:</h6>
+                                        <h4>320+</h4>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <h2>Scammy: Job Report Platform</h2>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="main-green-button scroll-to-section">
+                                        <a href="#contact">Submit Report</a>
+                                        <a href="@Url.Action("Articles", "Home")" class="btn-outline">Read Safety Tips</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                            <img src="assets/images/banner-right-image.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div id="features" class="features section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="features-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="features-item first-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
+                                <div class="first-number number">
+                                    <h6>01</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>Identify the Scam</h4>
+                                <div class="line-dec"></div>
+                                <p>Recognize suspicious messages, websites, or transactions before they cause harm.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="features-item second-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
+                                <div class="second-number number">
+                                    <h6>02</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>Submit Your Report</h4>
+                                <div class="line-dec"></div>
+                                <p>Use our quick form to share details and evidence so others can be alerted.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="features-item first-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+                                <div class="third-number number">
+                                    <h6>03</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>Review & Publish</h4>
+                                <div class="line-dec"></div>
+                                <p>Our team verifies and publishes scam reports to keep the community informed.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="features-item second-feature last-features-item wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.6s">
+                                <div class="fourth-number number">
+                                    <h6>04</h6>
+                                </div>
+                                <div class="icon"></div>
+                                <h4>Stay Protected</h4>
+                                <div class="line-dec"></div>
+                                <p>Browse scam alerts, prevention tips, and analysis to protect yourself and others.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="skills-content">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
+                                <div class="progress" data-percentage="80">
+                                    <span class="progress-left">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <div class="progress-value">
+                                        <div>
+                                            80%<br>
+                                            <span>Verified Reports</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s">
+                                <div class="progress" data-percentage="60">
+                                    <span class="progress-left">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <div class="progress-value">
+                                        <div>
+                                            60%<br>
+                                            <span>User Engagement</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.4s">
+                                <div class="progress" data-percentage="90">
+                                    <span class="progress-left">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <div class="progress-value">
+                                        <div>
+                                            90%<br>
+                                            <span>Job Scams <br>Reported</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="skill-item last-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.6s">
+                                <div class="progress" data-percentage="70">
+                                    <span class="progress-left">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <div class="progress-value">
+                                        <div>
+                                            70%<br>
+                                            <span>Prevented Losses</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-@*     <script src="script.js"></script>
-</body>
-</html> *@
+<div id="about" class="about-us section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="left-image wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
+                    <img src="assets/images/about-left-image.png" alt="">
+                </div>
+            </div>
+            <div class="col-lg-6 align-self-center wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                <div class="section-heading">
+                    <h6>About Scammy</h6>
+                    <h2>Empowering <em>Jobseekers</em> & <span>Communities</span> to Fight Online Job Scams</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="about-item">
+                            <h4>750+</h4>
+                            <h6>Verified Scam Reports</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="about-item">
+                            <h4>340+</h4>
+                            <h6>Community Members Protected</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-4">
+                        <div class="about-item">
+                            <h4>128+</h4>
+                            <h6>Awareness Articles Published</h6>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    Scammy is a community-driven platform dedicated to protecting job seekers from
+                    fraudulent opportunities. By collecting and verifying scam reports, and providing
+                    up-to-date awareness content, we aim to reduce job scam victims and enhance digital safety.
+                </p>
+                <div class="main-green-button"><a href="#features">Learn More</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="services" class="our-services section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+                    <h6>Our Services</h6>
+                    <h2>How Scammy <span>Protects</span> You from Online Job <em>Scams</em></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="icon">
+                                <img src="assets/images/service-icon-01.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="right-content">
+                                <h4>Report Scam Jobs</h4>
+                                <p>Easily submit scam job postings to help protect the community.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.4s">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="icon">
+                                <img src="assets/images/service-icon-02.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="right-content">
+                                <h4>Scam Awareness</h4>
+                                <p>Read and learn from regularly updated articles and tips on how to spot and avoid new scam trends.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+                <div class="col-lg-4">
+                    <div class="service-item wow bounceInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="icon">
+                                    <img src="assets/images/service-icon-01.png" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="right-content">
+                                    <h4>Manual Verification</h4>
+                                    <p>All submitted reports were manually verified by our admin.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+            
+           
+</div>
+
+<div id="contact" class="contact-us section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
+
+                <!-- Razor form with action -->
+                        @using (Html.BeginForm("SendMessage", "Contact", FormMethod.Post, new { id = "contact" }))
+                {
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-3">
+                            <div class="section-heading">
+                                <h6>Submit a Scam Report</h6>
+                                <h2>Help Us Stop Scams — <span>Report</span> Suspicious Jobs</h2>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <fieldset>
+                                        @Html.TextBox("Name", null, new { @placeholder = "Name", @required = "required", @autocomplete = "on", @class = "form-control" })
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <fieldset>
+                                        @Html.TextBox("ScamTitle", null, new { @placeholder = "Job Title or Scam Name", @required = "required", @autocomplete = "on", @class = "form-control" })
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <fieldset>
+                                        @Html.TextBox("Email", null, new { @type = "email", @placeholder = "Your Email", @required = "required", @pattern = "[^ @]*@[^ @]*", @class = "form-control" })
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <fieldset>
+                                        @Html.TextBox("CompanyName", null, new { @placeholder = "Company Name (if known)", @autocomplete = "on", @class = "form-control" })
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        @Html.TextArea("Description", null, new { @placeholder = "Detailed Description of Scam", @required = "required", @class = "form-control" })
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="main-button">Submit Report</button>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="col-lg-3">
+                            <div class="contact-info">
+                                <ul>
+                                    <li>
+                                        <div class="icon">
+                                            <img src="~/assets/images/contact-icon-01.png" alt="email icon">
+                                        </div>
+                                        <a href="mailto:info@scammy.com">info@scammy.com</a>
+                                    </li>
+                                    <li>
+                                        <div class="icon">
+                                            <img src="~/assets/images/contact-icon-02.png" alt="phone">
+                                        </div>
+                                                <a href="tel:+60123456789">+60 12-345 6789</a>
+                                    </li>
+                                    <li>
+                                        <div class="icon">
+                                            <img src="~/assets/images/contact-icon-03.png" alt="location">
+                                        </div>
+                                        <a href="#">26th Street, Kuala Lumpur</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

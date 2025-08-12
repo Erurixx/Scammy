@@ -1,46 +1,47 @@
-﻿<!-- Header -->
-<header class="header">
+﻿<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
     <div class="container">
-        <div class="nav-container">
-            <a href="@Url.Action("Index", "Home")" class="logo">
-                <i class="fas fa-shield-alt"></i>
-                Scammy
-            </a>
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- Logo -->
+                    <a href="@Url.Action("Index", "Home")" class="logo">
+                        <h4>Scammy <img src="~/assets/images/logo-icon.png" alt=""></h4>
+                    </a>
 
-            <nav>
-                <ul class="nav-menu">
-                    <li><a href="@Url.Action("Index", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">Home</a></li>
-                    <li><a href="@Url.Action("ScamReports", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "ScamReports" ? "active" : "")">Scam Reports</a></li>
-                    <li><a href="@Url.Action("Articles", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Articles" ? "active" : "")">Awareness Hub</a></li>
-                    <li><a href="@Url.Action("Analytics", "Home")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Analytics" ? "active" : "")">Analytics</a></li>
-                    <li><a href="@Url.Action("Submit", "Report")" class="@(ViewContext.RouteData.Values["action"].ToString() == "Submit" ? "active" : "")">Submit Report</a></li>
+                    <!-- Menu -->
+                    <ul class="nav">
+                        <li class="scroll-to-section"><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>
+                        <li class="scroll-to-section"><a href="@Url.Action("ScamReports", "Home")">Scam Reports</a></li>
+                        <li class="scroll-to-section"><a href="@Url.Action("Articles", "Home")">Awareness Hub</a></li>
+                        <li class="scroll-to-section"><a href="@Url.Action("Analytics", "Home")">Analytics</a></li>
+                        <li class="scroll-to-section"><a href="@Url.Action("Submit", "Report")">Submit Report</a></li>
+                        <li><a href="@Url.Action("Login", "Account")">Login</a></li>
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li><a href="@Url.Action("Dashboard", "Admin")">Admin</a></li>
-                    }
-                    @if (User.IsInRole("Analyst"))
-                    {
-                        <li><a href="@Url.Action("Dashboard", "Analyst")">Analyst</a></li>
-                    }
-                </ul>
-            </nav>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li><a href="@Url.Action("Dashboard", "Admin")">Admin</a></li>
+                        }
+                        @if (User.IsInRole("Analyst"))
+                        {
+                            <li><a href="@Url.Action("Dashboard", "Analyst")">Analyst</a></li>
+                        }
 
-            <div class="nav-actions">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search scams..." />
-                </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="@Url.Action("Logout", "Account")">Logout (@User.Identity.Name)</a></li>
+                        }
+                        @* else
+                        {
+                            <li><a href="@Url.Action("Login", "Account")">Login</a></li>
+                            <li><a href="@Url.Action("Register", "Account")">Sign Up</a></li>
+                        } *@
+                    </ul>
 
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a href="@Url.Action("Logout", "Account")" class="btn btn-outline">Logout (@User.Identity.Name)</a>
-                }
-                else
-                {
-                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline">Login</a>
-                    <a href="@Url.Action("Register", "Account")" class="btn btn-primary">Sign Up</a>
-                }
+                    <!-- Mobile Menu Trigger -->
+                    <a class="menu-trigger">
+                        <span>Menu</span>
+                    </a>
+                </nav>
             </div>
         </div>
     </div>
