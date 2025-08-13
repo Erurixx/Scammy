@@ -2,7 +2,158 @@
     ViewBag.Title = "Analyst Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/dashboard.css" />
+}
 
-<section id="analyst-dashboard">
-    <!-- Analyst dashboard content -->
+<section id="analyst-dashboard" >
+    <div class="az-content az-content-dashboard" style="margin-top:6rem;">
+        <div class="container">
+            <div class="az-content-body">
+                <div class="az-dashboard-one-title">
+                    <div>
+                        <h2 class="az-dashboard-title">Hi, welcome back!</h2>
+                        <p class="az-dashboard-text">Manage scam awareness content, review reports, and track trends.</p>
+                    </div>
+                    <div class="az-content-header-right">
+                        <div class="media">
+                            <div class="media-body">
+                                <label>Start Date</label>
+                                <h6>-- Select --</h6>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                        <div class="media">
+                            <div class="media-body">
+                                <label>End Date</label>
+                                <h6>-- Select --</h6>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                        <div class="media">
+                            <div class="media-body">
+                                <label>Trend Category</label>
+                                <h6>-- Select --</h6>
+                            </div><!-- media-body -->
+                        </div><!-- media -->
+                        <a href="" class="btn btn-green">Export Report</a>
+                    </div>
+                </div><!-- az-dashboard-one-title -->
+
+                <div class="az-dashboard-nav">
+                    <nav class="nav">
+                        <a class="nav-link active" data-toggle="tab" href="#">Overview</a>
+                        <a class="nav-link" data-toggle="tab" href="#">Manage Articles</a>
+                        <a class="nav-link" data-toggle="tab" href="#">View Published Articles</a>
+                        <a class="nav-link" href="@Url.Action("createArticle", "Analyst")">Create New Article +</a>
+
+                        
+                    </nav>
+                    <nav class="nav">
+                    </nav>
+                </div>
+
+                <div class="row row-sm mg-b-20">
+                    <div class="col-lg-7 ht-lg-100p">
+                        <div class="card card-dashboard-one">
+                            <div class="card-header">
+                                <div>
+                                    <h6 class="card-title">Total Reported Scams</h6>
+                                    <p class="card-text">Summary of reported scams for the selected date range.</p>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn active">Day</button>
+                                    <button class="btn">Week</button>
+                                    <button class="btn">Month</button>
+                                </div>
+                            </div><!-- card-header -->
+                            <div class="card-body">
+                                <div class="card-body-top">
+                                    <div>
+                                        <label class="mg-b-0">New Articles Posted</label>
+                                        <h2>13,956</h2>
+                                    </div>
+                                    <div>
+                                        <label class="mg-b-0">Approved Articles</label>
+                                        <h2>33.50%</h2>
+                                    </div>
+                                    <div>
+                                        <label class="mg-b-0">Rejected Articles</label>
+                                        <h2>83,123</h2>
+                                    </div>
+                                    
+                                </div><!-- card-body-top -->
+                                <div class="flot-chart-wrapper">
+                                    <div id="flotChart" class="flot-chart"></div>
+                                </div><!-- flot-chart-wrapper -->
+                            </div><!-- card-body -->
+                        </div><!-- card -->
+                    </div><!-- col -->
+
+                    <div class="col-lg-5 mg-t-20 mg-lg-t-0">
+                        <div class="row row-sm">
+                            <div class="col-sm-6">
+                                <div class="card card-dashboard-two">
+                                    <div class="card-header">
+                                        <h6>33.50% <i class="icon ion-md-trending-up tx-success"></i> <small>18.02%</small></h6>
+                                        <p>Article Approval Rate</p>
+                                    </div><!-- card-header -->
+                                    <div class="card-body">
+                                        <div class="chart-wrapper">
+                                            <div id="flotChart1" class="flot-chart"></div>
+                                        </div><!-- chart-wrapper -->
+                                    </div><!-- card-body -->
+                                </div><!-- card -->
+                            </div><!-- col -->
+                            <div class="col-sm-6 mg-t-20 mg-sm-t-0">
+                                <div class="card card-dashboard-two">
+                                    <div class="card-header">
+                                        <h6>1,200 <i class="icon ion-md-trending-down tx-danger"></i> <small>0.86%</small></h6>
+                                        <p>Scam Reports Reviewed</p>
+                                    </div><!-- card-header -->
+                                    <div class="card-body">
+                                        <div class="chart-wrapper">
+                                            <div id="flotChart2" class="flot-chart"></div>
+                                        </div><!-- chart-wrapper -->
+                                    </div><!-- card-body -->
+                                </div><!-- card -->
+                            </div><!-- col -->
+                            <div class="col-sm-12 mg-t-20">
+                                <div class="card card-dashboard-three">
+                                    <div class="card-header">
+                                        <p>Total Articles Published</p>
+                                        <h6>16,869 <small class="tx-success"><i class="icon ion-md-arrow-up"></i> 2.87%</small></h6>
+                                        <small>The total number of scam awareness articles published within the selected date range.</small>
+                                    </div><!-- card-header -->
+                                    <div class="card-body">
+                                        <div class="chart"><canvas id="chartBar5"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- row -->
+                    </div><!--col -->
+                </div><!-- row -->
+
+                
+        </div>
+    </div><!-- az-content -->
+    </div>
+    
 </section>
+
+@section Scripts {
+    <!-- jQuery (required for Flot and Peity) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Flot Charts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.resize.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <!-- Peity for small charts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peity/3.3.0/jquery.peity.min.js"></script>
+
+    <!-- Your custom dashboard JavaScript -->
+    <script src="~/assets/js/charts.js"></script>
+}

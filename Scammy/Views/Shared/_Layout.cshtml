@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewBag.Title - Scammy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
 
     <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/assets/css/fontawesome.css" />
@@ -13,6 +15,13 @@
     <link rel="stylesheet" href="~/assets/css/owl.css" />
     <link rel="stylesheet" href="~/assets/css/articles.css" />
 
+    @RenderSection("Styles", required: false)
+
+
+    
+    
+
+    
 </head>
 <body>
 
@@ -33,5 +42,7 @@
     <script src="~/assets/js/imagesloaded.js"></script>
     <script src="~/assets/js/custom.js"></script>
     <script src="~/assets/js/analyst.js"></script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
