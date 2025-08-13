@@ -12,8 +12,46 @@
                     <ul class="nav">
                         <li class="scroll-to-section"><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>
                         <li class="scroll-to-section"><a href="@Url.Action("ScamReports", "Home")">Scam Reports</a></li>
-                        <li class="scroll-to-section"><a href="@Url.Action("Articles", "Home")">Awareness Hub</a></li>
+                        <!-- Awareness Hub -->
+                        @* <li class="scroll-to-section"><a href="@Url.Action("Articles", "Home")">Awareness Hub</a></li> *@
+
+                        <!-- Awareness Hub (Always show Analyst dropdown for testing) -->
+                        @* <li class="nav-item dropdown scroll-to-section">
+                            @if (true) 
+                            {
+                                <a href="#" class="nav-link dropdown-toggle" id="awarenessHubDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Awareness Hub
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="awarenessHubDropdown">
+                                    <a class="dropdown-item" href="@Url.Action("Articles", "Home")">Awareness Hub</a>
+                                    <a class="dropdown-item" href="@Url.Action("AnalystDashboard", "Analyst")">Analyst Dashboard</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <a class="nav-link" href="@Url.Action("Articles", "Home")">Awareness Hub</a>
+                            }
+                        </li> *@
+
+                        <!-- Awareness Hub - Conditional Dropdown -->
+                        @if (true)
+                        {
+                            <li class="scroll-to-section dropdown">
+                                <a href="#" class="dropdown-toggle" id="awarenessHubDropdown">
+                                    Awareness Hub
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("Articles", "Home")">Awareness Hub</a></li>
+                                    <li><a href="@Url.Action("AnalystDashboard", "Analyst")">Analyst Dashboard</a></li>
+                                </ul>
+                            </li>
+                        }
+                        
+
                         <li class="scroll-to-section"><a href="@Url.Action("Analytics", "Home")">Analytics</a></li>
+                    
+
+                        @* <li class="scroll-to-section"><a href="@Url.Action("Analytics", "Home")">Analytics</a></li> *@
                         @* <li class="scroll-to-section"><a href="@Url.Action("Submit", "Report")">Submit Report</a></li> *@
                         <li><a href="@Url.Action("Login", "Account")">Login</a></li>
 

@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 /
 /* ---------------------------------------------
@@ -16,6 +16,7 @@ Table of contents
 10. preloader
 11. search
 12. portfolio
+13. dropdown
 
 --------------------------------------------- */
 /* 
@@ -1728,3 +1729,102 @@ responsive
     padding: 30px;
   }
 }
+
+/* Dropdown specific styles for navigation */
+.header-area .main-nav .nav li.dropdown {
+    position: relative;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-toggle {
+    display: block;
+    font-weight: 500;
+    font-size: 15px;
+    color: #fff;
+    text-transform: capitalize;
+    transition: all 0.3s ease 0s;
+    height: 40px;
+    line-height: 40px;
+    border: transparent;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+}
+
+/*.header-area .main-nav .nav li.dropdown .dropdown-toggle:after {
+    content: " ▼";
+    font-size: 10px;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}*/
+
+.header-area .main-nav .nav li.dropdown.active .dropdown-toggle:after {
+    transform: rotate(180deg);
+}
+
+/* Remove arrow when header is scrolled (background-header class) */
+.background-header .main-nav .nav li.dropdown .dropdown-toggle:after {
+    display: none;
+}
+
+/* Also remove the rotation effect for background header */
+.background-header .main-nav .nav li.dropdown.active .dropdown-toggle:after {
+    display: none;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-menu {
+    display: none;
+    position: absolute;
+    width: 200px;
+    box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    top: 50px;
+    left: 0;
+    background: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0;
+    z-index: 1000;
+    list-style: none;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-menu.show {
+    display: block;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-menu li {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-menu li a {
+    display: block;
+    background: #fff;
+    color: #2a2a2a!important;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 400;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease 0s;
+    text-transform: none;
+    height: auto;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-menu li:last-child a {
+    border-bottom: none;
+}
+
+.header-area .main-nav .nav li.dropdown .dropdown-menu li a:hover {
+    background: #f5f5f5;
+    color: #33ccc5!important;
+    padding-left: 25px;
+}
+
+
+
+
