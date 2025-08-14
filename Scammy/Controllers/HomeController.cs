@@ -23,7 +23,7 @@ namespace Scammy.Controllers
             return View();
         }
 
-        public IActionResult Articles()
+        public IActionResult articles()
         {
             return View();
         }

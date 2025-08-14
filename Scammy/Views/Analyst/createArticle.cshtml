@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="~/assets/css/addArticles.css" />
 }
 
-
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" style="margin: 20px 0; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;">
+        <strong>Success!</strong> @TempData["SuccessMessage"]
+        <button type="button" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;" onclick="this.parentElement.style.display='none'">&times;</button>
+    </div>
+}
 
 <!-- Main Content -->
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
@@ -22,8 +28,9 @@
         </a>
     </nav>
 </div>
-<div class="main-content">
 
+<form id="articleForm" asp-action="createArticle" asp-controller="Analyst" method="post" enctype="multipart/form-data">
+<div class="main-content">
     <!-- Left Panel - Content -->
     <div class="left-panel">
         <div class="panel-header">
@@ -32,13 +39,13 @@
         <div class="panel-content">
             <div class="form-group">
                 <label class="form-label" for="title">Article Title *</label>
-                <input type="text" id="title" class="form-input" placeholder="Enter a compelling title for your article">
+                    <input type="text" id="title" name="Title" class="form-input">
                 <div class="error-text hidden" id="titleError">Title is required</div>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="excerpt">Excerpt * <span style="color: #6b7280; font-weight: 400;">(Brief summary for article previews)</span></label>
-                <textarea id="excerpt" class="form-textarea" rows="3" maxlength="200" placeholder="Write a brief excerpt that summarizes your article (max 200 characters)"></textarea>
+                <textarea id="excerpt" name="Excerpt" class="form-textarea" rows="3" maxlength="200" placeholder="Write a brief excerpt that summarizes your article (max 200 characters)"></textarea>
                 <div class="char-counter">
                     <span id="excerptCount">0</span>/200
                 </div>
@@ -47,7 +54,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="content">Content *</label>
-                <textarea id="content" class="form-textarea" rows="15" placeholder="Write your article content here. You can use markdown formatting..."></textarea>
+                <textarea id="content" name="Content" class="form-textarea" rows="15" placeholder="Write your article content here. You can use markdown formatting..."></textarea>
                 <div class="error-text hidden" id="contentError">Content is required</div>
                 <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
                     💡 Tip: You can use markdown formatting (**, *, ##, etc.) for rich text
@@ -64,8 +71,8 @@
         <div class="panel-content">
             <div class="grid-2">
                 <div class="form-group">
-                    <label class="form-label" for="category">Category *</label>
-                    <select id="category" class="form-select">
+                    <label class="form-label" name="Category" for="category">Category *</label>
+                    <select id="category" name="Category" class="form-select" required>
                         <option value="">Select category</option>
                         <option value="Phone Scams">Phone Scams</option>
                         <option value="Email Scams">Email Scams</option>
@@ -82,7 +89,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="author">Author</label>
+                    <label class="form-label" name="Author" for="author">Author</label>
                     <input type="text" id="author" class="form-input" value="Jasmine" readonly style="background: #f9fafb;">
                 </div>
             </div>
@@ -90,7 +97,7 @@
             <div class="form-group">
                 <label class="form-label">Article Image</label>
                 <div class="file-upload" onclick="document.getElementById('imageUpload').click()">
-                    <input type="file" id="imageUpload" accept="image/*">
+                    <input type="file" id="imageUpload" name="imageFile" accept="image/*">
                     <svg class="file-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                         <polyline points="17,8 12,3 7,8" />
@@ -103,22 +110,18 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="tags">Tags <span style="color: #6b7280; font-weight: 400;">(Comma-separated)</span></label>
-                <input type="text" id="tags" class="form-input" placeholder="e.g. phishing, email, awareness, prevention">
+                <label class="form-label" name="Tags" for="tags">Tags <span style="color: #6b7280; font-weight: 400;">(Comma-separated)</span></label>
+                <input type="text" id="tags" name = "Tags" class="form-input" placeholder="e.g. phishing, email, awareness, prevention">
             </div>
 
-            <div class="alert">
-                <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                Articles need admin approval before publishing
-            </div>
+                <div class="alert">
+                    <i class="fa fa-exclamation-circle alert-icon"></i>
+                    Articles need admin approval before publishing
+                </div>
 
             <div class="form-group">
                 <label class="form-label" for="status">Status</label>
-                <select id="status" class="form-select">
+                <select id="status" name="Status" class="form-select">
                     <option value="draft">Draft</option>
                     <option value="pending">Submit for Review</option>
                 </select>
@@ -130,11 +133,13 @@
 <!-- Submit Section -->
 <div class="submit-section">
     <div style="display: flex; align-items: center; gap: 12px;">
+            <input type="hidden" id="submitAction" name="submitAction" />
+            
         <span style="font-weight: 500; color: #374151;">Ready to publish?</span>
         <span style="font-size: 14px; color: #6b7280;">Your article will be reviewed by admin first.</span>
     </div>
     <div style="display: flex; gap: 12px;">
-        <button class="btn btn-secondary" onclick="saveDraft()" id="saveDraftBtn2">
+            <button type="submit" class="btn btn-secondary" id="saveDraftBtn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                 <polyline points="17,21 17,13 7,13 7,21" />
@@ -142,7 +147,7 @@
             </svg>
             Save Draft
         </button>
-        <button class="btn btn-primary" onclick="submitArticle()" id="submitBtn">
+            <button type="submit" class="btn btn-primary" id="submitArticleBtn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14,2 14,8 20,8" />
@@ -154,4 +159,6 @@
         </button>
     </div>
 </div>
+
+</form>
 
