@@ -17,6 +17,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Check for success notification on page load
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+        const action = urlParams.get('action');
+        if (action === 'saveDraft') {
+            alert('Draft saved successfully!');
+        } else if (action === 'submitArticle') {
+            alert('Article submitted successfully!');
+        }
+
+        // Optional: Redirect to dashboard after alert
+        setTimeout(function () {
+            window.location.href = 'dashboard.html'; // Change to your dashboard URL
+        }, 1000);
+    }
+
     //Submit Form
     const form = document.getElementById("articleForm");
     const saveBtn = document.getElementById("saveDraftBtn");
