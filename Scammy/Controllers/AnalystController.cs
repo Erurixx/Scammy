@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Scammy.Data;
 using Scammy.Models;
 using System;
@@ -11,6 +12,7 @@ namespace Scammy.Controllers
     
     public class AnalystController : Controller
     {
+
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
 
@@ -42,27 +44,18 @@ namespace Scammy.Controllers
 
         }
 
+        //public IActionResult viewPublishedArticles()
+        //{
+        //    // optionally fetch data for the view
+        //    return View();
+        //}
 
-//Submit Form
+
+        //Submit Form
         [HttpPost]
         public async Task<IActionResult> createArticle(Article model, IFormFile imageFile, string submitAction)
         {
-            //Console.WriteLine("POST received");
-            //Console.WriteLine($"Title: {model.Title}");
-            //Console.WriteLine($"Status: {submitAction}");
-            //model.Author = User.Identity?.Name ?? "JasmineTest"; // <-- put this line here
-            //model.CreatedAt = DateTime.UtcNow;
-            //model.ImagePath = "/uploads/articles/2f1e4041-7856-45ac-8705-b34f4ccbaa13.png";
-            //model.Tags = "phishing";
-
-            //_context.Articles.Add(model);
-            //await _context.SaveChangesAsync();
-            //Console.WriteLine("Saved to database");
-
-            //return RedirectToAction("createArticle");
-
-            // Server-side validation
-            // Validation
+   
             if (string.IsNullOrWhiteSpace(model.Title) ||
                 string.IsNullOrWhiteSpace(model.Excerpt) ||
                 string.IsNullOrWhiteSpace(model.Content) ||
@@ -119,6 +112,54 @@ namespace Scammy.Controllers
             return RedirectToAction("createArticle");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> viewPublishedArticles()
+        {
+            ViewBag.ActivePage = "viewPublishedArticles";
+
+            try
+            {
+                // Get all published articles ordered by creation date (newest first)
+                var publishedArticles = await _context.Articles
+    .Where(a => a.Status == "published")
+    .ToListAsync();
+
+
+                // Debugging: write count to console so you can see it in VS Output window
+                Console.WriteLine($"✅ Published articles found: {publishedArticles.Count}");
+
+                return View(publishedArticles);
+            }
+            catch (Exception ex)
+            {
+                // Log the error (you can implement proper logging)
+                Console.WriteLine($"❌ Error retrieving published articles: {ex.Message}");
+
+                // Return empty list in case of error
+                return View(new List<Article>());
+            
+        }
+
+
+        //try
+        //{
+        //    // Get all published articles ordered by creation date (newest first)
+        //    var publishedArticles = await _context.Articles
+        //        .Where(a => a.Status == "published")
+        //        .OrderByDescending(a => a.CreatedAt)
+        //        .ToListAsync();
+
+        //    return View(publishedArticles);
+        //}
+        //catch (Exception ex)
+        //{
+        //    // Log the error (you can implement proper logging)
+        //    Console.WriteLine($"Error retrieving published articles: {ex.Message}");
+
+        //    // Return empty list in case of error
+        //    return View(new List<Article>());
+        //}
+    }
 
 
 
