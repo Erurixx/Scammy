@@ -6,13 +6,15 @@
     <link rel="stylesheet" href="~/assets/css/addArticles.css" />
 }
 
-@if (TempData["SuccessMessage"] != null)
+@* @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success" style="margin: 20px 0; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;">
         <strong>Success!</strong> @TempData["SuccessMessage"]
         <button type="button" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;" onclick="this.parentElement.style.display='none'">&times;</button>
     </div>
-}
+} *@
+
+
 
 <!-- Main Content -->
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
@@ -29,7 +31,19 @@
     </nav>
 </div>
 
-<form id="articleForm" asp-action="createArticle" asp-controller="Analyst" method="post" enctype="multipart/form-data">
+
+
+
+@* <form id="articleForm" asp-action="createArticle" asp-controller="Analyst" method="post" enctype="multipart/form-data"> *@
+<form id="articleForm"
+      asp-action="@(Model?.Id > 0 ? "EditArticle" : "createArticle")"
+      asp-controller="Analyst"
+      method="post"
+      enctype="multipart/form-data">
+    @if (Model?.Id > 0)
+    {
+        <input type="hidden" name="Id" value="@Model.Id" />
+    }
 <div class="main-content">
     <!-- Left Panel - Content -->
     <div class="left-panel">
@@ -39,13 +53,13 @@
         <div class="panel-content">
             <div class="form-group">
                 <label class="form-label" for="title">Article Title *</label>
-                    <input type="text" id="title" name="Title" class="form-input">
+                    <input type="text" id="title" name="Title" class="form-input" value="@Model?.Title"/>
                 <div class="error-text hidden" id="titleError">Title is required</div>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="excerpt">Excerpt * <span style="color: #6b7280; font-weight: 400;">(Brief summary for article previews)</span></label>
-                <textarea id="excerpt" name="Excerpt" class="form-textarea" rows="3" maxlength="200" placeholder="Write a brief excerpt that summarizes your article (max 200 characters)"></textarea>
+                    <textarea id="excerpt" name="Excerpt" class="form-textarea" rows="3" maxlength="200" placeholder="Write a brief excerpt that summarizes your article (max 200 characters)">@Model?.Excerpt</textarea>
                 <div class="char-counter">
                     <span id="excerptCount">0</span>/200
                 </div>
@@ -54,7 +68,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="content">Content *</label>
-                <textarea id="content" name="Content" class="form-textarea" rows="15" placeholder="Write your article content here. You can use markdown formatting..."></textarea>
+                    <textarea id="content" name="Content" class="form-textarea" rows="15" placeholder="Write your article content here. You can use markdown formatting...">@Model?.Content</textarea>
                 <div class="error-text hidden" id="contentError">Content is required</div>
                 <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
                     💡 Tip: You can use markdown formatting (**, *, ##, etc.) for rich text
@@ -72,9 +86,9 @@
             <div class="grid-2">
                 <div class="form-group">
                     <label class="form-label" name="Category" for="category">Category *</label>
-                    <select id="category" name="Category" class="form-select" required>
+                    @* <select id="category" name="Category" class="form-select" required>
                         <option value="">Select category</option>
-                        <option value="Phone Scams">Phone Scams</option>
+                        <option value="Phone Scams" @((Model?.Category == "Phone Scams") ? "selected" : "")>Phone Scams</option>
                         <option value="Email Scams">Email Scams</option>
                         <option value="Social Media Scams">Social Media Scams</option>
                         <option value="Investment Scams">Investment Scams</option>
@@ -84,7 +98,31 @@
                         <option value="Cryptocurrency Scams">Cryptocurrency Scams</option>
                         <option value="Identity Theft">Identity Theft</option>
                         <option value="General Awareness">General Awareness</option>
-                    </select>
+                    </select> *@
+                        @{
+                            var categories = new List<string>
+                                                {
+                                                "Phone Scams", "Email Scams", "Social Media Scams", "Investment Scams",
+                                                "Romance Scams", "Tech Support Scams", "Shopping Scams",
+                                                "Cryptocurrency Scams", "Identity Theft", "General Awareness"
+                                                };
+                        }
+                        <select id="category" name="Category" class="form-select" required>
+                            <option value="">Select category</option>
+                            @foreach (var cat in categories)
+                            {
+                                if (Model?.Category == cat)
+                                {
+                                    @:
+                                    <option value="@cat" selected>@cat</option>
+                                }
+                                else
+                                {
+                                    @:
+                                    <option value="@cat">@cat</option>
+                                }
+                            } 
+                            </select>
                     <div class="error-text hidden" id="categoryError">Category is required</div>
                 </div>
 
@@ -111,7 +149,7 @@
 
             <div class="form-group">
                 <label class="form-label" name="Tags" for="tags">Tags <span style="color: #6b7280; font-weight: 400;">(Comma-separated)</span></label>
-                <input type="text" id="tags" name = "Tags" class="form-input" placeholder="e.g. phishing, email, awareness, prevention">
+                    <input type="text" id="tags" name="Tags" class="form-input" value="@Model?.Tags" placeholder="e.g. phishing, email, awareness, prevention">
             </div>
 
                 <div class="alert">

@@ -44,11 +44,7 @@ namespace Scammy.Controllers
 
         }
 
-        //public IActionResult viewPublishedArticles()
-        //{
-        //    // optionally fetch data for the view
-        //    return View();
-        //}
+        
 
 
         //Submit Form
@@ -105,9 +101,20 @@ namespace Scammy.Controllers
 
             // Save to DB
             _context.Articles.Add(model);
+
+            // Set success message based on status
+            if (model.Status == "draft")
+            {
+                TempData["SuccessMessage"] = "Draft saved successfully.";
+            }
+            else if (model.Status == "pending")
+            {
+                TempData["SuccessMessage"] = "Article submitted. Please wait for admin approval.";
+            }
+
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = model.Status == "draft" ? "Draft saved." : "Article submitted.";
+            //TempData["SuccessMessage"] = model.Status == "draft" ? "Draft saved." : "Article submitted.";
 
             return RedirectToAction("createArticle");
         }
@@ -121,45 +128,82 @@ namespace Scammy.Controllers
             {
                 // Get all published articles ordered by creation date (newest first)
                 var publishedArticles = await _context.Articles
-    .Where(a => a.Status == "published")
-    .ToListAsync();
-
-
-                // Debugging: write count to console so you can see it in VS Output window
-                Console.WriteLine($"✅ Published articles found: {publishedArticles.Count}");
+                    .Where(a => a.Status == "published")
+                    .OrderByDescending(a => a.CreatedAt)
+                    .ToListAsync();
 
                 return View(publishedArticles);
             }
             catch (Exception ex)
             {
                 // Log the error (you can implement proper logging)
-                Console.WriteLine($"❌ Error retrieving published articles: {ex.Message}");
+                Console.WriteLine($"Error retrieving published articles: {ex.Message}");
 
                 // Return empty list in case of error
                 return View(new List<Article>());
-            
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditArticle(int id, Article model, IFormFile imageFile, string submitAction)
+        {
+            if (string.IsNullOrWhiteSpace(model.Title) ||
+                string.IsNullOrWhiteSpace(model.Excerpt) ||
+                string.IsNullOrWhiteSpace(model.Content) ||
+                string.IsNullOrWhiteSpace(model.Category))
+            {
+                ModelState.AddModelError("", "Please fill in all required fields.");
+                return View("createArticle", model);
+            }
+
+            var existingArticle = await _context.Articles.FindAsync(id);
+            if (existingArticle == null)
+                return NotFound();
+
+            // Update fields
+            existingArticle.Title = model.Title;
+            existingArticle.Excerpt = model.Excerpt;
+            existingArticle.Content = model.Content;
+            existingArticle.Category = model.Category;
+            existingArticle.Status = submitAction == "saveDraft" ? "draft" : "pending";
+
+            // Optional tags
+            var tagsInput = Request.Form["Tags"].ToString();
+            existingArticle.Tags = !string.IsNullOrWhiteSpace(tagsInput) ?
+                                    string.Join(",", tagsInput.Split(',').Select(t => t.Trim())) : "none";
+
+            // Image upload if new image is provided
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads", "articles");
+                Directory.CreateDirectory(uploadsFolder);
+                string uniqueFileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await imageFile.CopyToAsync(stream);
+                existingArticle.ImagePath = "/uploads/articles/" + uniqueFileName;
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = existingArticle.Status == "draft" ? "Draft saved." : "Article updated.";
+            return RedirectToAction("viewPublishedArticles");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditArticle(int id)
+        {
+            var article = await _context.Articles.FindAsync(id);
+            if (article == null)
+                return NotFound();
+
+            ViewBag.ActivePage = "createArticle"; // optional: highlights nav
+            return View("createArticle", article); // reuse the createArticle view
         }
 
 
-        //try
-        //{
-        //    // Get all published articles ordered by creation date (newest first)
-        //    var publishedArticles = await _context.Articles
-        //        .Where(a => a.Status == "published")
-        //        .OrderByDescending(a => a.CreatedAt)
-        //        .ToListAsync();
 
-        //    return View(publishedArticles);
-        //}
-        //catch (Exception ex)
-        //{
-        //    // Log the error (you can implement proper logging)
-        //    Console.WriteLine($"Error retrieving published articles: {ex.Message}");
 
-        //    // Return empty list in case of error
-        //    return View(new List<Article>());
-        //}
-    }
 
 
 
