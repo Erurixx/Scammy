@@ -1,25 +1,22 @@
 ﻿@{
     ViewBag.Title = "Login";
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<<<<<<< Updated upstream
+<section id="login">
+    <!-- Paste your login form HTML here -->
+</section>
+=======
 <link rel="stylesheet" href="~/assets/css/login.css" />
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <section id="login">
-
     <div class="container" id="container">
 
         <!-- Sign Up Form -->
         <div class="form-container sign-up-container">
-            @if (ViewBag.Error != null)
-            {
-                <div class="alert alert-danger">@ViewBag.Error</div>
-            }
-            @if (ViewBag.Success != null)
-            {
-                <div class="alert alert-success">@ViewBag.Success</div>
-            }
-
             <form asp-action="Register" method="post">
                 <h1>Create Account</h1>
                 <span>Use your email to register and start reporting scams</span>
@@ -32,11 +29,6 @@
 
         <!-- Sign In Form -->
         <div class="form-container sign-in-container">
-            @if (ViewBag.Error != null)
-            {
-                <div class="alert alert-danger">@ViewBag.Error</div>
-            }
-
             <form asp-action="LoginUser" method="post">
                 <h1>Sign In</h1>
                 <span>Use your account to access scam reports</span>
@@ -62,9 +54,33 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </section>
 
 <script src="~/assets/js/login.js"></script>
+
+<!-- ✅ SweetAlert Popup Handling -->
+<script>
+    @if (TempData["Error"] != null)
+    {
+                <text>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '@TempData["Error"]'
+                    });
+                </text>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+                <text>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: '@TempData["Success"]'
+                    });
+                </text>
+    }
+</script>
+>>>>>>> Stashed changes
