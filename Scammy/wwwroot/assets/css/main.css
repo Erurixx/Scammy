@@ -1828,7 +1828,15 @@ responsive
 .navbar-nav, .nav {
     display: flex;
     align-items: center;
-    gap: 15px; /* Space between items */
+    gap: 15px;  Space between items 
 }
+
+.user-greeting {
+    cursor: default;
+    
+    
+}
+    
+
 
 
