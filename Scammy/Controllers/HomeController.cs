@@ -1,16 +1,22 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Scammy.Data;
 using Scammy.Models;
+using System.Diagnostics;
 
 namespace Scammy.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        //public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -23,9 +29,14 @@ namespace Scammy.Controllers
             return View();
         }
 
-        public IActionResult articles()
+        public async Task<IActionResult> articles()
         {
-            return View();
+            var publishedArticles = await _context.Articles
+                .Where(a => a.Status == "published")
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
+            return View(publishedArticles);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
