@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 using Scammy.Data;
 using Scammy.Models;
 using System.Linq;
@@ -26,14 +29,14 @@ namespace Scammy.Controllers
         {
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                ViewBag.Error = "All fields are required.";
-                return View("Login");
+                TempData["Error"] = "All fields are required.";
+                return RedirectToAction("Login");
             }
 
             if (_db.Users.Any(u => u.Email == email))
             {
-                ViewBag.Error = "Email is already registered.";
-                return View("Login");
+                TempData["Error"] = "Email is already registered.";
+                return RedirectToAction("Login");
             }
 
             // Simple password encoding (replace with proper hashing)
@@ -50,18 +53,18 @@ namespace Scammy.Controllers
             _db.Users.Add(user);
             _db.SaveChanges();
 
-            ViewBag.Success = "Account created successfully. Please log in.";
-            return View("Login");
+            TempData["Success"] = "Account created successfully. Please log in.";
+            return RedirectToAction("Login");
         }
 
         // POST: Sign in user
         [HttpPost]
-        public IActionResult LoginUser(string email, string password)
+        public async Task<IActionResult> LoginUser(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                ViewBag.Error = "Email and password are required.";
-                return View("Login");
+                TempData["Error"] = "Email and password are required.";
+                return RedirectToAction("Login");
             }
 
             var hashedPassword = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password));
@@ -70,15 +73,39 @@ namespace Scammy.Controllers
 
             if (user == null)
             {
-                ViewBag.Error = "Invalid email or password.";
-                return View("Login");
+                TempData["Error"] = "Invalid email or password.";
+                return RedirectToAction("Login");
             }
 
-            // Optionally: store user info in TempData/session
-            TempData["UserName"] = user.FullName;
-            TempData["UserRole"] = user.UserRole;
+            // ✅ Create claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.FullName), // this becomes @User.Identity.Name
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.UserRole ?? "jobseeker")
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true, // keeps user logged in
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+            };
+
+            // ✅ Sign in the user
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
         }
     }
 }

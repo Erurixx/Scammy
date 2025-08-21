@@ -1825,6 +1825,18 @@ responsive
     padding-left: 25px;
 }
 
+.navbar-nav, .nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;  Space between items 
+}
+
+.user-greeting {
+    cursor: default;
+    
+    
+}
+    
 
 
 
