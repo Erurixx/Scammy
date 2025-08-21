@@ -145,7 +145,7 @@
                             }
 
                             <div class="article-footer">
-                                <a href="@Url.Action("ReadArticle", "Articles", new { id = article.Id, slug = article.Title.Replace(" ", "-").ToLower() })"
+                                <a href="@Url.Action("ReadArticles", "Home", new { id = article.Id, slug = article.Title.Replace(" ", "-").ToLower() })"
                                    class="read-more-btn">
                                     <span>Read Full Article</span>
                                     <i class="fas fa-arrow-right"></i>

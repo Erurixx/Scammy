@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Scammy.Data;
 using Scammy.Models;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Scammy.Controllers
 {
@@ -54,5 +55,31 @@ namespace Scammy.Controllers
 
             return View(publishedArticles); // this will look for Views/Home/ViewAllArticles.cshtml
         }
+
+        
+        public async Task<IActionResult> readArticles(int id, string slug)
+        {
+            var article = await _context.Articles
+                .FirstOrDefaultAsync(a => a.Id == id && a.Status == "published");
+
+            if (article == null)
+                return NotFound();
+
+            // Fetch related articles (same category, exclude current article)
+            var relatedArticles = await _context.Articles
+                .Where(a => a.Category == article.Category && a.Id != id && a.Status == "published")
+                .OrderByDescending(a => a.CreatedAt)
+                .Take(5) // Limit to 5 related articles
+                .ToListAsync();
+
+            // Pass related articles to the view via ViewBag
+            ViewBag.RelatedArticles = relatedArticles;
+
+
+            return View(article); // Looks for Views/Articles/ReadArticle.cshtml
+        }
+
+
+
     }
 }

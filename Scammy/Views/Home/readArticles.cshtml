@@ -1,0 +1,292 @@
+﻿@model Scammy.Models.Article
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var readTime = new Random().Next(5, 15);
+    var views = new Random().Next(500, 8000);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/readArticles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+}
+
+<!-- Progress Bar -->
+<div class="reading-progress">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- Navigation Breadcrumb -->
+<nav class="article-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+            <li><a href="@Url.Action("ViewAllArticles", "Home")">Articles</a></li>
+            <li><span class="category">@Model.Category</span></li>
+            <li class="current">@Model.Title</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Article Header -->
+<header class="article-header">
+    <div class="container">
+        <div class="article-header-content">
+            <div class="category-badge">@Model.Category</div>
+            <h1 class="article-title">@Model.Title</h1>
+            <p class="article-subtitle">@Model.Excerpt</p>
+
+            <div class="article-meta">
+                <div class="author-info">
+                    <div class="author-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="author-details">
+                        <strong class="author-name">@Model.Author</strong>
+                        
+                    </div>
+                </div>
+
+                <div class="article-stats">
+                    <span class="stat">
+                        <i class="fas fa-calendar"></i>
+                        @Model.CreatedAt.ToString("MMMM dd, yyyy")
+                    </span>
+                    <span class="stat">
+                        <i class="fas fa-clock"></i>
+                        @readTime min read
+                    </span>
+                    @* <span class="stat">
+                        <i class="fas fa-eye"></i>
+                        @views.ToString("N0") views
+                    </span> *@
+                </div>
+            </div>
+
+            <div class="article-actions">
+                @* <button class="action-btn bookmark-btn" id="bookmarkBtn" title="Bookmark this article">
+                    <i class="far fa-bookmark"></i>
+                    <span>Bookmark</span>
+                </button> *@
+                <button class="action-btn share-btn" id="shareBtn" title="Share this article">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Share</span>
+                </button>
+                <button class="action-btn print-btn" onclick="window.print()" title="Print article">
+                    <i class="fas fa-print"></i>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Article Content -->
+<main class="article-main">
+    <div class="container">
+        <div class="article-layout">
+            <!-- Table of Contents (if needed) -->
+            <aside class="table-of-contents" id="tableOfContents">
+                <div class="toc-header">
+                    <h3>Related Articles</h3>
+                    <button class="toc-toggle" id="tocToggle">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+                <nav class="toc-nav" id="tocNav" data-articles='@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.RelatedArticles))'>
+                    <!-- Generated dynamically by JavaScript -->
+                </nav>
+            </aside>
+
+            <!-- Main Article Content -->
+            <article class="article-content">
+                <!-- Article Image -->
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <div class="article-image-container">
+                        <img src="@Model.ImagePath" alt="@Model.Title" class="article-image">
+                        <div class="image-caption">
+                            <span>@Model.Title illustration</span>
+                        </div>
+                    </div>
+                }
+
+                <!-- Article Body -->
+                <div class="article-body">
+                    @Html.Raw(Model.Content?.Replace("\n", "<br>"))
+                </div>
+
+                <!-- Article Tags -->
+                @if (!string.IsNullOrEmpty(Model.Tags) && Model.Tags != "none")
+                {
+                    <div class="article-tags">
+                        <h4>Tags:</h4>
+                        <div class="tags-list">
+                            @foreach (var tag in Model.Tags.Split(','))
+                            {
+                                <span class="tag">#@tag.Trim()</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Article Footer -->
+                @* <footer class="article-footer">
+                    <div class="footer-actions">
+                        <div class="social-share">
+                            <h4>Share this article:</h4>
+                            <div class="share-buttons">
+                                <a href="#" class="share-btn facebook" onclick="shareOnFacebook('@Model.Title', '@Url.Action("ReadArticle", "Articles", new { id = Model.Id }, Request.Url.Scheme)')">
+                                    <i class="fab fa-facebook-f"></i>
+                                    Facebook
+                                </a>
+                                <a href="#" class="share-btn twitter" onclick="shareOnTwitter('@Model.Title', '@Url.Action("ReadArticle", "Articles", new { id = Model.Id }, Request.Url.Scheme)')">
+                                    <i class="fab fa-twitter"></i>
+                                    Twitter
+                                </a>
+                                <a href="#" class="share-btn linkedin" onclick="shareOnLinkedIn('@Model.Title', '@Url.Action("ReadArticle", "Articles", new { id = Model.Id }, Request.Url.Scheme)')">
+                                    <i class="fab fa-linkedin-in"></i>
+                                    LinkedIn
+                                </a>
+                                <a href="#" class="share-btn copy-link" onclick="copyArticleLink()">
+                                    <i class="fas fa-link"></i>
+                                    Copy Link
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="article-rating">
+                            <h4>Was this helpful?</h4>
+                            <div class="rating-buttons">
+                                <button class="rating-btn helpful" onclick="rateArticle('helpful')">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>Yes</span>
+                                    <span class="count" id="helpfulCount">0</span>
+                                </button>
+                                <button class="rating-btn not-helpful" onclick="rateArticle('not-helpful')">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    <span>No</span>
+                                    <span class="count" id="notHelpfulCount">0</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </footer> *@
+            </article>
+
+            <!-- Reading Tools Sidebar -->
+            <aside class="reading-tools">
+                <div class="tools-sticky">
+                    <button class="tool-btn" id="fontSizeBtn" title="Adjust font size">
+                        <i class="fas fa-text-height"></i>
+                    </button>
+                    <button class="tool-btn" id="darkModeBtn" title="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="tool-btn" id="focusModeBtn" title="Focus mode">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="tool-btn" onclick="window.print()" title="Print">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+
+<!-- Related Articles Section -->
+@* <section class="related-articles">
+    <div class="container">
+        <h2>Related Articles</h2>
+        <div class="related-grid">
+            <!-- You would populate this with actual related articles from your controller -->
+            <div class="related-card">
+                <div class="related-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+                <div class="related-content">
+                    <span class="related-category">Email Scams</span>
+                    <h3>How to Identify Phishing Emails</h3>
+                    <p>Learn the warning signs of phishing attempts...</p>
+                    <a href="#" class="related-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="related-card">
+                <div class="related-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+                <div class="related-content">
+                    <span class="related-category">Phone Scams</span>
+                    <h3>Protecting Yourself from Robocalls</h3>
+                    <p>Effective strategies to block unwanted calls...</p>
+                    <a href="#" class="related-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="related-card">
+                <div class="related-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                </div>
+                <div class="related-content">
+                    <span class="related-category">Financial Scams</span>
+                    <h3>Credit Card Safety Tips</h3>
+                    <p>Keep your financial information secure...</p>
+                    <a href="#" class="related-link">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> *@
+
+<!-- Back to Articles -->
+<div class="back-to-articles">
+    <div class="container">
+        <a href="@Url.Action("viewAllArticles", "Home")" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to All Articles</span>
+        </a>
+    </div>
+</div>
+
+<!-- Font Size Modal -->
+<div id="fontSizeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Reading Preferences</h3>
+            <button class="close-btn" onclick="closeFontModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="preference-group">
+                <label>Font Size:</label>
+                <div class="font-size-options">
+                    <button class="size-btn" data-size="small">A</button>
+                    <button class="size-btn active" data-size="medium">A</button>
+                    <button class="size-btn" data-size="large">A</button>
+                    <button class="size-btn" data-size="extra-large">A</button>
+                </div>
+            </div>
+            <div class="preference-group">
+                <label>Font Family:</label>
+                <select id="fontFamilySelect">
+                    <option value="crimson">Crimson Text (Default)</option>
+                    <option value="georgia">Georgia</option>
+                    <option value="times">Times New Roman</option>
+                    <option value="arial">Arial</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/readArticles.js"></script>
+}
