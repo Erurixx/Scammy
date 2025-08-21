@@ -6,13 +6,7 @@
     <link rel="stylesheet" href="~/assets/css/addArticles.css" />
 }
 
-@* @if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success" style="margin: 20px 0; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;">
-        <strong>Success!</strong> @TempData["SuccessMessage"]
-        <button type="button" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;" onclick="this.parentElement.style.display='none'">&times;</button>
-    </div>
-} *@
+
 
 
 
@@ -34,7 +28,7 @@
 
 
 
-@* <form id="articleForm" asp-action="createArticle" asp-controller="Analyst" method="post" enctype="multipart/form-data"> *@
+
 <form id="articleForm"
       asp-action="@(Model?.Id > 0 ? "EditArticle" : "createArticle")"
       asp-controller="Analyst"
@@ -89,19 +83,7 @@
             <div class="grid-2">
                 <div class="form-group">
                     <label class="form-label" name="Category" for="category">Category *</label>
-                    @* <select id="category" name="Category" class="form-select" required>
-                        <option value="">Select category</option>
-                        <option value="Phone Scams" @((Model?.Category == "Phone Scams") ? "selected" : "")>Phone Scams</option>
-                        <option value="Email Scams">Email Scams</option>
-                        <option value="Social Media Scams">Social Media Scams</option>
-                        <option value="Investment Scams">Investment Scams</option>
-                        <option value="Romance Scams">Romance Scams</option>
-                        <option value="Tech Support Scams">Tech Support Scams</option>
-                        <option value="Shopping Scams">Shopping Scams</option>
-                        <option value="Cryptocurrency Scams">Cryptocurrency Scams</option>
-                        <option value="Identity Theft">Identity Theft</option>
-                        <option value="General Awareness">General Awareness</option>
-                    </select> *@
+                    
                         @{
                             var categories = new List<string>
                                                 {

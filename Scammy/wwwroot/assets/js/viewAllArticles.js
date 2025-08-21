@@ -104,6 +104,8 @@
     function handleSort() {
         const sortBy = sortFilter.value;
 
+        
+
         filteredArticles.sort((a, b) => {
             switch (sortBy) {
                 case 'newest':
@@ -118,10 +120,18 @@
                     return 0;
             }
         });
+       
+        
 
-        showArticles();
+        
+        const container = document.getElementById("articlesContainer");
+        container.innerHTML = ""; // clear old order
+        filteredArticles.forEach(article => container.appendChild(article));
+
+        
     }
 
+    
     function handleViewToggle(e) {
         const viewType = e.currentTarget.getAttribute('data-view');
 

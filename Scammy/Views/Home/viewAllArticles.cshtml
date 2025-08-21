@@ -84,7 +84,7 @@
                              data-category="@article.Category"
                              data-title="@article.Title.ToLower()"
                              data-content="@(article.Content?.ToLower() ?? "")"
-                             data-date="@article.CreatedAt.ToString("yyyy-MM-dd")">
+                             data-date="@article.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")">
 
                         <div class="article-image">
                             @if (!string.IsNullOrEmpty(article.ImagePath))
