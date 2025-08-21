@@ -1,0 +1,279 @@
+﻿@{
+    ViewData["Title"] = "Manage User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="manage-user">
+    <div class="container">
+        <div class="dashboard-box">
+            <h2 class="dashboard-title">Manage Users</h2>
+            <p class="dashboard-subtitle">View, search, and manage all system users.</p>
+
+            <!-- Top Controls -->
+            <div class="top-controls">
+                <!-- Tabs -->
+                <ul class="nav nav-tabs custom-tabs" id="userTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" href="#admin" role="tab">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="analyst-tab" data-bs-toggle="tab" href="#analyst" role="tab">Analyst</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="user-tab" data-bs-toggle="tab" href="#user" role="tab">User</a>
+                    </li>
+                </ul>
+
+                <!-- Create User Button -->
+                <a href="@Url.Action("CreateUser", "Admin")" class="main-button create-btn">+ Create User</a>
+            </div>
+
+            <!-- Search -->
+            <div class="search-bar">
+                <input type="text" class="form-control search-input" placeholder="🔍 Search by name, email..." />
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="userTabsContent">
+                <!-- Admin Tab -->
+                <div class="tab-pane fade show active" id="admin" role="tabpanel">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th style="width: 150px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Admin001</td>
+                                <td>admin001@example.com</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action deactivate">Deactivate</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Analyst Tab -->
+                <div class="tab-pane fade" id="analyst" role="tabpanel">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th style="width: 150px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Analyst001</td>
+                                <td>analyst001@example.com</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action deactivate">Deactivate</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- User Tab -->
+                <div class="tab-pane fade" id="user" role="tabpanel">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th style="width: 150px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>User001</td>
+                                <td>user001@example.com</td>
+                                <td><span class="status active">Active</span></td>
+                                <td>
+                                    <button class="btn-action deactivate">Deactivate</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JS fallback if Bootstrap JS not loaded -->
+<script>
+    document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+        tab.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // deactivate all
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+
+            // activate clicked
+            this.classList.add('active');
+            let target = document.querySelector(this.getAttribute('href'));
+            target.classList.add('show', 'active');
+        });
+    });
+</script>
+
+
+<style>
+    #manage-user {
+        padding: 100px 0;
+        background: #f9f9f9;
+    }
+
+    .dashboard-box {
+        background: #fff;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    }
+
+    .dashboard-title {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: black;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-subtitle {
+        color: #555;
+        margin-bottom: 25px;
+        font-size: 1.1em;
+    }
+
+    /* Top controls */
+    .top-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    /* Tabs */
+    .custom-tabs .nav-link {
+        font-weight: bold;
+        color: #004aad;
+        border: none;
+        border-bottom: 2px solid transparent;
+    }
+
+        .custom-tabs .nav-link.active {
+            border-bottom: 2px solid #004aad;
+            color: #003380;
+        }
+
+    /* Create user button */
+    .create-btn {
+        display: inline-block;
+        background-color: #33ccc5;
+        font-size: 15px;
+        font-weight: 400;
+        color: #fff;
+        margin-top: 20px;
+        text-transform: capitalize;
+        padding: 12px 25px;
+        border-radius: 23px;
+        letter-spacing: 0.25px;
+        border-bottom: 2px solid #4771cb !important;
+        transition: all .3s;
+        outline: none;
+        border: none;
+    }
+
+        .create-btn:hover {
+            background-color: #4771cb !important;
+            color: #fff !important;
+            border-bottom: 2px solid #33ccc5 !important;
+        }
+
+    /* Search bar */
+    .search-bar {
+        margin-bottom: 25px;
+    }
+
+    .search-input {
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    /* User table */
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+        .user-table th,
+        .user-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .user-table th {
+            background-color: #004aad;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .user-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+    /* Status label */
+    .status {
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 0.9em;
+    }
+
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+    /* Buttons inside table */
+    .btn-action {
+        padding: 6px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9em;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .btn-action.deactivate {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+            .btn-action.deactivate:hover {
+                background-color: #e0a800;
+            }
+</style>

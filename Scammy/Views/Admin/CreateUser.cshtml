@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Create User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="create-user">
+    <div class="container">
+        <div class="dashboard-box">
+            <div class="row">
+
+                <div class="col-left">
+                    <img src="~/assets/images/admin/userprofile.png" alt="User Profile Icon" class="create-user-img">
+                    <h2 class="dashboard-title">Create New User</h2>
+                    <p class="dashboard-subtitle">Fill in the details below to add a new user to the system.</p>
+                </div>
+
+
+                <div class="col-right">
+                    <form action="SaveUser.aspx" method="post" class="user-form">
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" name="fullname" placeholder="Enter full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">User Role</label>
+                            <select id="role" name="role" required>
+                                <option value="">Select role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Analyst">Analyst</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="main-button">Create User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    #create-user {
+        padding: 100px 0;
+        background: #f9f9f9;
+    }
+
+    .dashboard-box {
+        background: #fff;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .col-left {
+        flex: 1;
+        text-align: center;
+    }
+
+    .col-right {
+        flex: 1;
+        margin-top: 30px;
+    }
+
+    .create-user-img {
+        display: block;
+        margin: 0 auto 20px auto;
+        max-width: 180px;
+        height: auto;
+    }
+
+    .dashboard-title {
+        font-size: 2em;
+        color: #004aad;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .dashboard-subtitle {
+        font-size: 1.1em;
+        color: #555;
+    }
+
+    .user-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    .user-form label {
+        margin-bottom: 8px;
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #004aad;
+    }
+
+    .user-form input,
+    .user-form select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1em;
+    }
+
+    .main-button {
+        display: inline-block;
+        background-color: #33ccc5;
+        font-size: 15px;
+        font-weight: 400;
+        color: #fff;
+        margin-top: 20px;
+        text-transform: capitalize;
+        padding: 12px 25px;
+        border-radius: 23px;
+        letter-spacing: 0.25px;
+        border-bottom: 2px solid #4771cb !important;
+        transition: all .3s;
+        outline: none;
+        border: none;
+    }
+
+        .main-button:hover {
+            background-color: #4771cb !important;
+            color: #fff !important;
+            border-bottom: 2px solid #33ccc5 !important;
+        }
+</style>
