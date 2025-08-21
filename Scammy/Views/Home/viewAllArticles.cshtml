@@ -1,0 +1,214 @@
+﻿@model IEnumerable<Scammy.Models.Article>
+
+@{
+    ViewBag.Title = "All Articles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/viewAllArticles.css" />
+}
+
+
+
+<!-- Filter and Search Section -->
+<section class="articles-filter">
+    <div class="container">
+        <div class="filter-container">
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="articleSearch" placeholder="Search articles, topics, or keywords...">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Category:</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Phone Scams">Phone Scams</option>
+                        <option value="Email Scams">Email Scams</option>
+                        <option value="Social Media Scams">Social Media Scams</option>
+                        <option value="Investment Scams">Investment Scams</option>
+                        <option value="Romance Scams">Romance Scams</option>
+                        <option value="Tech Support Scams">Tech Support Scams</option>
+                        <option value="Shopping Scams">Shopping Scams</option>
+                        <option value="Cryptocurrency Scams">Cryptocurrency Scams</option>
+                        <option value="Identity Theft">Identity Theft</option>
+                        <option value="General Awareness">General Awareness</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select id="sortFilter">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="title">Title A-Z</option>
+                        <option value="category">Category</option>
+                    </select>
+                </div>
+
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" title="Grid View">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" data-view="list" title="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Articles Section -->
+<section class="articles-content">
+    <div class="container">
+        <div class="articles-header">
+            <h2>All Articles</h2>
+            <span id="articlesCount">Showing @(Model?.Count() ?? 0) articles</span>
+        </div>
+
+        <div class="articles-grid" id="articlesContainer">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var article in Model.OrderByDescending(a => a.CreatedAt))
+                {
+                    var random = new Random();
+                    var readTime = random.Next(5, 15);
+                    @* var views = random.Next(100, 5000); *@
+
+                    <article class="article-card"
+                             data-category="@article.Category"
+                             data-title="@article.Title.ToLower()"
+                             data-content="@(article.Content?.ToLower() ?? "")"
+                             data-date="@article.CreatedAt.ToString("yyyy-MM-dd")">
+
+                        <div class="article-image">
+                            @if (!string.IsNullOrEmpty(article.ImagePath))
+                            {
+                                <img src="@article.ImagePath" alt="@article.Title" loading="lazy">
+                            }
+                            else
+                            {
+                                <div class="image-placeholder">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                            }
+                            <div class="article-overlay">
+                                <span class="category-badge">@article.Category</span>
+                            </div>
+                        </div>
+
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="meta-left">
+                                    <span class="author">
+                                        <i class="fas fa-user"></i>
+                                        @article.Author
+                                    </span>
+                                    <span class="date">
+                                        <i class="fas fa-calendar"></i>
+                                        @article.CreatedAt.ToString("MMM dd, yyyy")
+                                    </span>
+                                </div>
+                                <div class="meta-right">
+                                    <span class="read-time">
+                                        <i class="fas fa-clock"></i>
+                                        @readTime min read
+                                    </span>
+                                    @* <span class="views">
+                                        <i class="fas fa-eye"></i>
+                                        @views.ToString("N0")
+                                    </span> *@
+                                </div>
+                            </div>
+
+                            <h3 class="article-title">
+                                <a href="@Url.Action("ReadArticle", "Articles", new { id = article.Id, slug = article.Title.Replace(" ", "-").ToLower() })">
+                                    @article.Title
+                                </a>
+                            </h3>
+
+                            <p class="article-excerpt">@article.Excerpt</p>
+
+                            @if (!string.IsNullOrEmpty(article.Tags) && article.Tags != "none")
+                            {
+                                <div class="article-tags">
+                                    @foreach (var tag in article.Tags.Split(',').Take(3))
+                                    {
+                                        <span class="tag">#@tag.Trim()</span>
+                                    }
+                                </div>
+                            }
+
+                            <div class="article-footer">
+                                <a href="@Url.Action("ReadArticle", "Articles", new { id = article.Id, slug = article.Title.Replace(" ", "-").ToLower() })"
+                                   class="read-more-btn">
+                                    <span>Read Full Article</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+
+                                <div class="article-actions">
+                                    @* <button class="action-btn bookmark" title="Bookmark">
+                                        <i class="far fa-bookmark"></i>
+                                    </button> *@
+                                    <button class="action-btn share" title="Share" onclick="shareArticle('@article.Title', '@Url.Action("ReadArticle", "Articles", new { id = article.Id })')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                }
+            }
+            else
+            {
+                <div class="no-articles">
+                    <div class="no-articles-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3>No Articles Found</h3>
+                    <p>There are no articles available at the moment. Please check back later.</p>
+                </div>
+            }
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more-section" id="loadMoreSection" style="display: none;">
+            <button class="load-more-btn" id="loadMoreBtn">
+                <span>Load More Articles</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+
+        <!-- Back to Top Button -->
+        <button class="back-to-top" id="backToTop" title="Back to Top">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+    </div>
+</section>
+
+@* <!-- Newsletter Subscription -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="newsletter-content">
+            <div class="newsletter-text">
+                <h3>Stay Updated</h3>
+                <p>Get the latest articles and insights delivered directly to your inbox.</p>
+            </div>
+            <div class="newsletter-form">
+                <div class="input-group">
+                    <input type="email" placeholder="Enter your email address" class="newsletter-input">
+                    <button class="newsletter-btn">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> *@
+
+@section Scripts {
+    <script src="~/assets/js/viewAllArticles.js"></script>
+}

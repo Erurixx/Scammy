@@ -155,11 +155,11 @@
                             }
                         </div>
 
-                        <div class="text-center">
+                        @* <div class="text-center">
                             <div class="main-green-button">
                                 <a href="@Url.Action("ViewArticleDetails", "Analyst", new { id = article.Id })" class="scroll-to-section">Read Article</a>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                 }
             </div>
@@ -190,18 +190,18 @@
                     <span class="flag">Video Interviews</span>
                     <span class="flag">Detection Guide</span>
                 </div>
-                <div class="text-center">
+                @* <div class="text-center">
                     <div class="main-green-button">
                         <a href="#" class="scroll-to-section">Read Article</a>
                     </div>
-                </div>
+                </div> *@
             </div>
 
            
 
         <div class="text-center">
             <div class="main-green-button">
-                <a href="#" class="scroll-to-section">View All Articles</a>
+                    <a asp-controller="Home" asp-action="ViewAllArticles">View All Articles</a>
             </div>
         </div>
     

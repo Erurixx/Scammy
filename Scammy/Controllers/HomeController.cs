@@ -44,5 +44,15 @@ namespace Scammy.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public async Task<IActionResult> viewAllArticles()
+        {
+            var publishedArticles = await _context.Articles
+                .Where(a => a.Status == "published")
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
+            return View(publishedArticles); // this will look for Views/Home/ViewAllArticles.cshtml
+        }
     }
 }
