@@ -53,6 +53,11 @@ namespace Scammy.Controllers
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
 
+            
+
+
+
+
             return View(publishedArticles); // this will look for Views/Home/ViewAllArticles.cshtml
         }
 

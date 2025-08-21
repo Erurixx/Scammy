@@ -15,34 +15,40 @@
                         <h2 class="az-dashboard-title">Hi, welcome back!</h2>
                         <p class="az-dashboard-text">Manage scam awareness content, review reports, and track trends.</p>
                     </div>
-                    <div class="az-content-header-right">
+                    @* <div class="az-content-header-right">
                         <div class="media">
                             <div class="media-body">
-                                <label>Start Date</label>
-                                <h6>-- Select --</h6>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" name="startDate" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="media">
                             <div class="media-body">
-                                <label>End Date</label>
-                                <h6>-- Select --</h6>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                        <div class="media">
-                            <div class="media-body">
-                                <label>Trend Category</label>
-                                <h6>-- Select --</h6>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                        <a href="" class="btn btn-green">Export Report</a>
-                    </div>
-                </div><!-- az-dashboard-one-title -->
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" name="endDate" class="form-control">
+                            </div>
+                        </div>
+                       
+                        <div class="dropdown" style="display: inline-block;">
+                            <button class="btn btn-green dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Export Report
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="exportDropdown">
+                                <a class="dropdown-item" href="#" id="exportCsvBtn">Export as CSV</a>
+                                <a class="dropdown-item" href="#" id="exportExcelBtn">Export as Excel</a>
+                            </div>
+                        </div>
+
+                        
+                    </div> *@
+                </div>
 
                 <div class="az-dashboard-nav">
                     <nav class="nav">
                         <a class="nav-link active" data-toggle="tab" href="#">Overview</a>
-                        <a class="nav-link" data-toggle="tab" href="#">Manage Articles</a>
-                        <a class="nav-link" href="@Url.Action("viewPublishedArticles", "Analyst")">View Published Articles</a>
+                        @* <a class="nav-link" data-toggle="tab" href="#">Manage Articles</a> *@
+                        <a class="nav-link" href="@Url.Action("viewPublishedArticles", "Analyst")">View/Manage Articles</a>
                         <a class="nav-link" href="@Url.Action("createArticle", "Analyst")">Create New Article +</a>
 
                         
@@ -156,4 +162,5 @@
 
     <!-- Your custom dashboard JavaScript -->
     <script src="~/assets/js/charts.js"></script>
+    <script src="~/assets/js/analyst.js"></script>
 }

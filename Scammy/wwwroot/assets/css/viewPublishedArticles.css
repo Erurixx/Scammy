@@ -172,6 +172,16 @@
         color: #f59e0b;
     }
 
+.stat-icon.draft {
+    background: #fef2f2; /* light red/pink */
+    color: #ef4444;       /* red */
+}
+
+.stat-icon.pending {
+    background: #fef9c3; /* light yellow */
+    color: #f59e0b;       /* amber/orange */
+}
+
 .stat-number {
     font-size: 28px;
     font-weight: 700;
@@ -184,6 +194,33 @@
     font-size: 14px;
     margin: 0;
 }
+
+/*Status Tags*/
+.status-tag {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: white; /* default text color */
+    display: inline-block;
+    margin-left: 3px; /* spacing from category */
+}
+
+/* Colors per status */
+.status-tag.draft {
+    background-color: #f59e0b; /* amber/orange for draft */
+}
+
+.status-tag.pending {
+    background-color: #fbbf24; /* yellow for pending */
+    color: black; /* dark text for better contrast */
+}
+
+.status-tag.published {
+    background-color: #10b981; /* green for published */
+}
+
 
 /* Articles section */
 .articles-section {

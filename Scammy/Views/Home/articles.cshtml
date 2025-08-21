@@ -117,7 +117,7 @@
         
 
             <div class="scams-grid" style="margin-bottom: 40px;">
-                @foreach (var article in Model)
+                @foreach (var article in Model.Take(6))
                 {
                     // Random read time between 5 and 12 minutes
                     var random = new Random();
