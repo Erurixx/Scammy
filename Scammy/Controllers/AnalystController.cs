@@ -201,10 +201,21 @@ namespace Scammy.Controllers
             return View("createArticle", article); // reuse the createArticle view
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteArticle(int id)
+        {
+            var article = await _context.Articles.FindAsync(id);
+            if (article == null)
+            {
+                return NotFound();
+            }
 
+            _context.Articles.Remove(article);
+            await _context.SaveChangesAsync();
 
-
-
+            return RedirectToAction("viewPublishedArticles");
+        }
 
 
 
