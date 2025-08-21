@@ -81,3 +81,22 @@
         </div>
     </div>
 </header>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success"
+         style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+                    padding: 15px; max-width: 800px;
+                    background-color: #d4edda; color: #155724;
+                    border: 1px solid #c3e6cb; border-radius: 4px;
+                    z-index: 10000;">
+        <strong>Success!</strong> @TempData["SuccessMessage"]
+        <button type="button"
+                style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;"
+                onclick="this.parentElement.style.display='none'">
+            &times;
+        </button>
+    </div>
+}
+
+
