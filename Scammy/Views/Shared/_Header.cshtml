@@ -17,10 +17,10 @@
                         @if (true)
                         {
                             <li class="scroll-to-section dropdown">
-                                <a href="#" class="dropdown-toggle" id="awarenessHubDropdown">
+                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="awarenessHubDropdown">
                                     Awareness Hub
                                 </a>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" aria-labelledby="awarenessHubDropdown">
                                     <li><a href="@Url.Action("Articles", "Home")">Awareness Hub</a></li>
                                     <li><a href="@Url.Action("dashboard", "Analyst")">Analyst Dashboard</a></li>
                                 </ul>
@@ -80,6 +80,59 @@
             </div>
         </div>
     </div>
+
+
+    <style>
+        /* Override dropdown z-index directly in header */
+        .header-area .main-nav .nav li.dropdown .dropdown-menu,
+        .header-area .main-nav .nav li.submenu ul {
+            z-index: 99999 !important;
+        }
+
+        .header-area .main-nav .nav li.dropdown,
+        .header-area .main-nav .nav li.submenu {
+            z-index: 99999 !important;
+        }
+
+        .header-area {
+            z-index: 99999 !important;
+        }
+
+        .background-header {
+            z-index: 99999 !important;
+        }
+    </style>
+
+    <script>
+        // Simple dropdown fix - add at bottom of header.cshtml
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force z-index override for all dropdown elements
+            const dropdowns = document.querySelectorAll('.dropdown-menu, .submenu ul');
+            dropdowns.forEach(function(dropdown) {
+                dropdown.style.zIndex = '99999';
+                dropdown.style.position = 'absolute';
+            });
+
+            // Force z-index for dropdown containers
+            const dropdownContainers = document.querySelectorAll('.dropdown, .submenu');
+            dropdownContainers.forEach(function(container) {
+                container.style.zIndex = '99999';
+                container.style.position = 'relative';
+            });
+
+            // Force z-index for header
+            const header = document.querySelector('.header-area');
+            if (header) {
+                header.style.zIndex = '99999';
+            }
+
+            const backgroundHeader = document.querySelector('.background-header');
+            if (backgroundHeader) {
+                backgroundHeader.style.zIndex = '99999';
+            }
+        });
+    </script>
+
 </header>
 
 @if (TempData["SuccessMessage"] != null)

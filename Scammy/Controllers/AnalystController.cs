@@ -49,6 +49,14 @@ namespace Scammy.Controllers
                 .OrderBy(g => g.Date)
                 .ToListAsync();
 
+            // Chart data for the small chart (total articles created over time)
+            var totalArticlesChartData = await _context.Articles
+                .GroupBy(a => a.CreatedAt.Date)
+                .Select(g => new { Date = g.Key, Count = g.Count() })
+                .OrderBy(g => g.Date)
+                .Take(10) // Last 10 data points
+                .ToListAsync();
+
             // Approval rate data for small charts
             var approvalRate = totalArticles > 0 ? (double)approvedArticles / totalArticles * 100 : 0;
 
@@ -57,6 +65,7 @@ namespace Scammy.Controllers
             ViewBag.PendingArticles = pendingArticles;
             ViewBag.DraftArticles = draftArticles;
             ViewBag.ChartData = chartData;
+            ViewBag.TotalArticlesChartData = totalArticlesChartData; // New data for the small chart
             ViewBag.ApprovalRate = Math.Round(approvalRate, 2);
 
             return View();
