@@ -47,7 +47,8 @@ namespace Scammy.Controllers
                 FullName = fullName,
                 Email = email,
                 Password = hashedPassword,
-                UserRole = "jobseeker" // default role
+                UserRole = "jobseeker",
+                IsActive = true
             };
 
             _db.Users.Add(user);
@@ -77,13 +78,20 @@ namespace Scammy.Controllers
                 return RedirectToAction("Login");
             }
 
+            // ✅ check IsActive
+            if (!user.IsActive)
+            {
+                TempData["Error"] = "Your account has been deactivated. Please contact administrator.";
+                return RedirectToAction("Login");
+            }
+
             // ✅ Create claims
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.FullName), // this becomes @User.Identity.Name
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.UserRole ?? "jobseeker")
-            };
+    {
+        new Claim(ClaimTypes.Name, user.FullName), // this becomes @User.Identity.Name
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Role, user.UserRole ?? "jobseeker")
+    };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

@@ -88,12 +88,50 @@ namespace Scammy.Controllers
         }
 
 
-        // Manage User
-        public ActionResult ManageUser()
-        {
-            ViewBag.ActivePage = "ManageUser";
-            return View("ManageUser");
-        }
+
+
+            // Manage User page
+            public IActionResult ManageUser()
+            {
+                // 分角色获取用户
+                var admins = _context.Users.Where(u => u.UserRole == "Admin").ToList();
+                var analysts = _context.Users.Where(u => u.UserRole == "Analyst").ToList();
+                var users = _context.Users.Where(u => u.UserRole == "User").ToList();
+
+                ViewBag.Admins = admins;
+                ViewBag.Analysts = analysts;
+                ViewBag.Users = users;
+
+                return View();
+            }
+
+            [HttpPost]
+            public IActionResult DeactivateUser(int id)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == id);
+                if (user == null) return NotFound();
+
+                user.IsActive = false;
+                _context.SaveChanges();
+
+                return Ok(new { success = true });
+            }
+
+            [HttpPost]
+            public IActionResult ActivateUser(int id)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == id);
+                if (user == null) return NotFound();
+
+                user.IsActive = true;
+                _context.SaveChanges();
+
+                return Ok(new { success = true });
+            }
+        
+
+
+
 
 
         // Create User
@@ -130,7 +168,8 @@ namespace Scammy.Controllers
                 Email = email,
                 Password = hashedPassword,
                 UserRole = role,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                IsActive = true
             };
 
             _context.Users.Add(user);

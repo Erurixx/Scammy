@@ -47,14 +47,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Admin001</td>
-                                <td>admin001@example.com</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn-action deactivate">Deactivate</button>
-                                </td>
-                            </tr>
+                            @foreach (var user in ViewBag.Admins)
+                            {
+                                <tr>
+                                    <td>@user.FullName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="status @(user.IsActive ? "active" : "inactive")">
+                                            @(user.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false)">Deactivate</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn-action" onclick="toggleUser(@user.Id, true)">Activate</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -64,21 +78,35 @@
                     <table class="user-table">
                         <thead>
                             <tr>
-                                <th>Username</th>
+                                <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
                                 <th style="width: 150px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Analyst001</td>
-                                <td>analyst001@example.com</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn-action deactivate">Deactivate</button>
-                                </td>
-                            </tr>
+                            @foreach (var user in ViewBag.Analysts)
+                            {
+                                <tr>
+                                    <td>@user.FullName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="status @(user.IsActive ? "active" : "inactive")">
+                                            @(user.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false)">Deactivate</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn-action" onclick="toggleUser(@user.Id, true)">Activate</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -88,195 +116,47 @@
                     <table class="user-table">
                         <thead>
                             <tr>
-                                <th>Username</th>
+                                <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Status</th>
                                 <th style="width: 150px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>User001</td>
-                                <td>user001@example.com</td>
-                                <td><span class="status active">Active</span></td>
-                                <td>
-                                    <button class="btn-action deactivate">Deactivate</button>
-                                </td>
-                            </tr>
+                            @foreach (var user in ViewBag.Users)
+                            {
+                                <tr>
+                                    <td>@user.FullName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="status @(user.IsActive ? "active" : "inactive")">
+                                            @(user.IsActive ? "Active" : "Inactive")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false)">Deactivate</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn-action" onclick="toggleUser(@user.Id, true)">Activate</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
+            </div> 
+
+        </div> 
+    </div> 
 </section>
 
-<!-- JS fallback if Bootstrap JS not loaded -->
-<script>
-    document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
-        tab.addEventListener("click", function (e) {
-            e.preventDefault();
-
-            // deactivate all
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
-
-            // activate clicked
-            this.classList.add('active');
-            let target = document.querySelector(this.getAttribute('href'));
-            target.classList.add('show', 'active');
-        });
-    });
-</script>
-
-
-<style>
-    #manage-user {
-        padding: 100px 0;
-        background: #f9f9f9;
-    }
-
-    .dashboard-box {
-        background: #fff;
-        border-radius: 12px;
-        padding: 40px;
-        box-shadow: 0 4px 25px rgba(0,0,0,0.08);
-    }
-
-    .dashboard-title {
-        font-size: 1.8em;
-        font-weight: bold;
-        color: black;
-        margin-bottom: 10px;
-    }
-
-    .dashboard-subtitle {
-        color: #555;
-        margin-bottom: 25px;
-        font-size: 1.1em;
-    }
-
-    /* Top controls */
-    .top-controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-
-    /* Tabs */
-    .custom-tabs .nav-link {
-        font-weight: bold;
-        color: #004aad;
-        border: none;
-        border-bottom: 2px solid transparent;
-    }
-
-        .custom-tabs .nav-link.active {
-            border-bottom: 2px solid #004aad;
-            color: #003380;
-        }
-
-    /* Create user button */
-    .create-btn {
-        display: inline-block;
-        background-color: #33ccc5;
-        font-size: 15px;
-        font-weight: 400;
-        color: #fff;
-        margin-top: 20px;
-        text-transform: capitalize;
-        padding: 12px 25px;
-        border-radius: 23px;
-        letter-spacing: 0.25px;
-        border-bottom: 2px solid #4771cb !important;
-        transition: all .3s;
-        outline: none;
-        border: none;
-    }
-
-        .create-btn:hover {
-            background-color: #4771cb !important;
-            color: #fff !important;
-            border-bottom: 2px solid #33ccc5 !important;
-        }
-
-    /* Search bar */
-    .search-bar {
-        margin-bottom: 25px;
-    }
-
-    .search-input {
-        border-radius: 8px;
-        padding: 12px;
-        border: 1px solid #ccc;
-        width: 100%;
-    }
-
-    /* User table */
-    .user-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-        .user-table th,
-        .user-table td {
-            border: 1px solid #ddd;
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        .user-table th {
-            background-color: #004aad;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .user-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-    /* Status label */
-    .status {
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-weight: bold;
-        font-size: 0.9em;
-    }
-
-        .status.active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status.inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-    /* Buttons inside table */
-    .btn-action {
-        padding: 6px 15px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.9em;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-        .btn-action.deactivate {
-            background-color: #ffc107;
-            color: #000;
-        }
-
-            .btn-action.deactivate:hover {
-                background-color: #e0a800;
-            }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/ManageUser.css" />
+}
 
 
 @section Scripts {
@@ -285,6 +165,7 @@
 
     <script>
         $(document).ready(function() {
+            // Header scroll/reset handling
             let lastScrollTop = 0;
             let headerFixed = false;
 
@@ -296,35 +177,56 @@
                 $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
             }
 
-            // Scroll handler
             $(window).scroll(function() {
                 let scrollTop = $(this).scrollTop();
-
                 if (scrollTop < 200 && !headerFixed) {
                     resetHeader();
                 } else if (scrollTop > 200) {
                     headerFixed = false;
                 }
-
                 lastScrollTop = scrollTop;
             });
 
-            // Also reset header on page load
             resetHeader();
-
-            // Reset header after any clicks on the page
             $(document).on('click', function() {
-                if (!headerFixed) {
-                    setTimeout(resetHeader, 100);
-                }
+                if (!headerFixed) setTimeout(resetHeader, 100);
             });
 
-            // Force header reset every 5 seconds
             setInterval(function() {
-                if ($(window).scrollTop() < 200) {
-                    resetHeader();
-                }
+                if ($(window).scrollTop() < 200) resetHeader();
             }, 5000);
+
+            // Tab fallback for Bootstrap JS not loaded
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+                    this.classList.add('active');
+                    let target = document.querySelector(this.getAttribute('href'));
+                    target.classList.add('show', 'active');
+                });
+            });
+
+            // Toggle user active/inactive
+            window.toggleUser = function(userId, activate) {
+                let url = activate ? '@Url.Action("ActivateUser", "Admin")' : '@Url.Action("DeactivateUser", "Admin")';
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: userId })
+                })
+                .then(response => {
+                    if(response.ok){
+                        location.reload();
+                    } else {
+                        alert("Error!");
+                    }
+                })
+                .catch(err => console.error(err));
+            };
         });
     </script>
 }
+
