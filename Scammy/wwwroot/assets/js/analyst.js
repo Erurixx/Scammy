@@ -65,6 +65,31 @@ document.addEventListener("DOMContentLoaded", function () {
     
 });
 
+// File Preview in createArticle.cshtml
+document.getElementById('imageUpload').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    const successMsg = document.getElementById('imageSuccess');
+    const fileName = document.getElementById('fileName');
+    const preview = document.getElementById('imagePreview');
+
+    if (file) {
+        // Show success message
+        successMsg.classList.remove('hidden');
+
+        // Show file name
+        fileName.textContent = "Selected: " + file.name;
+        fileName.classList.remove('hidden');
+
+        // Preview image
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
 
 
 

@@ -15,9 +15,15 @@
             <form asp-action="Register" method="post">
                 <h1>Create Account</h1>
                 <span>Use your email to register and start reporting scams</span>
-                <input type="text" name="fullName" placeholder="Full Name" required />
+                <input type="text" name="fullName" placeholder="Full Name" required
+                       pattern="^[a-zA-Z\s]{2,50}$"
+                       title="Full Name should be 2-50 characters and only letters" />  
+
                 <input type="email" name="email" placeholder="Email" required />
-                <input type="password" name="password" placeholder="Password" required />
+
+                <input type="password" name="password" placeholder="Password" required
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                       title="Password must be at least 8 characters, include uppercase, lowercase, and a number" />
                 <button type="submit">Sign Up</button>
             </form>
         </div>
@@ -29,7 +35,7 @@
                 <span>Use your account to access scam reports</span>
                 <input type="email" name="email" placeholder="Email" required />
                 <input type="password" name="password" placeholder="Password" required />
-                <a href="#">Forgot your password?</a>
+                @* <a href="#">Forgot your password?</a> *@
                 <button type="submit">Sign In</button>
             </form>
         </div>
@@ -59,22 +65,22 @@
     @if (TempData["Error"] != null)
     {
             <text>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '@TempData["Error"]'
-                });
+            Swal.fire({
+                
+                title: 'Error',
+                text: '@TempData["Error"]'
+            });
             </text>
     }
-
     @if (TempData["Success"] != null)
     {
             <text>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: '@TempData["Success"]'
-                });
+            Swal.fire({
+                
+                title: 'Success',
+                text: '@TempData["Success"]'
+            });
             </text>
     }
 </script>
+

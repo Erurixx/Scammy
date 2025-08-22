@@ -15,10 +15,7 @@
     <nav class="nav">
         <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
 
-        @* <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
-        <a class="nav-link" href="@Url.Action("ViewPublishedArticles", "Analyst")">View Published Articles</a> *@
-
-        @* <a class="nav-link" href="@Url.Action("ManageArticles", "Analyst")">Manage Articles</a> *@
+       
         <a class="nav-link" href="@Url.Action("ViewPublishedArticles", "Analyst")">View/Manage Articles</a>
 
         @{
@@ -134,6 +131,10 @@
                     <div class="file-upload-text">Click to upload an image</div>
                     <div class="file-upload-subtext">PNG, JPG, GIF up to 10MB</div>
                     <div class="file-success hidden" id="imageSuccess">✓ Image uploaded successfully</div>
+                    <div class="file-name hidden" id="fileName">Selected: </div>
+
+                        <!-- Image preview -->
+                        <img id="imagePreview" class="hidden" alt="Preview" />
                 </div>
             </div>
 
@@ -210,7 +211,7 @@
                 styles.textContent = `
                     .toast {
                         position: fixed;
-                        top: 20px;
+                        top: 130px;
                         right: 20px;
                         background: white;
                         border-radius: 8px;
@@ -280,35 +281,6 @@
                     $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
 
 
-                //     $('<style id="header-emergency-fix">')
-                //         .html(`
-                //             .header-area, .background-header {
-                //                 z-index: 99999 !important;
-                //                 position: relative !important;
-                //             }
-                //             .header-area .main-nav .nav li.dropdown,
-                //             .header-area .main-nav .nav li.submenu {
-                //                 z-index: 99999 !important;
-                //                 position: relative !important;
-                //             }
-                //             .header-area .main-nav .nav li.dropdown .dropdown-menu,
-                //             .header-area .main-nav .nav li.submenu ul {
-                //                 z-index: 999999 !important;
-                //                 position: absolute !important;
-                //             }
-                //             .az-dashboard-nav {
-                //                 z-index: 1000 !important;
-                //             }
-                //         `)
-                //         .appendTo('head');
-
-
-                //     $('.header-area')[0].style.display = 'none';
-                //     $('.header-area')[0].offsetHeight;
-                //     $('.header-area')[0].style.display = '';
-
-                //     console.log('Header completely reset!');
-                //     headerFixed = true;
                 }
 
                 // Scroll handler
