@@ -36,7 +36,8 @@ namespace Scammy.Models
 
         public bool IsApproved { get; set; } = false;
 
-        public string AdminComment { get; set; } = "N/A";
+        public string AdminComment { get; set; } = string.Empty;
+
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

@@ -1,4 +1,6 @@
-﻿/* Navigation styles (inherited from addArticles.css) */
+﻿/* =======================
+   Navigation Styles
+======================= */
 .az-dashboard-nav {
     display: flex;
     align-items: center;
@@ -21,21 +23,22 @@
 
     .az-dashboard-nav .nav:last-child .nav-link {
         color: black;
-        display: none;
         display: block;
     }
 
-        .az-dashboard-nav .nav:last-child .nav-link:hover, .az-dashboard-nav .nav:last-child .nav-link:focus {
+        .az-dashboard-nav .nav:last-child .nav-link:hover,
+        .az-dashboard-nav .nav:last-child .nav-link:focus {
             color: #5b47fb;
         }
 
     .az-dashboard-nav .nav-link.active {
         color: #5b47fb !important;
-        font-weight: 500; /* optional */
+        font-weight: 500;
     }
 
-
-
+/* =======================
+   Stats Cards
+======================= */
 .stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -63,32 +66,20 @@
     justify-content: center;
 }
 
-    /* Pending */
     .stat-icon.pending {
         background: #fef3c7;
         color: #f59e0b;
     }
 
-    /* Published */
     .stat-icon.published {
         background: #d1fae5;
         color: #10b981;
     }
 
-    /* Declined */
     .stat-icon.declined {
         background: #fee2e2;
         color: #ef4444;
     }
-
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
     .stat-icon svg {
         width: 24px;
@@ -109,6 +100,9 @@
     margin: 0;
 }
 
+/* =======================
+   Table Styles
+======================= */
 .modern-table {
     width: 100%;
     border-collapse: separate;
@@ -118,7 +112,7 @@
 }
 
     .modern-table thead th {
-        background-color: #f3f4f6; /* 整条灰色 */
+        background-color: #f3f4f6;
         color: #111827;
         font-weight: 600;
         padding: 12px 15px;
@@ -141,7 +135,9 @@
         vertical-align: middle;
     }
 
-/* Status badges */
+/* =======================
+   Status Badges
+======================= */
 .status-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -156,23 +152,166 @@
     .status-badge.pending {
         background-color: #f59e0b;
     }
-    /* Yellow */
+
     .status-badge.published {
         background-color: #10b981;
     }
-    /* Green */
+
     .status-badge.declined {
         background-color: #ef4444;
     }
 
-    .status-badge.draft {
-        background-color: lightpink;
-    }
-/* Red */
+    
 
-/* Buttons */
+/* =======================
+   Buttons
+======================= */
 .btn-sm {
     margin-right: 5px;
 }
 
+.btn-success {
+    background-color: #10b981;
+    border-color: #10b981;
+    color: #fff;
+}
 
+    .btn-success:hover {
+        background-color: #0f9a72;
+        border-color: #0f9a72;
+    }
+
+.btn-danger {
+    background-color: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+}
+
+    .btn-danger:hover {
+        background-color: #dc2626;
+        border-color: #dc2626;
+    }
+
+.btn-info {
+    background-color: #33ccc5;
+    border-color: #33ccc5;
+    color: #fff;
+}
+
+    .btn-info:hover {
+        background-color: #2563eb;
+        border-color: #2563eb;
+    }
+
+/* =======================
+   Modal Styles
+======================= */
+/* Modal Styles */
+.modal-content {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    padding: 0;
+    overflow: hidden;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-header {
+    background-color: #f3f4f6;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.modal-body {
+    padding: 20px 24px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Buttons inside modals */
+.modal-footer .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 8px 16px;
+    min-width: 100px;
+    transition: all 0.2s ease;
+}
+
+.modal-footer .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Textarea */
+.modal-body textarea.form-control {
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    resize: vertical;
+    min-height: 100px;
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 1rem;
+    }
+    .modal-body {
+        padding: 16px;
+    }
+    .modal-footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+/* Add a subtle hover effect for modals */
+.modal-content:hover {
+    transform: scale(1.005);
+    transition: transform 0.2s ease;
+}
+
+/* Optional: fade-in background for modals */
+.modal-backdrop.show {
+    opacity: 0.6;
+}
+
+
+    /* =======================
+   Scrollbar for long content
+======================= */
+    .modal-body #viewModalContent::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .modal-body #viewModalContent::-webkit-scrollbar-thumb {
+        background-color: rgba(107, 114, 128, 0.5);
+        border-radius: 4px;
+    }
+
+    .modal-body #viewModalContent::-webkit-scrollbar-track {
+        background-color: #f3f4f6;
+        border-radius: 4px;
+    }

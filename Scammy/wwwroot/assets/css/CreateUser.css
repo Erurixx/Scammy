@@ -1,0 +1,161 @@
+﻿/* Section styling */
+#create-user {
+    padding: 100px 0;
+    background: #f9f9f9;
+}
+
+/* Dashboard box container */
+.dashboard-box {
+    background: #fff;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Flex row for left and right columns */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+}
+
+/* Left column with image and titles */
+.col-left {
+    flex: 1;
+    text-align: center;
+}
+
+/* Right column with form */
+.col-right {
+    flex: 1;
+    margin-top: 30px;
+}
+
+/* Image styling */
+.create-user-img {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 180px;
+    height: auto;
+}
+
+/* Titles */
+.dashboard-title {
+    font-size: 2em;
+    color: #004aad;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dashboard-subtitle {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Form styling */
+.user-form .form-group {
+    margin-bottom: 20px;
+}
+
+.user-form label {
+    display: block;
+    font-weight: bold;
+    color: #004aad;
+    margin-bottom: 8px;
+}
+
+.user-form input,
+.user-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Submit button */
+.main-button {
+    display: inline-block;
+    background-color: #33ccc5;
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 20px;
+    text-transform: capitalize;
+    padding: 12px 25px;
+    border-radius: 23px;
+    letter-spacing: 0.25px;
+    border-bottom: 2px solid #4771cb;
+    transition: all .3s;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+    .main-button:hover {
+        background-color: #4771cb;
+        color: #fff;
+        border-bottom: 2px solid #33ccc5;
+    }
+
+/* Alert messages */
+.alert {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Modal design */
+.custom-modal {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.custom-modal-header {
+    background: linear-gradient(90deg, #33ccc5, #4771cb);
+    color: #fff;
+    border-bottom: none;
+    justify-content: center;
+    text-align: center;
+}
+
+.custom-modal .modal-body {
+    padding: 30px;
+}
+
+#modalIcon i {
+    font-size: 3rem;
+    display: block;
+}
+
+#modalMessage {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.btn-light {
+    border-radius: 25px;
+    font-weight: bold;
+    padding: 8px 30px;
+    transition: 0.3s;
+}
+
+    .btn-light:hover {
+        background: #4771cb;
+        color: #fff;
+    }
