@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "ManageReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/ManageArticle.css" />
+}
+
+<!-- Main Navigation -->
+<div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
+    <nav class="nav">
+        
+        <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
+        @{
+            var ManageReport = ViewBag.ActivePage == "ManageRport" ? "active" : "";
+        }
+        <a class="nav-link @ManageReport" href="@Url.Action("ManageScam", "Admin")">Manage Reports</a>
+    </nav>
+</div>
+
+<!-- Stats -->
+<div class="stats-container" style="margin-top:130px; margin-bottom:30px; display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:20px;">
+    <div class="stat-card">
+        <div class="stat-icon pending">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="6" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12" y2="16"></line>
+            </svg>
+        </div>
+        <div class="stat-content">
+            @*<div class="stat-number">@articles.Count(a => a.Status == "pending")</div>*@
+            <div class="stat-label">Pending Reports</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon published">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <div class="stat-content">
+            @*<div class="stat-number">@articles.Count(a => a.Status == "published")</div>*@
+            <div class="stat-label">Published Reports</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon declined">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+        <div class="stat-content">
+            @*<div class="stat-number">@articles.Count(a => a.Status == "declined")</div>*@
+            <div class="stat-label">Declined Reports</div>
+        </div>
+    </div>
+</div>
+
+<!-- Reports Table -->
+<table class="table table-hover modern-table mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Job Title</th>
+            <th>Company Name</th>
+            <th>Created Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    @* <tbody>
+        @foreach (var article in articles) 
+        {
+            <tr>
+                 <td>@article.Title</td>
+                <td>@article.Author</td>
+                <td><span class="status-badge @(article.Status.ToLower())">@article.Status</span></td> 
+                <td>@article.CreatedAt.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal-@report.Id">
+                        View
+                    </button>
+
+                    <!-- Publish button opens modal -->
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#publishModal-@article.Id">
+                        Publish
+                    </button>
+
+                    <!-- Decline button opens modal -->
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#declineModal-@article.Id">
+                        Decline
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody> *@
+</table>

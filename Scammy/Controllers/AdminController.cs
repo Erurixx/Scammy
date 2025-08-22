@@ -93,7 +93,7 @@ namespace Scammy.Controllers
         // Manage User page
         public IActionResult ManageUser()
         {
-            // 分角色获取用户
+            
             var admins = _context.Users.Where(u => u.UserRole == "Admin").ToList();
             var analysts = _context.Users.Where(u => u.UserRole == "Analyst").ToList();
             var jobseekers = _context.Users.Where(u => u.UserRole == "Jobseeker").ToList(); // 改成 Jobseeker
@@ -184,7 +184,13 @@ namespace Scammy.Controllers
 
 
 
-
+        // Manage Report
+        public IActionResult ManageReport()
+        {
+            ViewBag.ActivePage = "ManageReport";
+            //var reports = _context.Reports.ToList();
+            return View();
+        }
 
 
 
