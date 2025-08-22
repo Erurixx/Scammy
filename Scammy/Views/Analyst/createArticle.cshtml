@@ -263,7 +263,89 @@
                     });
                 </text>
         }
+
+            
+        
+            $(document).ready(function() {
+                let lastScrollTop = 0;
+                let headerFixed = false;
+
+
+                function resetHeader() {
+
+                    $('.header-area, .background-header').removeAttr('style');
+                    $('.header-area .main-nav').removeAttr('style');
+                    $('.header-area .main-nav .nav').removeAttr('style');
+                    $('.header-area .main-nav .nav li').removeAttr('style');
+                    $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
+
+
+                //     $('<style id="header-emergency-fix">')
+                //         .html(`
+                //             .header-area, .background-header {
+                //                 z-index: 99999 !important;
+                //                 position: relative !important;
+                //             }
+                //             .header-area .main-nav .nav li.dropdown,
+                //             .header-area .main-nav .nav li.submenu {
+                //                 z-index: 99999 !important;
+                //                 position: relative !important;
+                //             }
+                //             .header-area .main-nav .nav li.dropdown .dropdown-menu,
+                //             .header-area .main-nav .nav li.submenu ul {
+                //                 z-index: 999999 !important;
+                //                 position: absolute !important;
+                //             }
+                //             .az-dashboard-nav {
+                //                 z-index: 1000 !important;
+                //             }
+                //         `)
+                //         .appendTo('head');
+
+
+                //     $('.header-area')[0].style.display = 'none';
+                //     $('.header-area')[0].offsetHeight;
+                //     $('.header-area')[0].style.display = '';
+
+                //     console.log('Header completely reset!');
+                //     headerFixed = true;
+                }
+
+                // Scroll handler
+                $(window).scroll(function() {
+                    let scrollTop = $(this).scrollTop();
+
+                    // Reset header when scrolling back to top
+                    if (scrollTop < 200 && !headerFixed) {
+                        resetHeader();
+                    } else if (scrollTop > 200) {
+                        headerFixed = false;
+                    }
+
+                    lastScrollTop = scrollTop;
+                });
+
+                // Also reset header on page load
+                resetHeader();
+
+                // Reset header after any clicks on the page
+                $(document).on('click', function() {
+                    if (!headerFixed) {
+                        setTimeout(resetHeader, 100);
+                    }
+                });
+
+                // Force header reset every 5 seconds (emergency backup)
+                setInterval(function() {
+                    if ($(window).scrollTop() < 200) {
+                        resetHeader();
+                    }
+                }, 5000);
+            });
+    
     </script>
+
+
 }
 
 
