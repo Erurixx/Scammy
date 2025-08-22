@@ -20,7 +20,7 @@
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
     <nav class="nav">
         <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
-        <a class="nav-link" href="@Url.Action("ManageArticles", "Analyst")">Manage Articles</a>
+        <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
         <a class="nav-link" href="@Url.Action("ViewPublishedArticles", "Analyst")">View Published Articles</a>
         @{
             var createActive = ViewBag.ActivePage == "createArticle" ? "active" : "";
