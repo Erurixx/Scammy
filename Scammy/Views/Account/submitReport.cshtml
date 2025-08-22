@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Scammy.Models.Article>
 
 @{
-    ViewBag.Title = "View/Manage Articles";
+    ViewBag.Title = "View/Submit Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles {
@@ -13,8 +13,6 @@
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
     <nav class="nav">
         <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
-
-<!--         <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a> -->
 
         @{
             var viewPublishedActive = ViewBag.ActivePage == "viewPublishedArticles" ? "active" : "";
@@ -113,8 +111,8 @@
             </div>
         </div>
 
-        
-        
+
+
         <div class="stat-card">
             <div class="stat-icon categories">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -218,7 +216,7 @@
                                         Edit
                                     </a>
 
-                                    
+
                                     <!-- Delete Button -->
                                     <form method="post" asp-action="DeleteArticle" asp-controller="Analyst" style="display:inline">
                                         @Html.AntiForgeryToken()
@@ -282,17 +280,17 @@
             let lastScrollTop = 0;
             let headerFixed = false;
 
-            
+
             function resetHeader() {
-               
+
                 $('.header-area, .background-header').removeAttr('style');
                 $('.header-area .main-nav').removeAttr('style');
                 $('.header-area .main-nav .nav').removeAttr('style');
                 $('.header-area .main-nav .nav li').removeAttr('style');
                 $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
 
-                
-            
+
+
             }
 
             // Scroll handler

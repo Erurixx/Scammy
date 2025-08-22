@@ -12,5 +12,7 @@ namespace Scammy.Data
 
         public DbSet<Article> Articles { get; set; }  // You can add more DbSets later
         public DbSet<User> Users { get; set; }
+        public DbSet<ScamReport> ScamReports { get; set; }
+
     }
 }
