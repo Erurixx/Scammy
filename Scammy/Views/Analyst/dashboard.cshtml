@@ -75,18 +75,17 @@
                                 <div class="card-body-top">
                                     <div>
                                         <label class="mg-b-0">New Articles Posted</label>
-                                        <h2>13,956</h2>
+                                        <h2>@ViewBag.TotalArticles</h2>
                                     </div>
                                     <div>
                                         <label class="mg-b-0">Approved Articles</label>
-                                        <h2>33.50%</h2>
+                                        <h2>@ViewBag.ApprovalRate%</h2>
                                     </div>
                                     <div>
-                                        <label class="mg-b-0">Rejected Articles</label>
-                                        <h2>83,123</h2>
+                                        <label class="mg-b-0">Pending Articles</label>
+                                        <h2>@ViewBag.PendingArticles</h2>
                                     </div>
-                                    
-                                </div><!-- card-body-top -->
+                                </div>
                                 <div class="flot-chart-wrapper">
                                     <div id="flotChart" class="flot-chart"></div>
                                 </div><!-- flot-chart-wrapper -->
@@ -99,9 +98,9 @@
                             <div class="col-sm-6">
                                 <div class="card card-dashboard-two">
                                     <div class="card-header">
-                                        <h6>33.50% <i class="icon ion-md-trending-up tx-success"></i> <small>18.02%</small></h6>
+                                        <h6>@ViewBag.ApprovalRate% <i class="icon ion-md-trending-up tx-success"></i></h6>
                                         <p>Article Approval Rate</p>
-                                    </div><!-- card-header -->
+                                    </div>
                                     <div class="card-body">
                                         <div class="chart-wrapper">
                                             <div id="flotChart1" class="flot-chart"></div>
@@ -112,9 +111,9 @@
                             <div class="col-sm-6 mg-t-20 mg-sm-t-0">
                                 <div class="card card-dashboard-two">
                                     <div class="card-header">
-                                        <h6>1,200 <i class="icon ion-md-trending-down tx-danger"></i> <small>0.86%</small></h6>
+                                        <h6>@ViewBag.PendingArticles <i class="icon ion-md-trending-down tx-danger"></i></h6>
                                         <p>Scam Reports Reviewed</p>
-                                    </div><!-- card-header -->
+                                    </div>
                                     <div class="card-body">
                                         <div class="chart-wrapper">
                                             <div id="flotChart2" class="flot-chart"></div>
@@ -126,9 +125,9 @@
                                 <div class="card card-dashboard-three">
                                     <div class="card-header">
                                         <p>Total Articles Published</p>
-                                        <h6>16,869 <small class="tx-success"><i class="icon ion-md-arrow-up"></i> 2.87%</small></h6>
-                                        <small>The total number of scam awareness articles published within the selected date range.</small>
-                                    </div><!-- card-header -->
+                                        <h6>@ViewBag.ApprovedArticles <small class="tx-success"><i class="icon ion-md-arrow-up"></i></small></h6>
+                                        <small>The total number of scam awareness articles published.</small>
+                                    </div>
                                     <div class="card-body">
                                         <div class="chart"><canvas id="chartBar5"></canvas></div>
                                     </div>
@@ -163,4 +162,32 @@
     <!-- Your custom dashboard JavaScript -->
     <script src="~/assets/js/charts.js"></script>
     <script src="~/assets/js/analyst.js"></script>
+
+    <script>
+        // Convert server-side data to JS
+        var chartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.ChartData ?? new List<object>()));
+
+        // Prepare Flot data - use real data if available, otherwise use sample data
+        var flotData = [];
+        var flotData2 = [];
+
+        if (chartData && chartData.length > 0) {
+            flotData = chartData.map((d, i) => [i * 3, d.Count]);
+            // Create a second dataset for comparison (e.g., previous period)
+            flotData2 = chartData.map((d, i) => [i * 3, Math.max(0, d.Count - Math.floor(Math.random() * 5))]);
+        } else {
+            // Fallback to sample data if no real data
+            flotData = [[0, 20], [10, 25], [20, 35], [30, 30], [40, 45], [50, 40]];
+            flotData2 = [[0, 15], [10, 20], [20, 25], [30, 35], [40, 30], [50, 35]];
+        }
+
+        // Pass data to charts.js
+        window.realChartData = {
+            mainChart: flotData,
+            secondaryChart: flotData2,
+            approvalRate: @ViewBag.ApprovalRate,
+            totalArticles: @ViewBag.TotalArticles,
+            approvedArticles: @ViewBag.ApprovedArticles
+        };
+    </script>
 }

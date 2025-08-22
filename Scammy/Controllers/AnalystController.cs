@@ -32,8 +32,33 @@ namespace Scammy.Controllers
             return View();
         }
 
-        public IActionResult dashboard()
+        public async Task<IActionResult> dashboard()
         {
+            // Article status counts
+            var totalArticles = await _context.Articles.CountAsync();
+            var approvedArticles = await _context.Articles.CountAsync(a => a.Status.ToLower() == "published");
+            var pendingArticles = await _context.Articles.CountAsync(a => a.Status.ToLower() == "pending");
+            var draftArticles = await _context.Articles.CountAsync(a => a.Status.ToLower() == "draft");
+
+            // Daily articles for chart (last 30 days)
+            var thirtyDaysAgo = DateTime.UtcNow.AddDays(-30).Date;
+            var chartData = await _context.Articles
+                .Where(a => a.CreatedAt.Date >= thirtyDaysAgo)
+                .GroupBy(a => a.CreatedAt.Date)
+                .Select(g => new { Date = g.Key, Count = g.Count() })
+                .OrderBy(g => g.Date)
+                .ToListAsync();
+
+            // Approval rate data for small charts
+            var approvalRate = totalArticles > 0 ? (double)approvedArticles / totalArticles * 100 : 0;
+
+            ViewBag.TotalArticles = totalArticles;
+            ViewBag.ApprovedArticles = approvedArticles;
+            ViewBag.PendingArticles = pendingArticles;
+            ViewBag.DraftArticles = draftArticles;
+            ViewBag.ChartData = chartData;
+            ViewBag.ApprovalRate = Math.Round(approvalRate, 2);
+
             return View();
         }
 
