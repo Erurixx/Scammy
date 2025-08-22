@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Scammy.Data;
 using Scammy.Models;
+using System.Security.Claims;
 
 namespace Scammy.Controllers
 {
@@ -12,6 +15,11 @@ namespace Scammy.Controllers
         {
             _context = context;
         }
+
+
+        
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -34,6 +42,9 @@ namespace Scammy.Controllers
             TempData["AlertScript"] = "alert('There was a problem submitting your report. Please try again.');";
             return RedirectToAction("Index", "Home");
         }
+
+
         
+
     }
 }

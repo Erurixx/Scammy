@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Scammy.Data;
 using Scammy.Models;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Scammy.Controllers
 {
@@ -22,6 +24,28 @@ namespace Scammy.Controllers
         {
             return View();
         }
+
+        // GET: Submit Report page with user's reports
+        [Authorize(Roles = "jobseeker")]
+        public IActionResult submitReport()
+        {
+            var userEmail = User.FindFirstValue(System.Security.Claims.ClaimTypes.Email);
+
+            // Get user's reports
+            var userReports = _db.ScamReports
+                .Where(r => r.Email == userEmail)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToList();
+
+            // Set ViewBag data
+            ViewBag.SubmittedReportsCount = userReports.Count;
+            ViewBag.PendingReportsCount = userReports.Count(r => r.Status.ToLower() == "pending");
+            ViewBag.ReviewedReportsCount = userReports.Count(r => r.Status.ToLower() != "pending");
+            ViewBag.UserName = User.Identity.Name; // Use the name from claims
+
+            return View(userReports);
+        }
+
 
         // POST: Register new user
         [HttpPost]
@@ -107,5 +131,28 @@ namespace Scammy.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "jobseeker")]
+        public async Task<IActionResult> DeleteReport(int id)
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            var report = await _db.ScamReports
+                .FirstOrDefaultAsync(r => r.Id == id && r.Email == userEmail);
+
+            if (report != null)
+            {
+                _db.ScamReports.Remove(report);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("submitReport");
+        }
+
     }
 }

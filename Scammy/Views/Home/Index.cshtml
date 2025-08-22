@@ -404,17 +404,6 @@
 
             <script src="~/assets/js/report.js"></script>
 
-
-    @if (TempData["AlertScript"] != null)
-    {
-                <script>
-                    window.addEventListener("DOMContentLoaded", function() {
-                        @Html.Raw(TempData["AlertScript"])
-                    });
-                </script>
-    }
-
-
             <script>
                 $(document).ready(function() {
                     let lastScrollTop = 0;

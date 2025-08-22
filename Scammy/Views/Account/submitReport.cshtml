@@ -1,4 +1,9 @@
-﻿@model IEnumerable<Scammy.Models.Article>
+﻿@using System.Security.Claims
+
+@model IEnumerable<Scammy.Models.ScamReport>
+
+
+
 
 @{
     ViewBag.Title = "View/Submit Report";
@@ -9,27 +14,15 @@
 }
 
 
-<!-- Main Content -->
-<div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
-    <nav class="nav">
-        <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
 
-        @{
-            var viewPublishedActive = ViewBag.ActivePage == "viewPublishedArticles" ? "active" : "";
-        }
-        <a class="nav-link @viewPublishedActive" href="@Url.Action("viewPublishedArticles", "Analyst")">View/Manage Articles</a>
-        <a class="nav-link" href="@Url.Action("createArticle", "Analyst")">
-            Create New Article +
-        </a>
-    </nav>
-</div>
+
 
 <div class="main-container">
     <!-- Header Section -->
     <div class="header-section">
         <div class="header-info">
-            <h1>Manage Articles</h1>
-            <p>Browse all articles available</p>
+            <h1>Submitted Reports</h1>
+            <p>Review all scam reports you have submitted</p>
         </div>
         <div class="header-actions">
             <div class="search-filter-container">
@@ -38,32 +31,29 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <input type="text" id="searchInput" placeholder="Search articles..." class="search-input">
+                    <input type="text" id="searchInput" placeholder="Search reports..." class="search-input">
                 </div>
-                <select id="categoryFilter" class="filter-select">
-                    <option value="">All Categories</option>
-                    <option value="Phone Scams">Phone Scams</option>
-                    <option value="Email Scams">Email Scams</option>
-                    <option value="Social Media Scams">Social Media Scams</option>
-                    <option value="Investment Scams">Investment Scams</option>
-                    <option value="Romance Scams">Romance Scams</option>
-                    <option value="Tech Support Scams">Tech Support Scams</option>
-                    <option value="Shopping Scams">Shopping Scams</option>
-                    <option value="Cryptocurrency Scams">Cryptocurrency Scams</option>
-                    <option value="Identity Theft">Identity Theft</option>
-                    <option value="General Awareness">General Awareness</option>
-                </select>
+                
 
                 <select id="statusFilter" class="filter-select">
                     <option value="">All Status</option>
-                    <option value="draft">Draft</option>
+                    
                     <option value="pending">Pending</option>
-                    <option value="published">Published</option>
+                    <option value="approved">Approved</option>
+                    
                 </select>
             </div>
         </div>
     </div>
+    
 
+
+
+    @{
+        var submittedCount = Model?.Count() ?? 0;
+        var pendingCount = Model?.Count(r => r.Status.ToLower() == "pending") ?? 0;
+        var reviewedCount = Model?.Count(r => r.Status.ToLower() != "pending") ?? 0;
+    }
     <!-- Stats Cards -->
     <div class="stats-container">
         <div class="stat-card">
@@ -76,10 +66,8 @@
                 </svg>
             </div>
             <div class="stat-content">
-                @* <div class="stat-number" id="publishedCount">@(Model?.Where(a => a.Status == "published").Count() ?? 0)</div> *@
-
-                <div class="stat-number" id="publishedCount">@ViewBag.PublishedArticles?.Count</div>
-                <div class="stat-label">Published Articles</div>
+                <div class="stat-number" id="publishedCount">@submittedCount</div>
+                <div class="stat-label">Total Submitted Reports</div>
             </div>
         </div>
 
@@ -91,12 +79,12 @@
                 </svg>
             </div>
             <div class="stat-content">
-                <div class="stat-number" id="pendingCount">@ViewBag.PendingArticles?.Count</div>
-                <div class="stat-label">Pending Articles</div>
+                <div class="stat-number" id="pendingCount">@pendingCount</div>
+                <div class="stat-label">Pending Review</div>
             </div>
         </div>
 
-        @* Draft *@
+        
         <div class="stat-card">
             <div class="stat-icon draft">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -106,167 +94,231 @@
                 </svg>
             </div>
             <div class="stat-content">
-                <div class="stat-number" id="draftCount">@ViewBag.DraftArticles?.Count</div>
-                <div class="stat-label">Draft Articles</div>
+                <div class="stat-number" id="draftCount">@reviewedCount</div>
+                <div class="stat-label">Approved Reports</div>
             </div>
         </div>
 
 
 
-        <div class="stat-card">
-            <div class="stat-icon categories">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="3" width="7" height="7"></rect>
-                    <rect x="14" y="14" width="7" height="7"></rect>
-                    <rect x="3" y="14" width="7" height="7"></rect>
-                </svg>
-            </div>
-            <div class="stat-content">
-                <div class="stat-number" id="categoriesCount">@(Model?.Select(a => a.Category).Distinct().Count() ?? 0)</div>
-                <div class="stat-label">Categories Covered</div>
-            </div>
-        </div>
+        
     </div>
 
-    <!-- Articles Grid -->
-    <div class="articles-section">
-        <div class="section-header">
-            <h2>All Articles</h2>
-            <div class="view-toggle">
-                <button class="view-btn active" data-view="grid">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
-                    </svg>
-                </button>
-                <button class="view-btn" data-view="list">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="8" y1="6" x2="21" y2="6"></line>
-                        <line x1="8" y1="12" x2="21" y2="12"></line>
-                        <line x1="8" y1="18" x2="21" y2="18"></line>
-                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                    </svg>
-                </button>
+    <!-- My Reports Section -->
+    <section class="reports-section">
+        <div class="container">
+            <!-- Header -->
+            <div class="reports-header">
+                <h2>My Scam Reports</h2>
+                <span id="reportsCount">Showing @(Model?.Count() ?? 0) report(s)</span>
             </div>
-        </div>
 
-        <div class="articles-container" id="articlesContainer">
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var article in Model.OrderByDescending(a => a.CreatedAt))
+            <!-- Reports Grid -->
+            <div class="reports-grid" id="reportsContainer">
+                @if (Model != null && Model.Any())
                 {
-                    <div class="article-card" data-category="@article.Category" data-title="@article.Title.ToLower()" data-excerpt="@article.Excerpt?.ToLower()" data-status="@article.Status.ToLower()">
-                        <div class="article-image">
-                            @if (!string.IsNullOrEmpty(article.ImagePath))
-                            {
-                                <img src="@article.ImagePath" alt="@article.Title" />
-                            }
-                            else
-                            {
-                                <div class="image-placeholder">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                        <polyline points="21,15 16,10 5,21"></polyline>
-                                    </svg>
-                                </div>
-                            }
-                        </div>
-                        <div class="article-content">
-                            <div class="article-meta">
-                                <span class="category-tag">@article.Category</span>
-                                <span class="status-tag @article.Status.ToLower()">@article.Status</span>
-                                <span class="date">@article.CreatedAt.ToString("MMM dd, yyyy")</span>
-                            </div>
-                            <h3 class="article-title">@article.Title</h3>
-                            <p class="article-excerpt">@article.Excerpt</p>
-                            <div class="article-footer">
-                                <div class="author-info">
-                                    <span class="author">By @article.Author</span>
-                                    @if (!string.IsNullOrEmpty(article.Tags) && article.Tags != "none")
-                                    {
-                                        <div class="tags">
-                                            @foreach (var tag in article.Tags.Split(',').Take(2))
-                                            {
-                                                <span class="tag">#@tag.Trim()</span>
-                                            }
-                                        </div>
-                                    }
-                                </div>
-                                <div class="article-actions">
-                                    <button class="action-btn preview" onclick="previewArticle('@article.Title', '@Html.Raw(article.Content?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@article.Category', '@article.Author', '@article.CreatedAt.ToString("MMM dd, yyyy")')">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                        </svg>
-                                        Preview
-                                    </button>
+                    @foreach (var report in Model.OrderByDescending(r => r.CreatedAt))
+                    {
+                        <div class="report-card status-@report.Status.ToLower()">
+                           
 
-                                    <!-- Edit Button -->
-                                    <a class="action-btn preview" href="@Url.Action("EditArticle", "Analyst", new { id = article.Id })">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 20h9"></path>
-                                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
-                                        </svg>
-                                        Edit
+                            <div class="report-content">
+                                <div class="report-meta">
+                                    <span class="report-author">@report.Name</span>
+                                    <span class="report-date">@report.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                    <span class="report-company">@report.CompanyName</span>
+                                </div>
+
+                                <h3 class="report-title">
+                                    <a href="#" onclick="previewReport('@report.JobTitle', '@Html.Raw(report.Description?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@report.CreatedAt.ToString("MMM dd, yyyy")')">
+                                        @report.JobTitle
                                     </a>
+                                </h3>
 
+                                <p class="report-excerpt">
+                                    @(report.Description?.Length > 150 ? report.Description.Substring(0, 150) + "..." : report.Description)
+                                </p>
 
-                                    <!-- Delete Button -->
-                                    <form method="post" asp-action="DeleteArticle" asp-controller="Analyst" style="display:inline">
+                                <div class="report-tags">
+                                    <span class="tag status-@report.Status.ToLower()">#@report.Status</span>
+                                </div>
+
+                                <div class="report-actions">
+                                    <form method="post" asp-action="DeleteReport" asp-controller="Account" class="delete-form">
                                         @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="@article.Id" />
-                                        <button type="submit" class="action-btn preview" onclick="return confirm('Are you sure you want to delete this article?')">
-                                            Delete
+                                        <input type="hidden" name="id" value="@report.Id" />
+                                        <button type="submit" class="action-btn delete" title="Delete Report">
+                                            <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
-
-
                                 </div>
                             </div>
                         </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-reports">
+                        <i class="fas fa-exclamation-triangle no-reports-icon"></i>
+                        <h3>No Reports Found</h3>
+                        <p>You haven't submitted any reports yet. Submit scam reports to help others stay safe.</p>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14,2 14,8 20,8"></polyline>
-                        </svg>
-                    </div>
-                    <h3>No Published Articles</h3>
-                    <p>There are no published articles to display yet.</p>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<!-- Article Preview Modal -->
-<div id="previewModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="previewTitle">Article Preview</h3>
-            <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="preview-meta">
-                <span id="previewCategory" class="category-tag"></span>
-                @* <span id="previewAuthor" class="author"></span>
-                <span id="previewDate" class="date"></span> *@
             </div>
-            <div id="previewContent" class="preview-content"></div>
         </div>
-    </div>
-</div>
+    </section>
+
+
+    <style>
+        /* Container & Header */
+.reports-section {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.reports-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.reports-header #reportsCount {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Grid & Cards */
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.report-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.report-icon i {
+    font-size: 2.5rem;
+    color: #ffa500;
+}
+
+/* Meta Info */
+.report-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.report-meta span {
+    margin-right: 10px;
+}
+
+/* Title & Excerpt */
+.report-title a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+}
+
+.report-title a:hover {
+    text-decoration: underline;
+}
+
+.report-excerpt {
+    margin: 10px 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* Tags */
+.report-tags {
+    margin-bottom: 10px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.tag.status-pending {
+    background-color: #ffa500;
+}
+
+.tag.status-reviewed {
+    background-color: #28a745;
+}
+
+.tag.status-rejected {
+    background-color: #dc3545;
+}
+
+/* Actions */
+.report-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.action-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.action-btn.delete {
+    color: #dc3545;
+}
+
+.action-btn.delete:hover {
+    background: #dc3545;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.action-btn.share {
+    color: #007bff;
+}
+
+.action-btn.share:hover {
+    color: #0056b3;
+}
+
+/* No reports state */
+.no-reports {
+    text-align: center;
+    padding: 40px 20px;
+    color: #555;
+}
+
+.no-reports-icon {
+    font-size: 3rem;
+    color: #ffa500;
+    margin-bottom: 15px;
+}
+    </style>
+
 
 @section Scripts {
     <!-- Scripts -->
@@ -325,4 +377,56 @@
             }, 5000);
         });
     </script>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const searchInput = document.getElementById("searchInput");
+                const statusFilter = document.getElementById("statusFilter");
+                const reportsContainer = document.getElementById("reportsContainer");
+                const reportsCount = document.getElementById("reportsCount");
+
+                function updateReports() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const statusTerm = statusFilter.value.toLowerCase();
+
+                    const reportCards = Array.from(reportsContainer.getElementsByClassName("report-card"));
+
+                    let visibleCount = 0;
+
+                    reportCards.forEach(card => {
+                        const title = card.querySelector(".report-title a").innerText.toLowerCase();
+                        const desc = card.querySelector(".report-excerpt").innerText.toLowerCase();
+                        const status = card.className.toLowerCase(); // includes status-xxx
+
+                        const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+                        const matchesStatus = !statusTerm || status.includes(statusTerm);
+
+                        if (matchesSearch && matchesStatus) {
+                            card.style.display = "block";
+                            visibleCount++;
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+
+                    reportsCount.innerText = `Showing ${visibleCount} report(s)`;
+                }
+
+                // Event listeners
+                searchInput.addEventListener("input", updateReports);
+                statusFilter.addEventListener("change", updateReports);
+
+                            const deleteForms = document.querySelectorAll(".delete-form");
+            deleteForms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    if (!confirm("Are you sure you want to delete this report?")) {
+                        e.preventDefault(); // cancel deletion
+                    }
+                });
+            });
+
+            });
+        </script>
 }

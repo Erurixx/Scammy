@@ -58,7 +58,7 @@
                                     <!-- Role-based menu items -->
                                     @if (User.IsInRole("jobseeker"))
                                     {
-                                        <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Submitted Report</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("submitReport", "Account")">Submitted Report</a></li>
                                     }
                                     @if (User.IsInRole("analyst"))
                                     {
