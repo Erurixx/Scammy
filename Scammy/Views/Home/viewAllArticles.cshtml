@@ -152,9 +152,7 @@
                                 </a>
 
                                 <div class="article-actions">
-                                    @* <button class="action-btn bookmark" title="Bookmark">
-                                        <i class="far fa-bookmark"></i>
-                                    </button> *@
+                                   
                                     <button class="action-btn share" title="Share" onclick="shareArticle('@article.Title', '@Url.Action("ReadArticle", "Articles", new { id = article.Id })')">
                                         <i class="fas fa-share-alt"></i>
                                     </button>
@@ -191,23 +189,7 @@
     </div>
 </section>
 
-@* <!-- Newsletter Subscription -->
-<section class="newsletter-section">
-    <div class="container">
-        <div class="newsletter-content">
-            <div class="newsletter-text">
-                <h3>Stay Updated</h3>
-                <p>Get the latest articles and insights delivered directly to your inbox.</p>
-            </div>
-            <div class="newsletter-form">
-                <div class="input-group">
-                    <input type="email" placeholder="Enter your email address" class="newsletter-input">
-                    <button class="newsletter-btn">Subscribe</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> *@
+
 
 @section Scripts {
     <script src="~/assets/js/viewAllArticles.js"></script>

@@ -22,10 +22,7 @@
                     <nav class="nav">
                         <a class="nav-link active" data-toggle="tab" href="#">Overview</a>
 
-                        @* <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a> *@
-@* <!--                         <a class="nav-link" href="@Url.Action("viewPublishedArticles", "Analyst")">View Published Articles</a> --> *@
-
-<!--                         @* <a class="nav-link" data-toggle="tab" href="#">Manage Articles</a> *@ -->
+                        
                         <a class="nav-link" href="@Url.Action("viewPublishedArticles", "Analyst")">View/Manage Articles</a>
 
                         <a class="nav-link" href="@Url.Action("createArticle", "Analyst")">Create New Article +</a>
@@ -42,13 +39,9 @@
                             <div class="card-header">
                                 <div>
                                     <h6 class="card-title">Total Reported Scams</h6>
-                                    @* <p class="card-text">Summary of reported scams for the selected date range.</p> *@
+                                   
                                 </div>
-                                @* <div class="btn-group">
-                                    <button class="btn active">Day</button>
-                                    <button class="btn">Week</button>
-                                    <button class="btn">Month</button>
-                                </div> *@
+                                
                             </div><!-- card-header -->
                             <div class="card-body">
                                 <div class="card-body-top">
@@ -90,7 +83,7 @@
                             <div class="col-sm-6 mg-t-20 mg-sm-t-0">
                                 <div class="card card-dashboard-two">
                                     <div class="card-header">
-                                        <h6>@ViewBag.TotalArticles <i class="icon ion-md-trending-up tx-success"></i> <small>@((ViewBag.TotalArticles > 0 ? "+0.86%" : "0%"))</small></h6>
+                                        <h6>@ViewBag.TotalArticles <i class="icon ion-md-trending-up tx-success"></i></h6>
                                         <p>Articles Created</p>
                                     </div><!-- card-header -->
                                     <div class="card-body">
@@ -146,41 +139,5 @@
     <script src="~/assets/js/charts.js"></script>
     <script src="~/assets/js/analyst.js"></script>
 
-    <script>
-        // Convert server-side data to JS
-        var chartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.ChartData ?? new List<object>()));
-        var totalArticlesData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.TotalArticlesChartData ?? new List<object>()));
-
-        // Prepare Flot data - use real data if available, otherwise use sample data
-        var flotData = [];
-        var flotData2 = [];
-        var totalArticlesFlotData = [];
-
-        if (chartData && chartData.length > 0) {
-            flotData = chartData.map((d, i) => [i * 3, d.Count]);
-            // Create a second dataset for comparison (e.g., previous period)
-            flotData2 = chartData.map((d, i) => [i * 3, Math.max(0, d.Count - Math.floor(Math.random() * 5))]);
-        } else {
-            // Fallback to sample data if no real data
-            flotData = [[0, 20], [10, 25], [20, 35], [30, 30], [40, 45], [50, 40]];
-            flotData2 = [[0, 15], [10, 20], [20, 25], [30, 35], [40, 30], [50, 35]];
-        }
-
-        // Prepare data for total articles chart
-        if (totalArticlesData && totalArticlesData.length > 0) {
-            totalArticlesFlotData = totalArticlesData.map((d, i) => [i * 5, d.Count]);
-        } else {
-            totalArticlesFlotData = [[0, 5], [5, 8], [10, 12], [15, 10], [20, 15], [25, 18], [30, 20], [35, 22], [40, 25], [45, 23], [50, 28]];
-        }
-
-        // Pass data to charts.js
-        window.realChartData = {
-            mainChart: flotData,
-            secondaryChart: flotData2,
-            totalArticlesChart: totalArticlesFlotData, // New chart data
-            approvalRate: @ViewBag.ApprovalRate,
-            totalArticles: @ViewBag.TotalArticles,
-            approvedArticles: @ViewBag.ApprovedArticles
-        };
-    </script>
+    
 }

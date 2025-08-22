@@ -74,8 +74,17 @@ namespace Scammy.Controllers
         [HttpGet]
         public IActionResult createArticle()
         {
-            ViewBag.ActivePage = "createArticle";
-            return View();
+            //ViewBag.ActivePage = "createArticle";
+            //return View();
+
+            var model = new Article();
+
+            // Populate Author for logged-in user
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            model.Author = currentUser != null ? currentUser.FullName : "Unknown";
+
+            return View(model);
 
         }
 
@@ -96,8 +105,10 @@ namespace Scammy.Controllers
                 return View(model);
             }
 
-            // Author
-            model.Author = "Jasmine";
+            // Author (based on logged-in user)
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            model.Author = currentUser != null ? currentUser.FullName : "Unknown";
 
             // Status
             model.Status = submitAction == "saveDraft" ? "draft" : "pending";
