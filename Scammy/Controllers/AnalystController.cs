@@ -187,13 +187,19 @@ namespace Scammy.Controllers
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
 
+            var declinedArticles = await _context.Articles
+                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "declined")
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
             // Combine all articles into one list for the view
-            var allArticles = publishedArticles.Concat(pendingArticles).Concat(draftArticles).ToList();
+            var allArticles = publishedArticles.Concat(pendingArticles).Concat(draftArticles).Concat(declinedArticles).ToList();
 
             // Pass them to ViewBag for stats
             ViewBag.PublishedArticles = publishedArticles;
             ViewBag.PendingArticles = pendingArticles;
             ViewBag.DraftArticles = draftArticles;
+            ViewBag.DeclinedArticles = declinedArticles;
 
             return View(allArticles); // Model will contain all articles
 

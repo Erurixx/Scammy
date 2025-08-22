@@ -114,15 +114,13 @@ function previewArticle(title, content, category, author, date) {
     const modal = document.getElementById('previewModal');
     const previewTitle = document.getElementById('previewTitle');
     const previewCategory = document.getElementById('previewCategory');
-    //const previewAuthor = document.getElementById('previewAuthor');
-    //const previewDate = document.getElementById('previewDate');
+    
     const previewContent = document.getElementById('previewContent');
 
     // Set modal content
     previewTitle.textContent = title;
     previewCategory.textContent = category;
-    //previewAuthor.textContent = `By ${author}`;
-    //previewDate.textContent = date;
+    
     previewContent.textContent = content;
 
     // Show modal

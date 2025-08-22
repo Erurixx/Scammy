@@ -14,7 +14,7 @@
     <nav class="nav">
         <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
 
-<!--         <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a> -->
+
 
         @{
             var viewPublishedActive = ViewBag.ActivePage == "viewPublishedArticles" ? "active" : "";
@@ -61,6 +61,7 @@
                     <option value="draft">Draft</option>
                     <option value="pending">Pending</option>
                     <option value="published">Published</option>
+                    <option value="declined">Declined</option>
                 </select>
             </div>
         </div>
@@ -78,7 +79,7 @@
                 </svg>
             </div>
             <div class="stat-content">
-                @* <div class="stat-number" id="publishedCount">@(Model?.Where(a => a.Status == "published").Count() ?? 0)</div> *@
+               
 
                 <div class="stat-number" id="publishedCount">@ViewBag.PublishedArticles?.Count</div>
                 <div class="stat-label">Published Articles</div>
@@ -116,7 +117,7 @@
         
         
         <div class="stat-card">
-            <div class="stat-icon categories">
+            <div class="stat-icon declined">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="7" height="7"></rect>
                     <rect x="14" y="3" width="7" height="7"></rect>
@@ -124,9 +125,13 @@
                     <rect x="3" y="14" width="7" height="7"></rect>
                 </svg>
             </div>
+            
+
             <div class="stat-content">
-                <div class="stat-number" id="categoriesCount">@(Model?.Select(a => a.Category).Distinct().Count() ?? 0)</div>
-                <div class="stat-label">Categories Covered</div>
+                <div class="stat-number" id="declinedCount">
+                    @(Model?.Where(a => a.Status.ToLower() == "declined").Count() ?? 0)
+                </div>
+                <div class="stat-label">Declined Articles</div>
             </div>
         </div>
     </div>
@@ -201,7 +206,7 @@
                                     }
                                 </div>
                                 <div class="article-actions">
-                                    <button class="action-btn preview" onclick="previewArticle('@article.Title', '@Html.Raw(article.Content?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@article.Category', '@article.Author', '@article.CreatedAt.ToString("MMM dd, yyyy")')">
+                                    <button class="action-btn preview" onclick="previewArticle('@article.Title', '@Html.Raw(article.Content?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@article.Category', '@article.Author', '@article.CreatedAt.ToString("MMM dd, yyyy")', )">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                             <circle cx="12" cy="12" r="3"></circle>
@@ -262,10 +267,14 @@
         <div class="modal-body">
             <div class="preview-meta">
                 <span id="previewCategory" class="category-tag"></span>
-                @* <span id="previewAuthor" class="author"></span>
-                <span id="previewDate" class="date"></span> *@
+                
             </div>
             <div id="previewContent" class="preview-content"></div>
+
+            <div id="previewAdminSection" style="display: none; margin-top: 1rem;">
+                <strong>Admin Comment:</strong>
+                <div id="previewAdminComment" class="preview-admin-comment"></div>
+            </div>
         </div>
     </div>
 </div>
