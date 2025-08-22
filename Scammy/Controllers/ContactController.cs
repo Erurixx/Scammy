@@ -19,6 +19,10 @@ namespace Scammy.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Ensure status is set to Pending
+                report.Status = "pending";
+
                 _context.ScamReports.Add(report);
                 await _context.SaveChangesAsync();
 

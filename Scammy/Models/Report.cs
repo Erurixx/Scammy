@@ -27,6 +27,10 @@ namespace Scammy.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }   // Detailed Scam Description
 
+        [Required]
+        [StringLength(20)]
+        public string Status { get; set; } = "pending";   // Status: Pending, Approved, Rejected
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;   // Auto timestamp
     }
 }
