@@ -6,13 +6,7 @@
     <link rel="stylesheet" href="~/assets/css/addArticles.css" />
 }
 
-@* @if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success" style="margin: 20px 0; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px;">
-        <strong>Success!</strong> @TempData["SuccessMessage"]
-        <button type="button" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;" onclick="this.parentElement.style.display='none'">&times;</button>
-    </div>
-} *@
+
 
 
 
@@ -20,8 +14,13 @@
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
     <nav class="nav">
         <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
+
         <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
         <a class="nav-link" href="@Url.Action("ViewPublishedArticles", "Analyst")">View Published Articles</a>
+
+        @* <a class="nav-link" href="@Url.Action("ManageArticles", "Analyst")">Manage Articles</a> *@
+        <a class="nav-link" href="@Url.Action("ViewPublishedArticles", "Analyst")">View/Manage Articles</a>
+
         @{
             var createActive = ViewBag.ActivePage == "createArticle" ? "active" : "";
         }
@@ -34,7 +33,7 @@
 
 
 
-@* <form id="articleForm" asp-action="createArticle" asp-controller="Analyst" method="post" enctype="multipart/form-data"> *@
+
 <form id="articleForm"
       asp-action="@(Model?.Id > 0 ? "EditArticle" : "createArticle")"
       asp-controller="Analyst"
@@ -44,6 +43,9 @@
     {
         <input type="hidden" name="Id" value="@Model.Id" />
     }
+
+    
+
 <div class="main-content">
     <!-- Left Panel - Content -->
     <div class="left-panel">
@@ -86,19 +88,7 @@
             <div class="grid-2">
                 <div class="form-group">
                     <label class="form-label" name="Category" for="category">Category *</label>
-                    @* <select id="category" name="Category" class="form-select" required>
-                        <option value="">Select category</option>
-                        <option value="Phone Scams" @((Model?.Category == "Phone Scams") ? "selected" : "")>Phone Scams</option>
-                        <option value="Email Scams">Email Scams</option>
-                        <option value="Social Media Scams">Social Media Scams</option>
-                        <option value="Investment Scams">Investment Scams</option>
-                        <option value="Romance Scams">Romance Scams</option>
-                        <option value="Tech Support Scams">Tech Support Scams</option>
-                        <option value="Shopping Scams">Shopping Scams</option>
-                        <option value="Cryptocurrency Scams">Cryptocurrency Scams</option>
-                        <option value="Identity Theft">Identity Theft</option>
-                        <option value="General Awareness">General Awareness</option>
-                    </select> *@
+                    
                         @{
                             var categories = new List<string>
                                                 {
@@ -199,4 +189,78 @@
 </div>
 
 </form>
+
+@section Scripts {
+    <script>
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="fas fa-${getToastIcon(type)}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            if (!document.querySelector('.toast-styles')) {
+                const styles = document.createElement('style');
+                styles.className = 'toast-styles';
+                styles.textContent = `
+                    .toast {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                        z-index: 10000;
+                        transform: translateX(100%);
+                        transition: transform 0.3s ease;
+                        border-left: 4px solid;
+                    }
+                    .toast.show { transform: translateX(0); }
+                    .toast-success { border-left-color: #10b981; }
+                    .toast-error { border-left-color: #ef4444; }
+                    .toast-info { border-left-color: #3b82f6; }
+                    .toast-content {
+                        padding: 16px 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        color: #374151;
+                    }
+                    .toast-success .toast-content i { color: #10b981; }
+                    .toast-error .toast-content i { color: #ef4444; }
+                    .toast-info .toast-content i { color: #3b82f6; }
+                `;
+                document.head.appendChild(styles);
+            }
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function getToastIcon(type) {
+            const icons = {
+                success: 'check-circle',
+                error: 'exclamation-circle',
+                info: 'info-circle'
+            };
+            return icons[type] || 'info-circle';
+        }
+
+        
+        @if (TempData["SuccessMessage"] != null)
+        {
+                <text>
+                    window.addEventListener("DOMContentLoaded", function() {
+                        showToast("@TempData["SuccessMessage"]", "success");
+                    });
+                </text>
+        }
+    </script>
+}
+
 

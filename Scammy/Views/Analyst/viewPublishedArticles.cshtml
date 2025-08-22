@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Scammy.Models.Article>
 
 @{
-    ViewBag.Title = "View Published Articles";
+    ViewBag.Title = "View/Manage Articles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles {
@@ -13,11 +13,13 @@
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
     <nav class="nav">
         <a class="nav-link" href="@Url.Action("dashboard", "Analyst")">Overview</a>
-        <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
+
+<!--         <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a> -->
+
         @{
             var viewPublishedActive = ViewBag.ActivePage == "viewPublishedArticles" ? "active" : "";
         }
-        <a class="nav-link @viewPublishedActive" href="@Url.Action("viewPublishedArticles", "Analyst")">View Published Articles</a>
+        <a class="nav-link @viewPublishedActive" href="@Url.Action("viewPublishedArticles", "Analyst")">View/Manage Articles</a>
         <a class="nav-link" href="@Url.Action("createArticle", "Analyst")">
             Create New Article +
         </a>
@@ -28,8 +30,8 @@
     <!-- Header Section -->
     <div class="header-section">
         <div class="header-info">
-            <h1>Published Articles</h1>
-            <p>Browse all published articles available to the public</p>
+            <h1>Manage Articles</h1>
+            <p>Browse all articles available</p>
         </div>
         <div class="header-actions">
             <div class="search-filter-container">
@@ -53,6 +55,13 @@
                     <option value="Identity Theft">Identity Theft</option>
                     <option value="General Awareness">General Awareness</option>
                 </select>
+
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="draft">Draft</option>
+                    <option value="pending">Pending</option>
+                    <option value="published">Published</option>
+                </select>
             </div>
         </div>
     </div>
@@ -69,22 +78,43 @@
                 </svg>
             </div>
             <div class="stat-content">
-                <div class="stat-number" id="publishedCount">@(Model?.Where(a => a.Status == "published").Count() ?? 0)</div>
+                @* <div class="stat-number" id="publishedCount">@(Model?.Where(a => a.Status == "published").Count() ?? 0)</div> *@
+
+                <div class="stat-number" id="publishedCount">@ViewBag.PublishedArticles?.Count</div>
                 <div class="stat-label">Published Articles</div>
             </div>
         </div>
-        @* <div class="stat-card">
-            <div class="stat-icon views">
+
+        <div class="stat-card">
+            <div class="stat-icon pending">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
             </div>
             <div class="stat-content">
-                <div class="stat-number">2.4K</div>
-                <div class="stat-label">Total Views</div>
+                <div class="stat-number" id="pendingCount">@ViewBag.PendingArticles?.Count</div>
+                <div class="stat-label">Pending Articles</div>
             </div>
-        </div> *@
+        </div>
+
+        @* Draft *@
+        <div class="stat-card">
+            <div class="stat-icon draft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="draftCount">@ViewBag.DraftArticles?.Count</div>
+                <div class="stat-label">Draft Articles</div>
+            </div>
+        </div>
+
+        
+        
         <div class="stat-card">
             <div class="stat-icon categories">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -95,7 +125,7 @@
                 </svg>
             </div>
             <div class="stat-content">
-                <div class="stat-number" id="categoriesCount">@(Model?.Where(a => a.Status == "published").Select(a => a.Category).Distinct().Count() ?? 0)</div>
+                <div class="stat-number" id="categoriesCount">@(Model?.Select(a => a.Category).Distinct().Count() ?? 0)</div>
                 <div class="stat-label">Categories Covered</div>
             </div>
         </div>
@@ -104,7 +134,7 @@
     <!-- Articles Grid -->
     <div class="articles-section">
         <div class="section-header">
-            <h2>All Published Articles</h2>
+            <h2>All Articles</h2>
             <div class="view-toggle">
                 <button class="view-btn active" data-view="grid">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -128,11 +158,11 @@
         </div>
 
         <div class="articles-container" id="articlesContainer">
-            @if (Model != null && Model.Any(a => a.Status == "published"))
+            @if (Model != null && Model.Any())
             {
-                @foreach (var article in Model.Where(a => a.Status == "published").OrderByDescending(a => a.CreatedAt))
+                @foreach (var article in Model.OrderByDescending(a => a.CreatedAt))
                 {
-                    <div class="article-card" data-category="@article.Category" data-title="@article.Title.ToLower()" data-excerpt="@article.Excerpt?.ToLower()">
+                    <div class="article-card" data-category="@article.Category" data-title="@article.Title.ToLower()" data-excerpt="@article.Excerpt?.ToLower()" data-status="@article.Status.ToLower()">
                         <div class="article-image">
                             @if (!string.IsNullOrEmpty(article.ImagePath))
                             {
@@ -152,6 +182,7 @@
                         <div class="article-content">
                             <div class="article-meta">
                                 <span class="category-tag">@article.Category</span>
+                                <span class="status-tag @article.Status.ToLower()">@article.Status</span>
                                 <span class="date">@article.CreatedAt.ToString("MMM dd, yyyy")</span>
                             </div>
                             <h3 class="article-title">@article.Title</h3>
@@ -187,6 +218,7 @@
                                         Edit
                                     </a>
 
+                                    
                                     <!-- Delete Button -->
                                     <form method="post" asp-action="DeleteArticle" asp-controller="Analyst" style="display:inline">
                                         @Html.AntiForgeryToken()

@@ -289,3 +289,33 @@ function showNotification(message) {
         }, 300);
     }, 3000);
 }
+
+statusFilter.addEventListener('change', function () {
+    const selectedStatus = this.value.toLowerCase(); // "" for all
+    const articles = articlesContainer.querySelectorAll('.article-card');
+
+    let visibleCount = 0;
+
+    articles.forEach(article => {
+        const status = article.getAttribute('data-status');
+        const matchesStatus = selectedStatus === "" || status === selectedStatus;
+
+        if (matchesStatus) {
+            article.classList.remove('hidden');
+            article.classList.add('filtered-in');
+            article.classList.remove('filtered-out');
+            visibleCount++;
+        } else {
+            article.classList.add('filtered-out');
+            article.classList.remove('filtered-in');
+            setTimeout(() => {
+                article.classList.add('hidden');
+            }, 300);
+        }
+    });
+
+    // Optionally update empty state
+    updateEmptyState(visibleCount);
+});
+
+

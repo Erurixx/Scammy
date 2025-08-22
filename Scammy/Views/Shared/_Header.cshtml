@@ -81,3 +81,14 @@
         </div>
     </div>
 </header>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="toastMessage" class="toast">
+        <span>@TempData["SuccessMessage"]</span>
+        <button type="button" class="toast-close" onclick="this.parentElement.style.display='none'">&times;</button>
+    </div>
+}
+
+
+

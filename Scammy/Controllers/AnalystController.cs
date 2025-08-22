@@ -5,6 +5,7 @@ using Scammy.Models;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Scammy.Controllers
@@ -124,24 +125,35 @@ namespace Scammy.Controllers
         {
             ViewBag.ActivePage = "viewPublishedArticles";
 
-            try
-            {
-                // Get all published articles ordered by creation date (newest first)
-                var publishedArticles = await _context.Articles
-                    .Where(a => a.Status == "published")
-                    .OrderByDescending(a => a.CreatedAt)
-                    .ToListAsync();
+            
 
-                return View(publishedArticles);
-            }
-            catch (Exception ex)
-            {
-                // Log the error (you can implement proper logging)
-                Console.WriteLine($"Error retrieving published articles: {ex.Message}");
+            var publishedArticles = await _context.Articles
+       .Where(a => a.Status != null && a.Status.Trim().ToLower() == "published")
+       .OrderByDescending(a => a.CreatedAt)
+       .ToListAsync();
 
-                // Return empty list in case of error
-                return View(new List<Article>());
-            }
+            var pendingArticles = await _context.Articles
+                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "pending")
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
+            var draftArticles = await _context.Articles
+                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "draft")
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
+            // Combine all articles into one list for the view
+            var allArticles = publishedArticles.Concat(pendingArticles).Concat(draftArticles).ToList();
+
+            // Pass them to ViewBag for stats
+            ViewBag.PublishedArticles = publishedArticles;
+            ViewBag.PendingArticles = pendingArticles;
+            ViewBag.DraftArticles = draftArticles;
+
+            return View(allArticles); // Model will contain all articles
+
+
+
         }
 
         [HttpPost]
@@ -200,6 +212,35 @@ namespace Scammy.Controllers
             ViewBag.ActivePage = "createArticle"; // optional: highlights nav
             return View("createArticle", article); // reuse the createArticle view
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteArticle(int id)
+        {
+            var article = await _context.Articles.FindAsync(id);
+            if (article == null)
+            {
+                return NotFound();
+            }
+
+            _context.Articles.Remove(article);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("viewPublishedArticles");
+        }
+
+
+        
+
+
+
+
+
+
+
+
+
+
 
 
 
