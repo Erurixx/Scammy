@@ -90,46 +90,50 @@ namespace Scammy.Controllers
 
 
 
-            // Manage User page
-            public IActionResult ManageUser()
-            {
-                // 分角色获取用户
-                var admins = _context.Users.Where(u => u.UserRole == "Admin").ToList();
-                var analysts = _context.Users.Where(u => u.UserRole == "Analyst").ToList();
-                var users = _context.Users.Where(u => u.UserRole == "User").ToList();
+        // Manage User page
+        public IActionResult ManageUser()
+        {
+            // 分角色获取用户
+            var admins = _context.Users.Where(u => u.UserRole == "Admin").ToList();
+            var analysts = _context.Users.Where(u => u.UserRole == "Analyst").ToList();
+            var jobseekers = _context.Users.Where(u => u.UserRole == "Jobseeker").ToList(); // 改成 Jobseeker
 
-                ViewBag.Admins = admins;
-                ViewBag.Analysts = analysts;
-                ViewBag.Users = users;
+            ViewBag.Admins = admins;
+            ViewBag.Analysts = analysts;
+            ViewBag.Jobseekers = jobseekers; // 对应前端 Tab
 
-                return View();
-            }
+            return View();
+        }
 
-            [HttpPost]
-            public IActionResult DeactivateUser(int id)
-            {
-                var user = _context.Users.FirstOrDefault(u => u.Id == id);
-                if (user == null) return NotFound();
+        [HttpPost]
+        [HttpPost]
+        public IActionResult DeactivateUser([FromBody] UserToggleDto data)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == data.Id);
+            if (user == null) return NotFound();
 
-                user.IsActive = false;
-                _context.SaveChanges();
+            user.IsActive = false;
+            _context.SaveChanges();
 
-                return Ok(new { success = true });
-            }
+            return Ok(new { success = true });
+        }
 
-            [HttpPost]
-            public IActionResult ActivateUser(int id)
-            {
-                var user = _context.Users.FirstOrDefault(u => u.Id == id);
-                if (user == null) return NotFound();
+        [HttpPost]
+        public IActionResult ActivateUser([FromBody] UserToggleDto data)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == data.Id);
+            if (user == null) return NotFound();
 
-                user.IsActive = true;
-                _context.SaveChanges();
+            user.IsActive = true;
+            _context.SaveChanges();
 
-                return Ok(new { success = true });
-            }
-        
+            return Ok(new { success = true });
+        }
 
+        public class UserToggleDto
+        {
+            public int Id { get; set; }
+        }
 
 
 
