@@ -34,6 +34,12 @@ namespace Scammy.Controllers
 
         public async Task<IActionResult> dashboard()
         {
+
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            string analystName = currentUser != null ? currentUser.FullName : "Unknown";
+
+
             // Article status counts
             var totalArticles = await _context.Articles.CountAsync();
             var approvedArticles = await _context.Articles.CountAsync(a => a.Status.ToLower() == "published");
@@ -43,7 +49,7 @@ namespace Scammy.Controllers
             // Daily articles for chart (last 30 days)
             var thirtyDaysAgo = DateTime.UtcNow.AddDays(-30).Date;
             var chartData = await _context.Articles
-                .Where(a => a.CreatedAt.Date >= thirtyDaysAgo)
+                .Where(a => a.CreatedAt.Date >= thirtyDaysAgo && a.Author == analystName)
                 .GroupBy(a => a.CreatedAt.Date)
                 .Select(g => new { Date = g.Key, Count = g.Count() })
                 .OrderBy(g => g.Date)
@@ -51,6 +57,7 @@ namespace Scammy.Controllers
 
             // Chart data for the small chart (total articles created over time)
             var totalArticlesChartData = await _context.Articles
+                .Where(a => a.Author == analystName)
                 .GroupBy(a => a.CreatedAt.Date)
                 .Select(g => new { Date = g.Key, Count = g.Count() })
                 .OrderBy(g => g.Date)
@@ -74,8 +81,17 @@ namespace Scammy.Controllers
         [HttpGet]
         public IActionResult createArticle()
         {
-            ViewBag.ActivePage = "createArticle";
-            return View();
+            //ViewBag.ActivePage = "createArticle";
+            //return View();
+
+            var model = new Article();
+
+            // Populate Author for logged-in user
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            model.Author = currentUser != null ? currentUser.FullName : "Unknown";
+
+            return View(model);
 
         }
 
@@ -96,8 +112,10 @@ namespace Scammy.Controllers
                 return View(model);
             }
 
-            // Author
-            model.Author = "Jasmine";
+            // Author (based on logged-in user)
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            model.Author = currentUser != null ? currentUser.FullName : "Unknown";
 
             // Status
             model.Status = submitAction == "saveDraft" ? "draft" : "pending";
@@ -159,30 +177,41 @@ namespace Scammy.Controllers
         {
             ViewBag.ActivePage = "viewPublishedArticles";
 
-            
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            string analystName = currentUser != null ? currentUser.FullName : "Unknown";
+
+
+
 
             var publishedArticles = await _context.Articles
-       .Where(a => a.Status != null && a.Status.Trim().ToLower() == "published")
+       .Where(a => a.Status != null && a.Status.Trim().ToLower() == "published" && a.Author == analystName)
        .OrderByDescending(a => a.CreatedAt)
        .ToListAsync();
 
             var pendingArticles = await _context.Articles
-                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "pending")
+                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "pending" && a.Author == analystName)
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
 
             var draftArticles = await _context.Articles
-                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "draft")
+                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "draft" && a.Author == analystName)
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
+            var declinedArticles = await _context.Articles
+                .Where(a => a.Status != null && a.Status.Trim().ToLower() == "declined" && a.Author == analystName)
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
 
             // Combine all articles into one list for the view
-            var allArticles = publishedArticles.Concat(pendingArticles).Concat(draftArticles).ToList();
+            var allArticles = publishedArticles.Concat(pendingArticles).Concat(draftArticles).Concat(declinedArticles).ToList();
 
             // Pass them to ViewBag for stats
             ViewBag.PublishedArticles = publishedArticles;
             ViewBag.PendingArticles = pendingArticles;
             ViewBag.DraftArticles = draftArticles;
+            ViewBag.DeclinedArticles = declinedArticles;
 
             return View(allArticles); // Model will contain all articles
 
@@ -205,6 +234,13 @@ namespace Scammy.Controllers
             var existingArticle = await _context.Articles.FindAsync(id);
             if (existingArticle == null)
                 return NotFound();
+
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            string analystName = currentUser != null ? currentUser.FullName : "Unknown";
+
+            if (existingArticle.Author != analystName)
+                return Forbid();
 
             // Update fields
             existingArticle.Title = model.Title;
@@ -243,8 +279,15 @@ namespace Scammy.Controllers
             if (article == null)
                 return NotFound();
 
-            ViewBag.ActivePage = "createArticle"; // optional: highlights nav
-            return View("createArticle", article); // reuse the createArticle view
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            string analystName = currentUser != null ? currentUser.FullName : "Unknown";
+
+            if (article.Author != analystName)
+                return Forbid();
+
+            ViewBag.ActivePage = "createArticle"; 
+            return View("createArticle", article);
         }
 
         [HttpPost]
@@ -256,6 +299,13 @@ namespace Scammy.Controllers
             {
                 return NotFound();
             }
+
+            string username = User.Identity.Name;
+            var currentUser = _context.Users.FirstOrDefault(u => u.FullName == username);
+            string analystName = currentUser != null ? currentUser.FullName : "Unknown";
+
+            if (article.Author != analystName)
+                return Forbid();
 
             _context.Articles.Remove(article);
             await _context.SaveChangesAsync();

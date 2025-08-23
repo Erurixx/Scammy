@@ -1,0 +1,187 @@
+﻿
+@model List<Scammy.Models.ScamReport>
+
+
+@{
+    ViewData["Title"] = "Reported Scams";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Hero Banner -->
+<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6 align-self-center">
+                            <div class="left-content header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="info-stat">
+                                            <h6>Total Scams Reported:</h6>
+                                            <h4>320+</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-12">
+                                        <h2>Reported Scams Hub</h2>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="main-green-button scroll-to-section">
+                                            <a href="#view-articles">Browse Reported Scams</a>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                                <img src="~/assets/images/report.png" alt="report-logo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Hub Features -->
+    <div id="hub-features" class="features section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="features-content">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="features-item first-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
+                                    <div class="first-number number">
+                                        <h6>01</h6>
+                                    </div>
+                                    <div class="icon"></div>
+                                    <h4>View Scams</h4>
+                                    <div class="line-dec"></div>
+                                    <p>Browse all reported scams submitted by users.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="features-item second-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
+                                    <div class="second-number number">
+                                        <h6>02</h6>
+                                    </div>
+                                    <div class="icon"></div>
+                                    <h4>Report Scams</h4>
+                                    <div class="line-dec"></div>
+                                    <p>Submit new scam reports to alert other users and authorities quickly.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="features-item second-feature wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
+                                    <div class="third-number number">
+                                        <h6>03</h6>
+                                    </div>
+                                    <div class="icon"></div>
+                                    <h4>Track Scam Status</h4>
+                                    <div class="line-dec"></div>
+                                    <p>Monitor the progress of your submitted reports and see which scams have been resolved or are still pending.</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Articles Section -->
+    <section id="view-articles" class="recent-scams">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Reported Scams</h2>
+                <p>Stay updated with the latest user-reported scams and their details.</p>
+            </div>
+
+
+
+
+            <div class="scams-grid" style="margin-bottom: 40px;">
+                @foreach (var scam in Model.Take(2))
+                {
+                    <div class="scam-card">
+                        <div class="scam-header">
+                            <span class="severity-badge @(scam.Status.ToLower() == "resolved" ? "severity-safe" : "severity-critical")">
+                                @scam.Status
+                            </span>
+                            <span class="date-text">@scam.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+
+                        <h3 class="scam-title">@scam.JobTitle</h3>
+
+                        <div class="scam-meta">
+                            <div class="scam-meta-item">
+                                <i class="fas fa-user"></i>
+                                <span>@scam.Name</span>
+                            </div>
+                            <div class="scam-meta-item">
+                                <i class="fas fa-building"></i>
+                                <span>@scam.CompanyName</span>
+                            </div>
+                            <div class="scam-meta-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>@scam.Email</span>
+                            </div>
+                        </div>
+
+                        <p class="description-text">@scam.Description</p>
+
+                        @* Optional: show tags if you add a Tags column later *@
+                        @* <div class="warning-flags">
+                        @if (!string.IsNullOrEmpty(scam.Tags))
+                        {
+                            foreach (var tag in scam.Tags.Split(','))
+                            {
+                                <span class="flag">@tag</span>
+                            }
+                        }
+                    </div> *@
+                    </div>
+                }
+            </div>
+
+            <div class="text-center">
+                <div class="main-green-button">
+                    <a asp-controller="Home" asp-action="viewReportedScams">View All Reported Scams</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <style>
+        .scams-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .scam-card {
+            flex: 1 1 300px; /* each card takes at least 300px */
+            min-width: 300px;
+        }
+
+
+   </style>
+
+    
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+

@@ -11,26 +11,29 @@
                     <!-- Menu -->
                     <ul class="nav">
                         <li class="scroll-to-section"><a href="@Url.Action("Index", "Home")" class="active">Home</a></li>
-                        <li class="scroll-to-section"><a href="@Url.Action("ScamReports", "Home")">Scam Reports</a></li>
+
+                        <li class="scroll-to-section">
+                            <a href="@Url.Action("ReportedScams", "Home")">Reported Scams</a>
+                        </li>
+                        
 
                         <!-- Awareness Hub - Conditional Dropdown -->
                         @if (true)
                         {
-                            <li class="scroll-to-section dropdown">
-                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="awarenessHubDropdown">
-                                    Awareness Hub
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="awarenessHubDropdown">
-                                    <li><a href="@Url.Action("Articles", "Home")">Awareness Hub</a></li>
-                                    <li><a href="@Url.Action("dashboard", "Analyst")">Analyst Dashboard</a></li>
-                                </ul>
+                            
+
+                            <li class="scroll-to-section">
+                                <a href="@Url.Action("Articles", "Home")">Awareness Hub</a>
                             </li>
+
+
                         }
 
-                        <li class="scroll-to-section"><a href="@Url.Action("Analytics", "Home")">Analytics</a></li>
+
+<!--                         <li class="scroll-to-section"><a href="@Url.Action("Analytics", "Home")">Analytics</a></li> -->
 
                         <!-- Admin - Conditional Dropdown -->
-                        <li class="scroll-to-section dropdown">
+<!--                         <li class="scroll-to-section dropdown">
                             <a class="dropdown-toggle" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Admin
                             </a>
@@ -40,17 +43,37 @@
                                 <li><a class="dropdown-item" href="@Url.Action("ManageUser", "Admin")">Manage User</a></li>
                                 <li><a class="dropdown-item" href="@Url.Action("CreateUser", "Admin")">Create User</a></li>
                             </ul>
-                        </li>
+                        </li> -->
 
 
+
+                        <!-- User Authentication Section -->
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="scroll-to-section">
-                                <a href="#" class="user-greeting"><i class="fas fa-user"></i> Hi, @User.Identity.Name</a>
-
-                            </li>
-                            <li class="scroll-to-section">
-                                <a href="@Url.Action("Logout", "Account")">Logout</a>
+                            <li class="scroll-to-section dropdown">
+                                <a href="#" class="dropdown-toggle user-greeting" data-bs-toggle="dropdown" aria-expanded="false" id="userDropdown">
+                                    <i class="fas fa-user"></i> Hi, @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <!-- Role-based menu items -->
+                                    @if (User.IsInRole("jobseeker"))
+                                    {
+                                        <li><a class="dropdown-item" href="@Url.Action("submitReport", "Account")">Submitted Report</a></li>
+                                    }
+                                    @if (User.IsInRole("analyst"))
+                                    {
+                                        <li><a class="dropdown-item" href="@Url.Action("dashboard", "Analyst")">Analyst Dashboard</a></li>
+                                    }
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <li><a class="dropdown-item" href="@Url.Action("dashboard", "Admin")">Admin Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("ManageUser", "Admin")">Manage User</a></li>
+                                        <li><a class="dropdown-item" href="@Url.Action("CreateUser", "Admin")">Create User</a></li>
+                                    }
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Account")">Logout</a></li>
+                                </ul>
                             </li>
                         }
                         else
@@ -58,17 +81,6 @@
                             <li class="scroll-to-section">
                                 <a href="@Url.Action("Login", "Account")">Login</a>
                             </li>
-                        }
-
-
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li><a href="@Url.Action("Dashboard", "Admin")">Admin</a></li>
-                        }
-                        @if (User.IsInRole("Analyst"))
-                        {
-                            <li><a href="@Url.Action("Dashboard", "Analyst")">Analyst</a></li>
                         }
                     </ul>
 

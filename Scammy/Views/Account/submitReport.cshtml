@@ -1,0 +1,432 @@
+﻿@using System.Security.Claims
+
+@model IEnumerable<Scammy.Models.ScamReport>
+
+
+
+
+@{
+    ViewBag.Title = "View/Submit Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/viewPublishedArticles.css" />
+}
+
+
+
+
+
+<div class="main-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-info">
+            <h1>Submitted Reports</h1>
+            <p>Review all scam reports you have submitted</p>
+        </div>
+        <div class="header-actions">
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search reports..." class="search-input">
+                </div>
+                
+
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    
+                </select>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    @{
+        var submittedCount = Model?.Count() ?? 0;
+        var pendingCount = Model?.Count(r => r.Status.ToLower() == "pending") ?? 0;
+        var reviewedCount = Model?.Count(r => r.Status.ToLower() != "pending") ?? 0;
+    }
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon published">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14,2 14,8 20,8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="publishedCount">@submittedCount</div>
+                <div class="stat-label">Total Submitted Reports</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon pending">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="pendingCount">@pendingCount</div>
+                <div class="stat-label">Pending Review</div>
+            </div>
+        </div>
+
+        
+        <div class="stat-card">
+            <div class="stat-icon draft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="draftCount">@reviewedCount</div>
+                <div class="stat-label">Approved Reports</div>
+            </div>
+        </div>
+
+
+
+        
+    </div>
+
+    <!-- My Reports Section -->
+    <section class="reports-section">
+        <div class="container">
+            <!-- Header -->
+            <div class="reports-header">
+                <h2>My Scam Reports</h2>
+                <span id="reportsCount">Showing @(Model?.Count() ?? 0) report(s)</span>
+            </div>
+
+            <!-- Reports Grid -->
+            <div class="reports-grid" id="reportsContainer">
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var report in Model.OrderByDescending(r => r.CreatedAt))
+                    {
+                        <div class="report-card status-@report.Status.ToLower()">
+                           
+
+                            <div class="report-content">
+                                <div class="report-meta">
+                                    <span class="report-author">@report.Name</span>
+                                    <span class="report-date">@report.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                    <span class="report-company">@report.CompanyName</span>
+                                </div>
+
+                                <h3 class="report-title">
+                                    <a href="#" onclick="previewReport('@report.JobTitle', '@Html.Raw(report.Description?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@report.CreatedAt.ToString("MMM dd, yyyy")')">
+                                        @report.JobTitle
+                                    </a>
+                                </h3>
+
+                                <p class="report-excerpt">
+                                    @(report.Description?.Length > 150 ? report.Description.Substring(0, 150) + "..." : report.Description)
+                                </p>
+
+                                <div class="report-tags">
+                                    <span class="tag status-@report.Status.ToLower()">#@report.Status</span>
+                                </div>
+
+                                <div class="report-actions">
+                                    <form method="post" asp-action="DeleteReport" asp-controller="Account" class="delete-form">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@report.Id" />
+                                        <button type="submit" class="action-btn delete" title="Delete Report">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-reports">
+                        <i class="fas fa-exclamation-triangle no-reports-icon"></i>
+                        <h3>No Reports Found</h3>
+                        <p>You haven't submitted any reports yet. Submit scam reports to help others stay safe.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+
+    <style>
+        /* Container & Header */
+.reports-section {
+    padding: 50px 0;
+    background-color: #f9f9f9;
+}
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.reports-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.reports-header #reportsCount {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Grid & Cards */
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.report-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+}
+
+.report-icon i {
+    font-size: 2.5rem;
+    color: #ffa500;
+}
+
+/* Meta Info */
+.report-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.report-meta span {
+    margin-right: 10px;
+}
+
+/* Title & Excerpt */
+.report-title a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+}
+
+.report-title a:hover {
+    text-decoration: underline;
+}
+
+.report-excerpt {
+    margin: 10px 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* Tags */
+.report-tags {
+    margin-bottom: 10px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.tag.status-pending {
+    background-color: #ffa500;
+}
+
+.tag.status-reviewed {
+    background-color: #28a745;
+}
+
+.tag.status-rejected {
+    background-color: #dc3545;
+}
+
+/* Actions */
+.report-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.action-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.action-btn.delete {
+    color: #dc3545;
+}
+
+.action-btn.delete:hover {
+    background: #dc3545;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.action-btn.share {
+    color: #007bff;
+}
+
+.action-btn.share:hover {
+    color: #0056b3;
+}
+
+/* No reports state */
+.no-reports {
+    text-align: center;
+    padding: 40px 20px;
+    color: #555;
+}
+
+.no-reports-icon {
+    font-size: 3rem;
+    color: #ffa500;
+    margin-bottom: 15px;
+}
+    </style>
+
+
+@section Scripts {
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/viewPublishedArticles.js"></script>
+
+    <!-- Quick header fix -->
+    <script>
+        $(document).ready(function() {
+            let lastScrollTop = 0;
+            let headerFixed = false;
+
+
+            function resetHeader() {
+
+                $('.header-area, .background-header').removeAttr('style');
+                $('.header-area .main-nav').removeAttr('style');
+                $('.header-area .main-nav .nav').removeAttr('style');
+                $('.header-area .main-nav .nav li').removeAttr('style');
+                $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
+
+
+
+            }
+
+            // Scroll handler
+            $(window).scroll(function() {
+                let scrollTop = $(this).scrollTop();
+
+                // Reset header when scrolling back to top
+                if (scrollTop < 200 && !headerFixed) {
+                    resetHeader();
+                } else if (scrollTop > 200) {
+                    headerFixed = false;
+                }
+
+                lastScrollTop = scrollTop;
+            });
+
+            // Also reset header on page load
+            resetHeader();
+
+            // Reset header after any clicks on the page
+            $(document).on('click', function() {
+                if (!headerFixed) {
+                    setTimeout(resetHeader, 100);
+                }
+            });
+
+            // Force header reset every 5 seconds (emergency backup)
+            setInterval(function() {
+                if ($(window).scrollTop() < 200) {
+                    resetHeader();
+                }
+            }, 5000);
+        });
+    </script>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const searchInput = document.getElementById("searchInput");
+                const statusFilter = document.getElementById("statusFilter");
+                const reportsContainer = document.getElementById("reportsContainer");
+                const reportsCount = document.getElementById("reportsCount");
+
+                function updateReports() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const statusTerm = statusFilter.value.toLowerCase();
+
+                    const reportCards = Array.from(reportsContainer.getElementsByClassName("report-card"));
+
+                    let visibleCount = 0;
+
+                    reportCards.forEach(card => {
+                        const title = card.querySelector(".report-title a").innerText.toLowerCase();
+                        const desc = card.querySelector(".report-excerpt").innerText.toLowerCase();
+                        const status = card.className.toLowerCase(); // includes status-xxx
+
+                        const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+                        const matchesStatus = !statusTerm || status.includes(statusTerm);
+
+                        if (matchesSearch && matchesStatus) {
+                            card.style.display = "block";
+                            visibleCount++;
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+
+                    reportsCount.innerText = `Showing ${visibleCount} report(s)`;
+                }
+
+                // Event listeners
+                searchInput.addEventListener("input", updateReports);
+                statusFilter.addEventListener("change", updateReports);
+
+                            const deleteForms = document.querySelectorAll(".delete-form");
+            deleteForms.forEach(form => {
+                form.addEventListener("submit", function (e) {
+                    if (!confirm("Are you sure you want to delete this report?")) {
+                        e.preventDefault(); // cancel deletion
+                    }
+                });
+            });
+
+            });
+        </script>
+}

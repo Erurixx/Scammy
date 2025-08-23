@@ -167,19 +167,19 @@
         color: #10b981;
     }
 
-    .stat-icon.categories {
-        background: #fef3c7;
-        color: #f59e0b;
+    .stat-icon.declined {
+        background: #fef3f2;
+        color: #dc2626;
     }
 
 .stat-icon.draft {
-    background: #fef2f2; /* light red/pink */
-    color: #ef4444;       /* red */
+    background:#f3e8ff; 
+    color: #7c3aed;      
 }
 
 .stat-icon.pending {
-    background: #fef9c3; /* light yellow */
-    color: #f59e0b;       /* amber/orange */
+    background: #fef9c3; 
+    color: #f59e0b;       
 }
 
 .stat-number {
@@ -209,16 +209,21 @@
 
 /* Colors per status */
 .status-tag.draft {
-    background-color: #f59e0b; /* amber/orange for draft */
+    background-color: #f59e0b; 
 }
 
 .status-tag.pending {
-    background-color: #fbbf24; /* yellow for pending */
-    color: black; /* dark text for better contrast */
+    background-color: #fbbf24; 
+    
 }
 
 .status-tag.published {
-    background-color: #10b981; /* green for published */
+    background-color: #10b981; 
+}
+
+.status-tag.declined {
+    background-color: #ef4444; 
+    
 }
 
 
@@ -283,7 +288,7 @@
         }
 
 /* Articles grid */
-.articles-container {
+.articles-container, report-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 24px;
@@ -586,6 +591,23 @@
     color: #374151;
     white-space: pre-wrap;
     font-size: 15px;
+}
+
+
+.preview-admin-section {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.preview-admin-comment {
+    margin-top: 8px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    color: #374151;
+    font-style: italic;
+    border-left: 4px solid #f59e0b;
 }
 
 /* Responsive design */

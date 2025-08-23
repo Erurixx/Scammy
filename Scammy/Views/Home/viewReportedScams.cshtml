@@ -1,0 +1,181 @@
+﻿@model List<Scammy.Models.ScamReport>
+
+@{
+    ViewBag.Title = "All Reported Scams";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/viewAllArticles.css" />
+}
+
+<!-- Filter and Search Section -->
+<section class="articles-filter">
+    <div class="container">
+        <div class="filter-container">
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="scamSearch" placeholder="Search scams by name, company, email, or description...">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Status:</label>
+                    <select id="statusFilter">
+                        <option value="">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select id="sortFilter">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="name">Name A-Z</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scams Section -->
+<section class="articles-content">
+    <div class="container">
+        <div class="articles-header">
+            <h2>All Reported Scams</h2>
+            <span id="scamsCount">Showing @(Model?.Count() ?? 0) scams</span>
+        </div>
+
+        <div class="articles-grid" id="scamsContainer">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var scam in Model.OrderByDescending(s => s.CreatedAt))
+                {
+                    <article class="article-card"
+                             data-status="@scam.Status.ToLower()"
+                             data-name="@scam.Name.ToLower()"
+                             data-company="@scam.CompanyName.ToLower()"
+                             data-email="@scam.Email.ToLower()"
+                             data-content="@scam.Description.ToLower()"
+                             data-date="@scam.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")">
+
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <div class="meta-left">
+                                    <span class="status">
+                                        <i class="fas fa-flag"></i>
+                                        @scam.Status
+                                    </span>
+                                    <span class="date">
+                                        <i class="fas fa-calendar"></i>
+                                        @scam.CreatedAt.ToString("MMM dd, yyyy HH:mm")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <h3 class="article-title">
+                                @scam.JobTitle
+                            </h3>
+
+                            <p class="article-excerpt"><strong>Reported By:</strong> @scam.Name</p>
+                            <p class="article-excerpt"><strong>Company:</strong> @scam.CompanyName</p>
+                            <p class="article-excerpt"><strong>Email:</strong> @scam.Email</p>
+                            <p class="article-excerpt"><strong>Description:</strong> @scam.Description</p>
+                        </div>
+                    </article>
+                }
+            }
+            else
+            {
+                <div class="no-articles">
+                    <div class="no-articles-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>No Scam Reports Found</h3>
+                    <p>There are no reported scams available at the moment.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/assets/js/viewAllArticles.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+                document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('scamSearch');
+            const statusFilter = document.getElementById('statusFilter');
+            const sortFilter = document.getElementById('sortFilter');
+            const scamsContainer = document.getElementById('scamsContainer');
+            const scamsCount = document.getElementById('scamsCount');
+
+            let allScams = Array.from(document.querySelectorAll('#scamsContainer article'));
+            let filteredScams = [...allScams];
+
+            function updateScams() {
+                const query = searchInput.value.toLowerCase().trim();
+                const selectedStatus = statusFilter.value;
+
+                filteredScams = allScams.filter(scam => {
+                    const name = scam.getAttribute('data-name') || '';
+                    const company = scam.getAttribute('data-company') || '';
+                    const email = scam.getAttribute('data-email') || '';
+                    const content = scam.getAttribute('data-content') || '';
+                    const status = scam.getAttribute('data-status') || '';
+
+                    const matchesSearch = name.includes(query) ||
+                                          company.includes(query) ||
+                                          email.includes(query) ||
+                                          content.includes(query);
+                    const matchesStatus = !selectedStatus || status === selectedStatus.toLowerCase();
+
+                    return matchesSearch && matchesStatus;
+                });
+
+                // Sort
+                const sortBy = sortFilter.value;
+                filteredScams.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'newest':
+                            return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
+                        case 'oldest':
+                            return new Date(a.getAttribute('data-date')) - new Date(b.getAttribute('data-date'));
+                        case 'name':
+                            return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+                        case 'company':
+                            return a.getAttribute('data-company').localeCompare(b.getAttribute('data-company'));
+                        default:
+                            return 0;
+                    }
+                });
+
+                // Render
+                scamsContainer.innerHTML = '';
+                filteredScams.forEach(scam => scamsContainer.appendChild(scam));
+
+                // Update count
+                scamsCount.textContent = `Showing ${filteredScams.length} scams`;
+            }
+
+            // Event listeners
+            if (searchInput) searchInput.addEventListener('input', updateScams);
+            if (statusFilter) statusFilter.addEventListener('change', updateScams);
+            if (sortFilter) sortFilter.addEventListener('change', updateScams);
+
+            // Initial render
+            updateScams();
+        });
+
+    </script>
+    
+}

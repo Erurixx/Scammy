@@ -20,6 +20,7 @@ namespace Scammy.Controllers
             _context = context;
         }
 
+
         public IActionResult Index()
         {
             return View();
@@ -53,11 +54,6 @@ namespace Scammy.Controllers
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
 
-            
-
-
-
-
             return View(publishedArticles); // this will look for Views/Home/ViewAllArticles.cshtml
         }
 
@@ -82,6 +78,25 @@ namespace Scammy.Controllers
 
 
             return View(article); // Looks for Views/Articles/ReadArticle.cshtml
+        }
+
+        public IActionResult ReportedScams()
+        {
+            var reportedScams = _context.ScamReports
+                                .OrderByDescending(s => s.CreatedAt) // use CreatedAt
+                                .Take(6)
+                                .ToList();
+            return View(reportedScams);
+        }
+
+        public IActionResult viewReportedScams()
+        {
+            // Fetch all scam reports ordered by newest first
+            var allScams = _context.ScamReports
+                                   .OrderByDescending(s => s.CreatedAt)
+                                   .ToList();
+
+            return View(allScams); // This will use ViewAllScams.cshtml
         }
 
 
