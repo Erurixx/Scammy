@@ -206,7 +206,8 @@
                                     }
                                 </div>
                                 <div class="article-actions">
-                                    <button class="action-btn preview" onclick="previewArticle('@article.Title', '@Html.Raw(article.Content?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@article.Category', '@article.Author', '@article.CreatedAt.ToString("MMM dd, yyyy")', )">
+                                    
+                                    <button class="action-btn preview" onclick="previewArticle('@article.Title', '@Html.Raw(article.Content?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@article.Category', '@article.Author', '@article.CreatedAt.ToString("MMM dd, yyyy")', '@Html.Raw((article.AdminComment ?? "").Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))')">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                             <circle cx="12" cy="12" r="3"></circle>
@@ -271,7 +272,7 @@
             </div>
             <div id="previewContent" class="preview-content"></div>
 
-            <div id="previewAdminSection" style="display: none; margin-top: 1rem;">
+            <div id="previewAdminSection" class="preview-admin-section">
                 <strong>Admin Comment:</strong>
                 <div id="previewAdminComment" class="preview-admin-comment"></div>
             </div>

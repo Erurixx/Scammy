@@ -110,18 +110,26 @@
 });
 
 // Article preview modal functionality
-function previewArticle(title, content, category, author, date) {
+function previewArticle(title, content, category, author, date, adminComment) {
     const modal = document.getElementById('previewModal');
     const previewTitle = document.getElementById('previewTitle');
     const previewCategory = document.getElementById('previewCategory');
-    
     const previewContent = document.getElementById('previewContent');
+    const previewAdminSection = document.getElementById('previewAdminSection');
+    const previewAdminComment = document.getElementById('previewAdminComment');
 
     // Set modal content
     previewTitle.textContent = title;
     previewCategory.textContent = category;
-    
     previewContent.textContent = content;
+
+    // Show/hide admin comment section
+    if (adminComment && adminComment.trim() !== '' && adminComment !== 'null') {
+        previewAdminComment.textContent = adminComment;
+        previewAdminSection.style.display = 'block';
+    } else {
+        previewAdminSection.style.display = 'none';
+    }
 
     // Show modal
     modal.style.display = 'block';
