@@ -188,8 +188,40 @@ namespace Scammy.Controllers
         public IActionResult ManageReport()
         {
             ViewBag.ActivePage = "ManageReport";
-            //var reports = _context.Reports.ToList();
-            return View();
+
+            // Fetch all reports from DB, sorted by CreatedAt descending
+            var reports = _context.ScamReports
+                                  .OrderByDescending(r => r.CreatedAt)
+                                  .ToList();
+
+            return View(reports);
+        }
+
+        // Update status of a report: Approve or Reject
+        [HttpPost]
+        public IActionResult UpdateReportStatus(int id, string action)
+        {
+            var report = _context.ScamReports.FirstOrDefault(r => r.Id == id);
+            if (report == null) return NotFound();
+
+            // Update status based on action
+            switch (action.ToLower())
+            {
+                case "approve":
+                    report.Status = "Approved";
+                    break;
+                case "reject":
+                    report.Status = "Rejected";
+                    break;
+                case "pending":
+                    report.Status = "Pending";
+                    break;
+                default:
+                    return BadRequest("Invalid action");
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("ManageReport");
         }
 
 

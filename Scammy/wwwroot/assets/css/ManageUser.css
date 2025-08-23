@@ -1,38 +1,85 @@
-﻿
+﻿/* ============ Manage User Page ============ */
 #manage-user {
-    padding: 100px 0;
-    background: #f9f9f9;
+    padding: 130px 0;
+    
 }
 
-.dashboard-box {
-    background: #fff;
-    border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
-}
 
-.dashboard-title {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 10px;
-}
 
-.dashboard-subtitle {
-    color: #555;
-    margin-bottom: 25px;
-    font-size: 1.1em;
-}
-
-/* Top controls */
-.top-controls {
+/* Dashboard header */
+.header-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
     flex-wrap: wrap;
     gap: 15px;
 }
+
+.header-info h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.header-info p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 16px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Search  */
+.search-filter-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    position: relative;
+    width: 330px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: #9ca3af;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 12px 10px 40px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
 
 /* Tabs */
 .custom-tabs .nav-link {
@@ -42,10 +89,10 @@
     border-bottom: 2px solid transparent;
 }
 
-    .custom-tabs .nav-link.active {
-        border-bottom: 2px solid #004aad;
-        color: #003380;
-    }
+.custom-tabs .nav-link.active {
+    border-bottom: 2px solid #004aad;
+    color: #003380;
+}
 
 /* Create user button */
 .create-btn {
@@ -54,76 +101,100 @@
     font-size: 15px;
     font-weight: 400;
     color: #fff;
-    margin-top: 20px;
     text-transform: capitalize;
     padding: 12px 25px;
     border-radius: 23px;
     letter-spacing: 0.25px;
-    border-bottom: 2px solid #4771cb !important;
-    transition: all .3s;
-    outline: none;
     border: none;
+    transition: all .3s;
 }
 
-    .create-btn:hover {
-        background-color: #4771cb !important;
-        color: #fff !important;
-        border-bottom: 2px solid #33ccc5 !important;
-    }
-
-/* Search bar */
-.search-bar {
-    margin-bottom: 25px;
+.create-btn:hover {
+    background-color: #4771cb !important;
+    color: #fff !important;
 }
 
-.search-input {
-    border-radius: 8px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    width: 100%;
+/* ===================== User Table ===================== */
+.user-table-container {
+    background: #fff;
+    border-radius: 12px; 
+    overflow: hidden; 
+    border: 1px solid #e2e8f0;
+   
 }
 
-/* User table */
 .user-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+    border-collapse: separate; 
+    border-spacing: 0; 
 }
 
-    .user-table th,
-    .user-table td {
-        border: 1px solid #ddd;
-        padding: 12px 15px;
-        text-align: left;
-    }
-
-    .user-table th {
+    .user-table thead {
         background-color: #004aad;
         color: #fff;
-        font-weight: bold;
     }
 
-    .user-table tr:nth-child(even) {
-        background-color: #f9f9f9;
+        .user-table thead th {
+            font-weight: 600;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+    .user-table tbody tr {
+        transition: background 0.3s;
     }
 
-/* Status label */
+        .user-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .user-table tbody tr:hover {
+            background-color: #e6f0ff; 
+        }
+
+    .user-table td {
+        padding: 12px 15px;
+        vertical-align: middle;
+    }
+
+/* Status  */
 .status {
     padding: 5px 12px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 0.9em;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.85em;
+    display: inline-block;
+    text-align: center;
+    width: 90px;
 }
 
     .status.active {
-        background: #d4edda;
+        background-color: #d4edda;
         color: #155724;
     }
 
-    .status.inactive {
-        background: #f8d7da;
+    .status.deactivate {
+        background-color: #f8d7da;
         color: #721c24;
     }
+
+
+.user-table thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.user-table thead th:last-child {
+    border-top-right-radius: 12px;
+}
+
+.user-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.user-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
 
 /* Buttons inside table */
 .btn-action {
@@ -134,17 +205,19 @@
     font-size: 0.9em;
     font-weight: bold;
     transition: 0.3s;
+    width: 100px;
 }
 
-    .btn-action.deactivate {
-        background-color: #ffc107;
-        color: #000;
-    }
+.btn-action.deactivate {
+    background-color: #ffc107;
+    color: #000;
+}
 
-        .btn-action.deactivate:hover {
-            background-color: #e0a800;
-        }
+.btn-action.deactivate:hover {
+    background-color: #e0a800;
+}
 
+/* SweetAlert overrides */
 .swal2-confirm-button {
     background-color: #33ccc5 !important;
     color: white !important;
@@ -152,11 +225,38 @@
     padding: 8px 30px !important;
 }
 
-    .swal2-confirm-button:hover {
-        background-color: #4771cb !important;
-    }
+.swal2-confirm-button:hover {
+    background-color: #4771cb !important;
+}
 
 .swal2-cancel-button {
     border-radius: 25px !important;
     padding: 8px 30px !important;
 }
+
+.reset-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .reset-btn svg {
+        stroke: #555;
+    }
+
+    .reset-btn:hover {
+        border-color: #888;
+        stroke: #000;
+    }
+
+    .reset-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    }
