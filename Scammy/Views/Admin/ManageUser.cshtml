@@ -6,151 +6,179 @@
 <section id="manage-user">
     <div class="container">
         <div class="dashboard-box">
-            <h2 class="dashboard-title">Manage Users</h2>
-            <p class="dashboard-subtitle">View, search, and manage all system users.</p>
 
-            <!-- Top Controls -->
-            <div class="top-controls">
-                <ul class="nav nav-tabs custom-tabs" id="userTabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" href="#admin" role="tab">Admin</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="analyst-tab" data-bs-toggle="tab" href="#analyst" role="tab">Analyst</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="jobseeker-tab" data-bs-toggle="tab" href="#jobseeker" role="tab">JobSeeker</a>
-                    </li>
-                </ul>
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="header-info">
+                    <h1>Manage Users</h1>
+                    <p>View, search, and manage all system users.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-filter-container">
 
-                <a href="@Url.Action("CreateUser", "Admin")" class="main-button create-btn">+ Create User</a>
+                        <!-- Search Box -->
+                        <div class="search-box">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" id="searchInput" placeholder="Search by name or email..." class="search-input">
+                        </div>
+                                                
+                        <!-- Reset Button with Circular Arrow -->
+                        <button id="resetFilters" class="reset-btn" title="Reset">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Create User Button -->
+                        <a href="@Url.Action("CreateUser", "Admin")" class="main-button create-btn">+ Create User</a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Search -->
-            <div class="search-bar">
-                <input type="text" class="form-control search-input" placeholder="Search by name or email..." />
-            </div>
+                    <!-- Role Tabs -->
+                    <ul class="nav nav-tabs custom-tabs" id="userTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="admin-tab" data-bs-toggle="tab" href="#admin" role="tab">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="analyst-tab" data-bs-toggle="tab" href="#analyst" role="tab">Analyst</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="jobseeker-tab" data-bs-toggle="tab" href="#jobseeker" role="tab">JobSeeker</a>
+                        </li>
+                    </ul>
 
             <!-- Tab Content -->
+            <div class="mb-3"></div>
             <div class="tab-content" id="userTabsContent">
                 <!-- Admin Tab -->
                 <div class="tab-pane fade show active" id="admin" role="tabpanel">
-                    <table class="user-table">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th style="width: 150px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in ViewBag.Admins)
-                            {
+                    <div class="user-table-container">
+                        <table class="user-table">
+                            <thead>
                                 <tr>
-                                    <td>@user.FullName</td>
-                                    <td>@user.Email</td>
-                                    <td>@user.UserRole</td>
-                                    <td>
-                                        <span class="status @(user.IsActive ? "active" : "inactive")">
-                                            @(user.IsActive ? "Active" : "Inactive")
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if (user.IsActive)
-                                        {
-                                            <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false, this)">Deactivate</button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn-action activate" onclick="toggleUser(@user.Id, true, this)">Activate</button>
-                                        }
-                                    </td>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th style="width: 150px;">Action</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in ViewBag.Admins)
+                                {
+                                    <tr>
+                                        <td>@user.FullName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.UserRole</td>
+                                        <td>
+                                            <span class="status @(user.IsActive ? "active" : "deactivate")">
+                                                @(user.IsActive ? "Active" : "Deactivate")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false, this)">Deactivate</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn-action activate" onclick="toggleUser(@user.Id, true, this)">Activate</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Analyst Tab -->
                 <div class="tab-pane fade" id="analyst" role="tabpanel">
-                    <table class="user-table">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th style="width: 150px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in ViewBag.Analysts)
-                            {
+                    <div class="user-table-container">
+                        <table class="user-table">
+                            <thead>
                                 <tr>
-                                    <td>@user.FullName</td>
-                                    <td>@user.Email</td>
-                                    <td>@user.UserRole</td>
-                                    <td>
-                                        <span class="status @(user.IsActive ? "active" : "inactive")">
-                                            @(user.IsActive ? "Active" : "Inactive")
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if (user.IsActive)
-                                        {
-                                            <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false, this)">Deactivate</button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn-action activate" onclick="toggleUser(@user.Id, true, this)">Activate</button>
-                                        }
-                                    </td>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th style="width: 150px;">Action</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in ViewBag.Analysts)
+                                {
+                                    <tr>
+                                        <td>@user.FullName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.UserRole</td>
+                                        <td>
+                                            <span class="status @(user.IsActive ? "active" : "deactivate")">
+                                                @(user.IsActive ? "Active" : "Deactivate")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false, this)">Deactivate</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn-action activate" onclick="toggleUser(@user.Id, true, this)">Activate</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- JobSeeker Tab -->
                 <div class="tab-pane fade" id="jobseeker" role="tabpanel">
-                    <table class="user-table">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th style="width: 150px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in ViewBag.JobSeekers)
-                            {
+                    <div class="user-table-container">
+                        <table class="user-table">
+                            <thead>
                                 <tr>
-                                    <td>@user.FullName</td>
-                                    <td>@user.Email</td>
-                                    <td>@user.UserRole</td>
-                                    <td>
-                                        <span class="status @(user.IsActive ? "active" : "inactive")">
-                                            @(user.IsActive ? "Active" : "Inactive")
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if (user.IsActive)
-                                        {
-                                            <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false, this)">Deactivate</button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn-action activate" onclick="toggleUser(@user.Id, true, this)">Activate</button>
-                                        }
-                                    </td>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th style="width: 150px;">Action</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in ViewBag.JobSeekers)
+                                {
+                                    <tr>
+                                        <td>@user.FullName</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.UserRole</td>
+                                        <td>
+                                            <span class="status @(user.IsActive ? "active" : "deactivate")">
+                                                @(user.IsActive ? "Active" : "Deactivate")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <button class="btn-action deactivate" onclick="toggleUser(@user.Id, false, this)">Deactivate</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn-action activate" onclick="toggleUser(@user.Id, true, this)">Activate</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,26 +1,29 @@
-﻿@{
+﻿@model IEnumerable<Scammy.Models.ScamReport>
+
+@{
     ViewBag.Title = "ManageReport";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+    var reports = Model?.OrderByDescending(r => r.CreatedAt) ?? Enumerable.Empty<Scammy.Models.ScamReport>();
 }
+
 @section Styles {
-    <link rel="stylesheet" href="~/assets/css/ManageArticle.css" />
+    <link rel="stylesheet" href="~/assets/css/ManageReport.css" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
 }
 
 <!-- Main Navigation -->
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
     <nav class="nav">
-        
-        <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
         @{
-            var ManageReport = ViewBag.ActivePage == "ManageRport" ? "active" : "";
+            var ManageReport = ViewBag.ActivePage == "ManageReport" ? "active" : "";
         }
-        <a class="nav-link @ManageReport" href="@Url.Action("ManageScam", "Admin")">Manage Reports</a>
+        <a class="nav-link" href="@Url.Action("ManageArticle", "Admin")">Manage Articles</a>
+        <a class="nav-link @ManageReport" href="@Url.Action("ManageReport", "Admin")">Manage Reports</a>
     </nav>
 </div>
 
 <!-- Stats -->
-<div class="stats-container" style="margin-top:130px; margin-bottom:30px; display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:20px;">
+<div class="stats-container" style="margin-top:130px; margin-bottom:30px;">
     <div class="stat-card">
         <div class="stat-icon pending">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -30,32 +33,59 @@
             </svg>
         </div>
         <div class="stat-content">
-            @*<div class="stat-number">@articles.Count(a => a.Status == "pending")</div>*@
+            <div class="stat-number">@reports.Count(r => r.Status == "pending")</div>
             <div class="stat-label">Pending Reports</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon published">
+        <div class="stat-icon approved">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         </div>
         <div class="stat-content">
-            @*<div class="stat-number">@articles.Count(a => a.Status == "published")</div>*@
-            <div class="stat-label">Published Reports</div>
+            <div class="stat-number">@reports.Count(r => r.Status == "Approved")</div>
+            <div class="stat-label">Approved Reports</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon declined">
+        <div class="stat-icon rejected">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </div>
         <div class="stat-content">
-            @*<div class="stat-number">@articles.Count(a => a.Status == "declined")</div>*@
-            <div class="stat-label">Declined Reports</div>
+            <div class="stat-number">@reports.Count(r => r.Status == "Rejected")</div>
+            <div class="stat-label">Rejected Reports</div>
         </div>
+    </div>
+</div>
+
+<div class="header-actions">
+    <div class="search-filter-container">
+        <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search report by Name, Job Title, Email..." class="search-input">
+        </div>
+
+        <select id="statusFilter" class="filter-select">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+        </select>
+
+        <!-- Reset Button -->
+        <button id="resetFilters" class="reset-btn" title="Reset">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+        </button>
     </div>
 </div>
 
@@ -63,38 +93,294 @@
 <table class="table table-hover modern-table mt-3">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Email</th>
             <th>Job Title</th>
-            <th>Company Name</th>
+            <th>Name</th>            
+            <th>Email</th>
+            <th>Status</th>
             <th>Created Date</th>
             <th>Action</th>
         </tr>
     </thead>
-    @* <tbody>
-        @foreach (var article in articles) 
+    <tbody>
+        @foreach (var report in reports)
         {
-            <tr>
-                 <td>@article.Title</td>
-                <td>@article.Author</td>
-                <td><span class="status-badge @(article.Status.ToLower())">@article.Status</span></td> 
-                <td>@article.CreatedAt.ToString("yyyy-MM-dd")</td>
+            <tr class="report-row"
+                data-jobtitle="@report.JobTitle"
+                data-name="@report.Name"                
+                data-email="@report.Email"
+                data-status="@report.Status.ToLower()">
+                <td>@report.JobTitle</td>
+                <td>@report.Name</td>                
+                <td>@report.Email</td>
+                <td><span class="status-badge @(report.Status.ToLower())">@report.Status</span></td>
+                <td>@report.CreatedAt.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal-@report.Id">
-                        View
-                    </button>
-
-                    <!-- Publish button opens modal -->
-                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#publishModal-@article.Id">
-                        Publish
-                    </button>
-
-                    <!-- Decline button opens modal -->
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#declineModal-@article.Id">
-                        Decline
-                    </button>
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal-@report.Id">View</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="updateReportStatus(@report.Id, 'approve')">Approve</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="updateReportStatus(@report.Id, 'reject')">Reject</button>
+                    </div>
                 </td>
             </tr>
         }
-    </tbody> *@
+    </tbody>
 </table>
+
+<!-- Modals -->
+@foreach (var report in reports)
+{
+    <!-- View Modal -->
+    <div class="modal fade" id="viewModal-@report.Id" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@report.JobTitle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name:</strong> @report.Name</p>
+                    <p><strong>Job Title:</strong> @report.JobTitle</p>
+                    <p><strong>Email:</strong> @report.Email</p>
+                    <p><strong>Company:</strong> @report.CompanyName</p>
+                    <p><strong>Description:</strong> @report.Description</p>
+                    <p><strong>Created At:</strong> @report.CreatedAt.ToString("yyyy-MM-dd")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approve Modal -->
+    <div class="modal fade" id="approveModal-@report.Id" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="UpdateReportStatus" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Approve Report</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="@report.Id" />
+                        <input type="hidden" name="action" value="approve" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Approve</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div class="modal fade" id="rejectModal-@report.Id" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="UpdateReportStatus" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Reject Report</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="@report.Id" />
+                        <input type="hidden" name="action" value="reject" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const resetBtn = document.getElementById('resetFilters');
+            const reportRows = document.querySelectorAll('.report-row');
+
+            function filterReports() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedStatus = statusFilter.value.toLowerCase();
+                let visibleCount = 0;
+
+                reportRows.forEach(row => {
+                    const name = row.getAttribute('data-name').toLowerCase();
+                    const job = row.getAttribute('data-jobtitle').toLowerCase();
+                    const email = row.getAttribute('data-email').toLowerCase();
+                    const status = row.getAttribute('data-status').toLowerCase();
+
+                    const matchesSearch =
+                        name.includes(searchTerm) ||
+                        job.includes(searchTerm) ||
+                        email.includes(searchTerm);
+
+                    const matchesStatus = selectedStatus === '' || status === selectedStatus;
+
+                    if (matchesSearch && matchesStatus) {
+                        row.classList.remove('d-none');
+                        visibleCount++;
+                    } else {
+                        row.classList.add('d-none');
+                    }
+                });
+
+                // Empty state message
+                let emptyState = document.querySelector('.empty-state');
+                if (visibleCount === 0 && !emptyState) {
+                    emptyState = document.createElement('tr');
+                    emptyState.className = 'empty-state';
+                    emptyState.innerHTML = `<td colspan="6" class="text-center">No reports found</td>`;
+                    document.querySelector('tbody').appendChild(emptyState);
+                } else if (visibleCount > 0 && emptyState) {
+                    emptyState.remove();
+                }
+            }
+
+            // Reset filters
+            resetBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                statusFilter.value = '';
+                filterReports();
+            });
+
+            // Auto clear search when switching tabs
+            const tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+            tabLinks.forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function () {
+                    searchInput.value = '';
+                    statusFilter.value = '';
+                    filterReports();
+                });
+            });
+
+            // Event listeners
+            searchInput.addEventListener('input', filterReports);
+            statusFilter.addEventListener('change', filterReports);
+        });
+
+        // ✅ NEW: Approve / Reject handler
+                function updateReportStatus(reportId, action) {
+            const actionText = action.charAt(0).toUpperCase() + action.slice(1);
+
+            Swal.fire({
+                title: `Are you sure?`,
+                text: `Do you really want to ${action} this report?`,
+                icon: action === "approve" ? "success" : "warning",
+                showCancelButton: true,
+                confirmButtonText: ` ${actionText} `,
+                cancelButtonText: "Cancel",
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: "swal2-confirm-button",
+                    cancelButton: "swal2-cancel-button"
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append("id", reportId);
+                    formData.append("action", action);
+
+                    fetch('/Admin/UpdateReportStatus', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Network error');
+                        return res.text();
+                    })
+                    .then(() => {
+                        const rowToUpdate = document.querySelector(`.report-row button[onclick*="${reportId}"]`).closest('tr');
+                        const statusCell = rowToUpdate.querySelector('.status-badge');
+
+                        if (action === 'approve') {
+                            statusCell.textContent = 'Approved';
+                            statusCell.className = 'status-badge approved';
+                            rowToUpdate.setAttribute('data-status', 'approved');
+                        } else if (action === 'reject') {
+                            statusCell.textContent = 'Rejected';
+                            statusCell.className = 'status-badge rejected';
+                            rowToUpdate.setAttribute('data-status', 'rejected');
+                        }
+
+                        Swal.fire({
+                            title: `Report ${actionText}d!`,
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Something went wrong. Please try again.",
+                            icon: "error"
+                        });
+                    });
+                }
+            });
+        }
+
+
+    
+    //Quick header fix
+    
+        $(document).ready(function() {
+            let lastScrollTop = 0;
+            let headerFixed = false;
+
+
+            function resetHeader() {
+
+                $('.header-area, .background-header').removeAttr('style');
+                $('.header-area .main-nav').removeAttr('style');
+                $('.header-area .main-nav .nav').removeAttr('style');
+                $('.header-area .main-nav .nav li').removeAttr('style');
+                $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
+
+
+
+            }
+
+            // Scroll handler
+            $(window).scroll(function() {
+                let scrollTop = $(this).scrollTop();
+
+                // Reset header when scrolling back to top
+                if (scrollTop < 200 && !headerFixed) {
+                    resetHeader();
+                } else if (scrollTop > 200) {
+                    headerFixed = false;
+                }
+
+                lastScrollTop = scrollTop;
+            });
+
+            // Also reset header on page load
+            resetHeader();
+
+            // Reset header after any clicks on the page
+            $(document).on('click', function() {
+                if (!headerFixed) {
+                    setTimeout(resetHeader, 100);
+                }
+            });
+
+            // Force header reset every 5 seconds (emergency backup)
+            setInterval(function() {
+                if ($(window).scrollTop() < 200) {
+                    resetHeader();
+                }
+            }, 5000);
+        });
+    </script>
+}
+

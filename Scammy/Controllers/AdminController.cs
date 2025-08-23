@@ -32,7 +32,10 @@ namespace Scammy.Controllers
         public IActionResult UpdateStatus(int id, string action, string AdminComment)
         {
             var article = _context.Articles.Find(id);
-            if (article == null) return NotFound();
+            if (article == null)
+            {
+                return Json(new { success = false, message = "Article not found." });
+            }
 
             if (action == "approve")
             {
@@ -44,8 +47,7 @@ namespace Scammy.Controllers
             {
                 if (string.IsNullOrWhiteSpace(AdminComment))
                 {
-                    TempData["Error"] = "Comment is required when declining.";
-                    return RedirectToAction("ManageArticle");
+                    return Json(new { success = false, message = "Comment is required when declining." });
                 }
                 article.Status = "declined";
                 article.IsApproved = false;
@@ -54,8 +56,10 @@ namespace Scammy.Controllers
 
             article.UpdatedAt = DateTime.Now;
             _context.SaveChanges();
-            return RedirectToAction("ManageArticle");
+
+            return Json(new { success = true, status = article.Status });
         }
+
 
         [HttpPost]
         public IActionResult ApproveArticle(int id, string AdminComment)
@@ -188,8 +192,40 @@ namespace Scammy.Controllers
         public IActionResult ManageReport()
         {
             ViewBag.ActivePage = "ManageReport";
-            //var reports = _context.Reports.ToList();
-            return View();
+
+            // Fetch all reports from DB, sorted by CreatedAt descending
+            var reports = _context.ScamReports
+                                  .OrderByDescending(r => r.CreatedAt)
+                                  .ToList();
+
+            return View(reports);
+        }
+
+        // Update status of a report: Approve or Reject
+        [HttpPost]
+        public IActionResult UpdateReportStatus(int id, string action)
+        {
+            var report = _context.ScamReports.FirstOrDefault(r => r.Id == id);
+            if (report == null) return NotFound();
+
+            // Update status based on action
+            switch (action.ToLower())
+            {
+                case "approve":
+                    report.Status = "Approved";
+                    break;
+                case "reject":
+                    report.Status = "Rejected";
+                    break;
+                case "pending":
+                    report.Status = "Pending";
+                    break;
+                default:
+                    return BadRequest("Invalid action");
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("ManageReport");
         }
 
 
