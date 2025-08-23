@@ -226,6 +226,14 @@
     }
 
 /* Modal Styles */
+.modal {
+    top: 70px; /* adjust based on your header height */
+}
+
+.modal-dialog {
+    margin: 70px auto; /* pushes modal below header */
+}
+
 .modal-content {
     border-radius: 12px;
     border: 1px solid #e2e8f0;
@@ -422,4 +430,65 @@
     .reset-btn:focus {
         outline: none;
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+/* SweetAlert modern button overrides for ManageReport */
+.swal2-popup {
+    border-radius: 18px !important; /* 弹窗圆角 */
+    padding: 1.5rem !important;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+.swal2-title {
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+    color: #111827 !important; /* 深灰标题 */
+}
+
+.swal2-html-container {
+    font-size: 1rem !important;
+    color: #374151 !important; /* 正文颜色 */
+}
+
+/* 按钮容器，拉开间距 */
+.swal2-actions {
+    margin-top: 1.5rem !important;
+    gap: 12px !important; /* 两个按钮之间距离 */
+}
+
+/* 确认按钮 */
+.swal2-confirm {
+    background-color: #33ccc5 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 10px 32px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .swal2-confirm:hover {
+        background-color: #2baaa3 !important;
+        transform: translateY(-2px);
+    }
+
+/* 取消按钮 */
+.swal2-cancel {
+    background-color: #f3f4f6 !important;
+    color: #374151 !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 10px 32px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .swal2-cancel:hover {
+        background-color: #e5e7eb !important;
+        transform: translateY(-2px);
     }

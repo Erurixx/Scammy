@@ -85,3 +85,35 @@
 });
 
 
+
+$(document).on("submit", "form[action='/Admin/UpdateStatus']", function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let formData = form.serialize();
+
+    $.post(form.attr("action"), formData, function (response) {
+        if (response.success) {
+            // admincomment
+            $("#admincomment").remove();
+
+            // show success
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: `Article has been ${response.status} successfully!`,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.message || 'Action failed! Please try again.'
+            });
+        }
+    });
+});
+

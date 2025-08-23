@@ -32,7 +32,10 @@ namespace Scammy.Controllers
         public IActionResult UpdateStatus(int id, string action, string AdminComment)
         {
             var article = _context.Articles.Find(id);
-            if (article == null) return NotFound();
+            if (article == null)
+            {
+                return Json(new { success = false, message = "Article not found." });
+            }
 
             if (action == "approve")
             {
@@ -44,8 +47,7 @@ namespace Scammy.Controllers
             {
                 if (string.IsNullOrWhiteSpace(AdminComment))
                 {
-                    TempData["Error"] = "Comment is required when declining.";
-                    return RedirectToAction("ManageArticle");
+                    return Json(new { success = false, message = "Comment is required when declining." });
                 }
                 article.Status = "declined";
                 article.IsApproved = false;
@@ -54,8 +56,10 @@ namespace Scammy.Controllers
 
             article.UpdatedAt = DateTime.Now;
             _context.SaveChanges();
-            return RedirectToAction("ManageArticle");
+
+            return Json(new { success = true, status = article.Status });
         }
+
 
         [HttpPost]
         public IActionResult ApproveArticle(int id, string AdminComment)
