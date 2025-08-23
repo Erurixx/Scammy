@@ -22,6 +22,7 @@ namespace Scammy.Models
 
         [MaxLength(20)]
         public string UserRole { get; set; } = "jobseeker";
+        public bool IsActive { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

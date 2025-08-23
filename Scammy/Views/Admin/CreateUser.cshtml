@@ -8,18 +8,19 @@
         <div class="dashboard-box">
             <div class="row">
 
+                <!-- Left Column: Image & Titles -->
                 <div class="col-left">
                     <img src="~/assets/images/admin/userprofile.png" alt="User Profile Icon" class="create-user-img">
                     <h2 class="dashboard-title">Create New User</h2>
                     <p class="dashboard-subtitle">Fill in the details below to add a new user to the system.</p>
                 </div>
 
-
+                <!-- Right Column: Form -->
                 <div class="col-right">
-                    <form action="SaveUser.aspx" method="post" class="user-form">
+                    <form id="createUserForm" asp-action="CreateUser" asp-controller="Admin" method="post" class="user-form">
                         <div class="form-group">
                             <label for="fullname">Full Name</label>
-                            <input type="text" id="fullname" name="fullname" placeholder="Enter full name" required>
+                            <input type="text" id="fullname" name="fullName" placeholder="Enter full name" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
@@ -33,8 +34,8 @@
                             <label for="role">User Role</label>
                             <select id="role" name="role" required>
                                 <option value="">Select role</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Analyst">Analyst</option>
+                                <option value="admin">Admin</option>
+                                <option value="analyst">Analyst</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -42,103 +43,102 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
 </section>
 
-<style>
-    #create-user {
-        padding: 100px 0;
-        background: #f9f9f9;
-    }
+@section Styles {
+    <link rel="stylesheet" href="~/assets/css/CreateUser.css" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+}
 
-    .dashboard-box {
-        background: #fff;
-        border-radius: 15px;
-        padding: 40px;
-        box-shadow: 0 4px 25px rgba(0,0,0,0.08);
-        max-width: 900px;
-        margin: auto;
-    }
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 40px;
-    }
+    <script>
+        $(document).ready(function () {
+            $('#createUserForm').submit(function (e) {
+                e.preventDefault();
 
-    .col-left {
-        flex: 1;
-        text-align: center;
-    }
+                // Show SweetAlert2 loading popup
+                Swal.fire({
+                    title: 'Processing...',
+                    html: 'Creating user, please wait.',
+                    didOpen: () => {
+                        Swal.showLoading()
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    allowEnterKey: false,
+                    showConfirmButton: false
+                });
 
-    .col-right {
-        flex: 1;
-        margin-top: 30px;
-    }
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        Swal.close(); // Close loading popup
+                        if (response.isSuccess) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message,
+                                confirmButtonColor: '#33ccc5'
+                            });
+                            $('#createUserForm')[0].reset();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                confirmButtonColor: '#ef4444'
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        Swal.close(); // Close loading popup
+                        var errorMsg = xhr.responseText || "Error creating user!";
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMsg,
+                            confirmButtonColor: '#ef4444'
+                        });
+                    }
+                });
+            });
 
-    .create-user-img {
-        display: block;
-        margin: 0 auto 20px auto;
-        max-width: 180px;
-        height: auto;
-    }
+            // Header scroll/reset logic
+            let lastScrollTop = 0;
+            let headerFixed = false;
 
-    .dashboard-title {
-        font-size: 2em;
-        color: #004aad;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
+            function resetHeader() {
+                $('.header-area, .background-header').removeAttr('style');
+                $('.header-area .main-nav').removeAttr('style');
+                $('.header-area .main-nav .nav').removeAttr('style');
+                $('.header-area .main-nav .nav li').removeAttr('style');
+                $('.dropdown-menu, .submenu ul, .dropdown, .submenu').removeAttr('style');
+            }
 
-    .dashboard-subtitle {
-        font-size: 1.1em;
-        color: #555;
-    }
+            $(window).scroll(function() {
+                let scrollTop = $(this).scrollTop();
+                if (scrollTop < 200 && !headerFixed) resetHeader();
+                lastScrollTop = scrollTop;
+            });
 
-    .user-form .form-group {
-        margin-bottom: 20px;
-    }
+            resetHeader();
+            $(document).on('click', function() {
+                if (!headerFixed) setTimeout(resetHeader, 100);
+            });
 
-    .user-form label {
-        margin-bottom: 8px;
-        display: block;
-        font-weight: bold;
-        margin-bottom: 8px;
-        color: #004aad;
-    }
-
-    .user-form input,
-    .user-form select {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 1em;
-    }
-
-    .main-button {
-        display: inline-block;
-        background-color: #33ccc5;
-        font-size: 15px;
-        font-weight: 400;
-        color: #fff;
-        margin-top: 20px;
-        text-transform: capitalize;
-        padding: 12px 25px;
-        border-radius: 23px;
-        letter-spacing: 0.25px;
-        border-bottom: 2px solid #4771cb !important;
-        transition: all .3s;
-        outline: none;
-        border: none;
-    }
-
-        .main-button:hover {
-            background-color: #4771cb !important;
-            color: #fff !important;
-            border-bottom: 2px solid #33ccc5 !important;
-        }
-</style>
+            setInterval(function() {
+                if ($(window).scrollTop() < 200) resetHeader();
+            }, 5000);
+        });
+    </script>
+}

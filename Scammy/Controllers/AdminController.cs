@@ -23,8 +23,8 @@ namespace Scammy.Controllers
         // Manage Article
         public IActionResult ManageArticle()
         {
-            ViewBag.ActivePage = "ManageArticle"; // ⚠️ 这一行必须加
-            var articles = _context.Articles.ToList(); // 或者你的 Model 数据
+            ViewBag.ActivePage = "ManageArticle"; 
+            var articles = _context.Articles.ToList(); 
             return View(articles);
         }
 
@@ -38,7 +38,7 @@ namespace Scammy.Controllers
             {
                 article.Status = "published";
                 article.IsApproved = true;
-                article.AdminComment = "ok";
+                article.AdminComment = AdminComment;
             }
             else if (action == "decline")
             {
@@ -58,17 +58,20 @@ namespace Scammy.Controllers
         }
 
         [HttpPost]
-        public IActionResult ApproveArticle(int id)
+        public IActionResult ApproveArticle(int id, string AdminComment)
         {
             var article = _context.Articles.FirstOrDefault(a => a.Id == id);
             if (article != null)
             {
                 article.IsApproved = true;
                 article.Status = "published";
+                article.AdminComment = AdminComment; // Save the admin comment
+                article.UpdatedAt = DateTime.Now;
                 _context.SaveChanges();
             }
             return RedirectToAction("ManageArticle");
         }
+
 
         [HttpPost]
         public IActionResult DeclineArticle(int id, string AdminComment)
@@ -85,16 +88,116 @@ namespace Scammy.Controllers
         }
 
 
-        // Manage User
-        public ActionResult ManageUser()
+
+
+        // Manage User page
+        public IActionResult ManageUser()
         {
-            return View("ManageUser");
+            
+            var admins = _context.Users.Where(u => u.UserRole == "Admin").ToList();
+            var analysts = _context.Users.Where(u => u.UserRole == "Analyst").ToList();
+            var jobseekers = _context.Users.Where(u => u.UserRole == "Jobseeker").ToList(); // 改成 Jobseeker
+
+            ViewBag.Admins = admins;
+            ViewBag.Analysts = analysts;
+            ViewBag.Jobseekers = jobseekers; // 对应前端 Tab
+
+            return View();
         }
 
-        // Create User
-        public ActionResult CreateUser()
+        [HttpPost]
+        [HttpPost]
+        public IActionResult DeactivateUser([FromBody] UserToggleDto data)
         {
-            return View("CreateUser");
+            var user = _context.Users.FirstOrDefault(u => u.Id == data.Id);
+            if (user == null) return NotFound();
+
+            user.IsActive = false;
+            _context.SaveChanges();
+
+            return Ok(new { success = true });
         }
+
+        [HttpPost]
+        public IActionResult ActivateUser([FromBody] UserToggleDto data)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == data.Id);
+            if (user == null) return NotFound();
+
+            user.IsActive = true;
+            _context.SaveChanges();
+
+            return Ok(new { success = true });
+        }
+
+        public class UserToggleDto
+        {
+            public int Id { get; set; }
+        }
+
+
+
+
+        // Create User
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateUser(string fullName, string email, string password, string role)
+        {
+            if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
+            {
+                return BadRequest("All fields are required.");
+            }
+
+            role = role.ToLower();
+            if (role != "admin" && role != "analyst")
+            {
+                return BadRequest("Only admin or analyst roles can be assigned.");
+            }
+
+            if (_context.Users.Any(u => u.Email == email))
+            {
+                return BadRequest("Email is already registered.");
+            }
+
+            var hashedPassword = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password));
+
+            var user = new User
+            {
+                FullName = fullName,
+                Email = email,
+                Password = hashedPassword,
+                UserRole = role,
+                CreatedAt = DateTime.Now,
+                IsActive = true
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return Ok(new { isSuccess = true, message = "User created successfully!" });
+        }
+
+
+
+        // Manage Report
+        public IActionResult ManageReport()
+        {
+            ViewBag.ActivePage = "ManageReport";
+            //var reports = _context.Reports.ToList();
+            return View();
+        }
+
+
+
+
+
     }
+
+
 }
+

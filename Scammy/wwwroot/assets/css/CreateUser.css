@@ -1,0 +1,162 @@
+﻿/* Section styling */
+#create-user {
+    padding: 100px 0;
+    background: #f9f9f9;
+}
+
+/* Dashboard box container */
+.dashboard-box {
+    background: #fff;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    max-width: 900px;
+    margin: auto;
+}
+
+/* Flex row for left and right columns */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+}
+
+/* Left column with image and titles */
+.col-left {
+    flex: 1;
+    text-align: center;
+}
+
+/* Right column with form */
+.col-right {
+    flex: 1;
+    margin-top: 30px;
+}
+
+/* Image styling */
+.create-user-img {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 180px;
+    height: auto;
+}
+
+/* Titles */
+.dashboard-title {
+    font-size: 2em;
+    color: #004aad;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dashboard-subtitle {
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Form styling */
+.user-form .form-group {
+    margin-bottom: 20px;
+}
+
+.user-form label {
+    display: block;
+    font-weight: bold;
+    color: #004aad;
+    margin-bottom: 8px;
+}
+
+.user-form input,
+.user-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+/* Submit button */
+.main-button {
+    display: inline-block;
+    background-color: #33ccc5;
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 20px;
+    text-transform: capitalize;
+    padding: 12px 25px;
+    border-radius: 23px;
+    letter-spacing: 0.25px;
+    border-bottom: 2px solid #4771cb;
+    transition: all .3s;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+    .main-button:hover {
+        background-color: #4771cb;
+        color: #fff;
+        border-bottom: 2px solid #33ccc5;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(71, 113, 203, 0.3);
+    }
+
+/* SweetAlert2 custom styles */
+.swal2-popup {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.swal2-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #004aad;
+}
+
+.swal2-content {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.swal2-icon-success {
+    border-color: #33ccc5 !important;
+    color: #33ccc5 !important;
+}
+
+.swal2-icon-error {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+}
+
+.swal2-confirm {
+    background-color: #33ccc5 !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 25px !important;
+    padding: 10px 30px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(51, 204, 197, 0.4);
+}
+
+    .swal2-confirm:hover {
+        background-color: #4771cb !important;
+    }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-left, .col-right {
+        flex: unset;
+        width: 100%;
+    }
+
+    .create-user-img {
+        max-width: 140px;
+    }
+}
