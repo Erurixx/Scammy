@@ -1,6 +1,6 @@
-﻿/* =======================
-   Navigation Styles
-======================= */
+﻿
+/*Navigation Styles*/
+
 .az-dashboard-nav {
     display: flex;
     align-items: center;
@@ -36,9 +36,9 @@
         font-weight: 500;
     }
 
-/* =======================
-   Stats Cards
-======================= */
+
+/*   Stats Cards*/
+
 .stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -100,9 +100,9 @@
     margin: 0;
 }
 
-/* =======================
-   Table Styles
-======================= */
+
+/*   Table Styles*/
+
 .modern-table {
     width: 100%;
     border-collapse: separate;
@@ -135,9 +135,9 @@
         vertical-align: middle;
     }
 
-/* =======================
-   Status Badges
-======================= */
+
+/*   Status Badges*/
+
 .status-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -163,9 +163,9 @@
 
     
 
-/* =======================
-   Buttons
-======================= */
+
+/*   Buttons*/
+
 .btn-sm {
     margin-right: 5px;
 }
@@ -203,9 +203,7 @@
         border-color: #2563eb;
     }
 
-/* =======================
-   Modal Styles
-======================= */
+
 /* Modal Styles */
 .modal-content {
     border-radius: 12px;
@@ -299,9 +297,8 @@
 }
 
 
-    /* =======================
-   Scrollbar for long content
-======================= */
+/*   Scrollbar for long content*/
+
     .modal-body #viewModalContent::-webkit-scrollbar {
         width: 8px;
     }
