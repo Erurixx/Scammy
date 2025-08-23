@@ -21,32 +21,55 @@
         });
     });
 
-    // Toggle user active/inactive
+    // Toggle user active/inactive with confirmation popup
     window.toggleUser = function (userId, activate, btn) {
-        let url = activate ? '/Admin/ActivateUser' : '/Admin/DeactivateUser';
+        const actionText = activate ? "Activate" : "Deactivate";
 
-        $.ajax({
-            url: url,
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ id: userId }),
-            success: function (res) {
-                var row = $(btn).closest('tr');
-                var statusSpan = row.find('.status');
+        Swal.fire({
+            title: `${actionText} User?`,
+            text: `Are you sure you want to ${actionText.toLowerCase()} this user?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: actionText,
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+            focusCancel: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let url = activate ? '/Admin/ActivateUser' : '/Admin/DeactivateUser';
 
-                if (activate) {
-                    statusSpan.text('Active').removeClass('inactive').addClass('active');
-                    $(btn).text('Deactivate').removeClass('activate').addClass('deactivate');
-                    $(btn).attr('onclick', 'toggleUser(' + userId + ', false, this)');
-                } else {
-                    statusSpan.text('Inactive').removeClass('active').addClass('inactive');
-                    $(btn).text('Activate').removeClass('deactivate').addClass('activate');
-                    $(btn).attr('onclick', 'toggleUser(' + userId + ', true, this)');
-                }
-            },
-            error: function (err) {
-                alert("Action failed!");
-                console.error(err);
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ id: userId }),
+                    success: function (res) {
+                        var row = $(btn).closest('tr');
+                        var statusSpan = row.find('.status');
+
+                        if (activate) {
+                            statusSpan.text('Active').removeClass('inactive').addClass('active');
+                            $(btn).text('Deactivate').removeClass('activate').addClass('deactivate');
+                            $(btn).attr('onclick', 'toggleUser(' + userId + ', false, this)');
+                        } else {
+                            statusSpan.text('Inactive').removeClass('active').addClass('inactive');
+                            $(btn).text('Activate').removeClass('deactivate').addClass('activate');
+                            $(btn).attr('onclick', 'toggleUser(' + userId + ', true, this)');
+                        }
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: `User has been ${activate ? 'activated' : 'deactivated'} successfully!`,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function (err) {
+                        Swal.fire('Error', 'Action failed! Please try again.', 'error');
+                        console.error(err);
+                    }
+                });
             }
         });
     };

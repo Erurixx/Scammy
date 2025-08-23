@@ -145,3 +145,18 @@
             background-color: #e0a800;
         }
 
+.swal2-confirm-button {
+    background-color: #33ccc5 !important;
+    color: white !important;
+    border-radius: 25px !important;
+    padding: 8px 30px !important;
+}
+
+    .swal2-confirm-button:hover {
+        background-color: #4771cb !important;
+    }
+
+.swal2-cancel-button {
+    border-radius: 25px !important;
+    padding: 8px 30px !important;
+}

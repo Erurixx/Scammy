@@ -99,63 +99,64 @@
         background-color: #4771cb;
         color: #fff;
         border-bottom: 2px solid #33ccc5;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(71, 113, 203, 0.3);
     }
 
-/* Alert messages */
-.alert {
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-top: 15px;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* Modal design */
-.custom-modal {
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+/* SweetAlert2 custom styles */
+.swal2-popup {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
-.custom-modal-header {
-    background: linear-gradient(90deg, #33ccc5, #4771cb);
-    color: #fff;
-    border-bottom: none;
-    justify-content: center;
-    text-align: center;
+.swal2-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #004aad;
 }
 
-.custom-modal .modal-body {
-    padding: 30px;
-}
-
-#modalIcon i {
-    font-size: 3rem;
-    display: block;
-}
-
-#modalMessage {
+.swal2-content {
     font-size: 1.1rem;
-    font-weight: 500;
+    color: #333;
 }
 
-.btn-light {
-    border-radius: 25px;
-    font-weight: bold;
-    padding: 8px 30px;
-    transition: 0.3s;
+.swal2-icon-success {
+    border-color: #33ccc5 !important;
+    color: #33ccc5 !important;
 }
 
-    .btn-light:hover {
-        background: #4771cb;
-        color: #fff;
+.swal2-icon-error {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+}
+
+.swal2-confirm {
+    background-color: #33ccc5 !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 25px !important;
+    padding: 10px 30px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(51, 204, 197, 0.4);
+}
+
+    .swal2-confirm:hover {
+        background-color: #4771cb !important;
     }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-left, .col-right {
+        flex: unset;
+        width: 100%;
+    }
+
+    .create-user-img {
+        max-width: 140px;
+    }
+}
