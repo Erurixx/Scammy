@@ -7,18 +7,45 @@
     $('.nav-link').on('shown.bs.tab', function (e) {
         var target = $(e.target).attr("href");
         localStorage.setItem("activeUserTab", target);
+
+        // change tab clear
+        $('#searchInput').val('');
+        var activeTab = $(target);
+        activeTab.find('tbody tr').not('.empty-state').show();
+        activeTab.find('.empty-state').remove();
     });
 
     // Tab-specific search
     $('.search-input').on('keyup', function () {
         var value = $(this).val().toLowerCase();
         var activeTab = $('.tab-pane.active');
-        activeTab.find('tbody tr').filter(function () {
-            $(this).toggle(
-                $(this).find('td:eq(0)').text().toLowerCase().indexOf(value) > -1 ||
-                $(this).find('td:eq(1)').text().toLowerCase().indexOf(value) > -1
-            );
+        var rows = activeTab.find('tbody tr').not('.empty-state'); 
+        var visibleCount = 0;
+
+        rows.each(function () {
+            var match = $(this).find('td:eq(0)').text().toLowerCase().indexOf(value) > -1 ||
+                $(this).find('td:eq(1)').text().toLowerCase().indexOf(value) > -1;
+            $(this).toggle(match);
+            if (match) visibleCount++;
         });
+
+        var emptyState = activeTab.find('.empty-state');
+        if (visibleCount === 0 && emptyState.length === 0) {
+            activeTab.find('tbody').append(
+                `<tr class="empty-state"><td colspan="6" class="text-center text-muted fst-italic">No users found</td></tr>`
+            );
+        } else if (visibleCount > 0 && emptyState.length > 0) {
+            emptyState.remove();
+        }
+    });
+
+    // Reset 
+    $('#resetFilters').on('click', function () {
+        $('#searchInput').val('');
+        var activeTab = $('.tab-pane.active');
+        var rows = activeTab.find('tbody tr').not('.empty-state');
+        rows.show();
+        activeTab.find('.empty-state').remove();
     });
 
     // Toggle user active/inactive with confirmation popup
@@ -48,11 +75,11 @@
                         var statusSpan = row.find('.status');
 
                         if (activate) {
-                            statusSpan.text('Active').removeClass('inactive').addClass('active');
+                            statusSpan.text('Active').removeClass('deactivate').addClass('active');
                             $(btn).text('Deactivate').removeClass('activate').addClass('deactivate');
                             $(btn).attr('onclick', 'toggleUser(' + userId + ', false, this)');
                         } else {
-                            statusSpan.text('Inactive').removeClass('active').addClass('inactive');
+                            statusSpan.text('Deactivate').removeClass('active').addClass('deactivate');
                             $(btn).text('Activate').removeClass('deactivate').addClass('activate');
                             $(btn).attr('onclick', 'toggleUser(' + userId + ', true, this)');
                         }
@@ -74,7 +101,7 @@
         });
     };
 
-    // Header scroll/reset
+    // Header reset
     let lastScrollTop = 0;
     let headerFixed = false;
 
