@@ -9,6 +9,7 @@
 }
 
 
+
 <!-- Main Content -->
 <div class="az-dashboard-nav" style="margin-top: 8rem; margin-bottom: -7rem;">
     <nav class="nav">
@@ -25,6 +26,8 @@
         </a>
     </nav>
 </div>
+
+
 
 <div class="main-container">
     <!-- Header Section -->
@@ -136,7 +139,7 @@
             </div>
         </div>
 
-        @* Draft *@
+        
         <div class="stat-card">
             <div class="stat-icon draft">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -242,15 +245,25 @@
                                         </div>
                                     }
                                 </div>
+
+                               
                                 <div class="article-actions">
                                     
-                                    <button class="action-btn preview" onclick="previewArticle('@article.Title', '@Html.Raw(article.Content?.Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))', '@article.Category', '@article.Author', '@article.CreatedAt.ToString("MMM dd, yyyy")', '@Html.Raw((article.AdminComment ?? "").Replace("'", "\\'").Replace("\n", "\\n").Replace("\r", ""))')">
+                                    
+                                    <button class="action-btn preview" onclick="previewArticleData(this)"
+                                            data-title="@Html.Encode(article.Title)"
+                                            data-content="@Html.Encode(article.Content)"
+                                            data-category="@Html.Encode(article.Category)"
+                                            data-author="@Html.Encode(article.Author)"
+                                            data-date="@Html.Encode(article.CreatedAt.ToString("MMM dd, yyyy"))"
+                                            data-admin-comment="@Html.Encode(article.AdminComment ?? "")">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                             <circle cx="12" cy="12" r="3"></circle>
                                         </svg>
                                         Preview
                                     </button>
+                                    
 
                                     <!-- Edit Button -->
                                     <a class="action-btn preview" href="@Url.Action("EditArticle", "Analyst", new { id = article.Id })">
@@ -270,6 +283,8 @@
                                             Delete
                                         </button>
                                     </form>
+
+                                    
 
 
                                 </div>
@@ -295,8 +310,11 @@
     </div>
 </div>
 
+
+
+
 <!-- Article Preview Modal -->
-<div id="previewModal" class="modal">
+<div id="previewModal" class="modal" style="display: none;">
     <div class="modal-content">
         <div class="modal-header">
             <h3 id="previewTitle">Article Preview</h3>
@@ -305,6 +323,10 @@
         <div class="modal-body">
             <div class="preview-meta">
                 <span id="previewCategory" class="category-tag"></span>
+                <div class="article-info">
+                    <p><strong>Author:</strong> <span id="previewAuthor"></span></p>
+                    <p><strong>Date:</strong> <span id="previewDate"></span></p>
+                </div>
                 
             </div>
             <div id="previewContent" class="preview-content"></div>
@@ -316,6 +338,8 @@
         </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     <!-- Scripts -->
@@ -346,7 +370,7 @@
             $(window).scroll(function() {
                 let scrollTop = $(this).scrollTop();
 
-                // Reset header when scrolling back to top
+                
                 if (scrollTop < 200 && !headerFixed) {
                     resetHeader();
                 } else if (scrollTop > 200) {
@@ -356,17 +380,17 @@
                 lastScrollTop = scrollTop;
             });
 
-            // Also reset header on page load
+            
             resetHeader();
 
-            // Reset header after any clicks on the page
+            
             $(document).on('click', function() {
                 if (!headerFixed) {
                     setTimeout(resetHeader, 100);
                 }
             });
 
-            // Force header reset every 5 seconds (emergency backup)
+           
             setInterval(function() {
                 if ($(window).scrollTop() < 200) {
                     resetHeader();

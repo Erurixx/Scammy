@@ -139,16 +139,7 @@
 
                         <p class="description-text">@scam.Description</p>
 
-                        @* Optional: show tags if you add a Tags column later *@
-                        @* <div class="warning-flags">
-                        @if (!string.IsNullOrEmpty(scam.Tags))
-                        {
-                            foreach (var tag in scam.Tags.Split(','))
-                            {
-                                <span class="flag">@tag</span>
-                            }
-                        }
-                    </div> *@
+                        
                     </div>
                 }
             </div>
@@ -169,7 +160,7 @@
         }
 
         .scam-card {
-            flex: 1 1 300px; /* each card takes at least 300px */
+            flex: 1 1 300px; 
             min-width: 300px;
         }
 

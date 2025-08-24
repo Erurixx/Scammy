@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="~/assets/images/scammy-logo.png" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewBag.Title - Scammy</title>
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="~/assets/css/fontawesome.css" />
     <link rel="stylesheet" href="~/assets/css/main.css" />
     <link rel="stylesheet" href="~/assets/css/animated.css" />
-    @* <link rel="stylesheet" href="~/assets/css/owl.css" /> *@
+    
     <link rel="stylesheet" href="~/assets/css/articles.css" />
 
     @RenderSection("Styles", required: false)
@@ -25,28 +26,28 @@
 </head>
 <body>
 
-    @* Header Partial *@
+    
     @Html.Partial("_Header")
 
     <main role="main" class="container">
         @RenderBody()
     </main>
 
-    @* Footer Partial *@
+   
     @Html.Partial("_Footer")
 
-    <!-- jQuery (if needed) -->
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <!-- Bootstrap 5 Bundle (includes Popper.js) -->
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    @* <script src="~/vendor/jquery/jquery.min.js"></script> *@
+    
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    @* <script src="~/assets/js/owl-carousel.js"></script> *@
+    
     <script src="~/assets/js/animation.js"></script>
     <script src="~/assets/js/imagesloaded.js"></script>
-    @* <script src="~/assets/js/custom.js"></script> *@
+    
     <script src="~/assets/js/analyst.js"></script>
 
 

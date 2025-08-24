@@ -54,7 +54,7 @@ namespace Scammy.Controllers
                 .OrderByDescending(a => a.CreatedAt)
                 .ToListAsync();
 
-            return View(publishedArticles); // this will look for Views/Home/ViewAllArticles.cshtml
+            return View(publishedArticles);
         }
 
         
@@ -77,7 +77,7 @@ namespace Scammy.Controllers
             ViewBag.RelatedArticles = relatedArticles;
 
 
-            return View(article); // Looks for Views/Articles/ReadArticle.cshtml
+            return View(article); 
         }
 
         public IActionResult ReportedScams()
@@ -96,7 +96,7 @@ namespace Scammy.Controllers
                                    .OrderByDescending(s => s.CreatedAt)
                                    .ToList();
 
-            return View(allScams); // This will use ViewAllScams.cshtml
+            return View(allScams); 
         }
 
 

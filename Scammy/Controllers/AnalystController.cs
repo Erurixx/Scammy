@@ -81,8 +81,7 @@ namespace Scammy.Controllers
         [HttpGet]
         public IActionResult createArticle()
         {
-            //ViewBag.ActivePage = "createArticle";
-            //return View();
+           
 
             var model = new Article();
 
@@ -134,6 +133,8 @@ namespace Scammy.Controllers
 
             // CreatedAt
             model.CreatedAt = DateTime.UtcNow;
+
+            model.AdminComment = "N/A";
 
             // Optional tags from form
             var tagsInput = Request.Form["Tags"].ToString(); // raw input from form

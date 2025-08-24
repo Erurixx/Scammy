@@ -430,17 +430,17 @@
                         lastScrollTop = scrollTop;
                     });
 
-                    // Also reset header on page load
+                   
                     resetHeader();
 
-                    // Reset header after any clicks on the page
+                    
                     $(document).on('click', function() {
                         if (!headerFixed) {
                             setTimeout(resetHeader, 100);
                         }
                     });
 
-                    // Force header reset every 5 seconds
+                    
                     setInterval(function() {
                         if ($(window).scrollTop() < 200) {
                             resetHeader();

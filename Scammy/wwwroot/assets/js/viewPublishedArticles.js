@@ -1,10 +1,10 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Initialize functionality
+    
     initializeSearch();
     initializeFiltering();
     initializeViewToggle();
 
-    // Search functionality
+    
     function initializeSearch() {
         const searchInput = document.getElementById('searchInput');
         const categoryFilter = document.getElementById('categoryFilter');
@@ -22,7 +22,7 @@
         }
     }
 
-    // Filter articles based on search and category
+    
     function filterArticles() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const selectedCategory = document.getElementById('categoryFilter').value;
@@ -52,7 +52,7 @@
             }
         });
 
-        // Show/hide empty state
+        
         updateEmptyState(visibleCount);
     }
 
@@ -79,16 +79,16 @@
         }
     }
 
-    // View toggle functionality
+    
     function initializeViewToggle() {
         const viewButtons = document.querySelectorAll('.view-btn');
         const articlesContainer = document.getElementById('articlesContainer');
 
         viewButtons.forEach(button => {
             button.addEventListener('click', function () {
-                // Remove active class from all buttons
+               
                 viewButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
+               
                 this.classList.add('active');
 
                 const view = this.getAttribute('data-view');
@@ -102,14 +102,14 @@
         });
     }
 
-    // Initialize filtering
+   
     function initializeFiltering() {
-        // Any additional filtering setup can go here
+        
         console.log('Filtering initialized');
     }
 });
 
-// Article preview modal functionality
+
 function previewArticle(title, content, category, author, date, adminComment) {
     const modal = document.getElementById('previewModal');
     const previewTitle = document.getElementById('previewTitle');
@@ -117,13 +117,18 @@ function previewArticle(title, content, category, author, date, adminComment) {
     const previewContent = document.getElementById('previewContent');
     const previewAdminSection = document.getElementById('previewAdminSection');
     const previewAdminComment = document.getElementById('previewAdminComment');
+    const previewAuthor = document.getElementById('previewAuthor');  
+    const previewDate = document.getElementById('previewDate');
 
-    // Set modal content
+    
     previewTitle.textContent = title;
     previewCategory.textContent = category;
     previewContent.textContent = content;
+    previewAuthor.textContent = author;        
+    previewDate.textContent = date;  
 
-    // Show/hide admin comment section
+    previewContent.innerHTML = content;
+
     if (adminComment && adminComment.trim() !== '' && adminComment !== 'null') {
         previewAdminComment.textContent = adminComment;
         previewAdminSection.style.display = 'block';
@@ -131,16 +136,31 @@ function previewArticle(title, content, category, author, date, adminComment) {
         previewAdminSection.style.display = 'none';
     }
 
-    // Show modal
+   
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
 
-    // Add click outside to close
+   
     modal.onclick = function (event) {
         if (event.target === modal) {
             closeModal();
         }
     }
+}
+
+function previewArticleData(button) {
+    const title = button.getAttribute('data-title');
+    const content = button.getAttribute('data-content');
+    const category = button.getAttribute('data-category');
+    const author = button.getAttribute('data-author');
+    const date = button.getAttribute('data-date');
+    const adminComment = button.getAttribute('data-admin-comment');
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = content;
+    const decodedContent = tempDiv.innerHTML;
+
+    previewArticle(title, decodedContent, category, author, date, adminComment);
 }
 
 function closeModal() {
@@ -149,14 +169,14 @@ function closeModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Keyboard shortcuts
+
 document.addEventListener('keydown', function (event) {
-    // Close modal with Escape key
+    
     if (event.key === 'Escape') {
         closeModal();
     }
 
-    // Focus search with Ctrl+F or Cmd+F
+    
     if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
         event.preventDefault();
         const searchInput = document.getElementById('searchInput');
@@ -180,28 +200,8 @@ function debounce(func, wait) {
     };
 }
 
-// Export article data (if needed)
-function exportArticleData() {
-    const articles = [];
-    const articleCards = document.querySelectorAll('.article-card:not(.hidden)');
 
-    articleCards.forEach(card => {
-        const title = card.querySelector('.article-title').textContent;
-        const category = card.getAttribute('data-category');
-        const author = card.querySelector('.author').textContent;
-        const date = card.querySelector('.date').textContent;
 
-        articles.push({
-            title,
-            category,
-            author,
-            date
-        });
-    });
-
-    console.log('Visible articles:', articles);
-    return articles;
-}
 
 // Smooth scroll to top
 function scrollToTop() {
@@ -225,19 +225,14 @@ window.addEventListener('scroll', function () {
 
 // Performance optimization for large lists
 function virtualizeList() {
-    // This function can be implemented if you have many articles
-    // and need to improve performance with virtual scrolling
+    
     console.log('List virtualization can be implemented here if needed');
 }
 
 // Analytics tracking (if needed)
-function trackArticleView(articleTitle) {
-    // Track when users preview articles
-    console.log(`Article previewed: ${articleTitle}`);
-    // You can integrate with your analytics service here
-}
 
-// Article sharing functionality (if needed)
+
+// Article sharing functionality 
 function shareArticle(title, url) {
     if (navigator.share) {
         navigator.share({

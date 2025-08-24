@@ -115,7 +115,7 @@
                 {
                     var random = new Random();
                     var readTime = random.Next(5, 15);
-                    @* var views = random.Next(100, 5000); *@
+                    
 
                     <article class="article-card"
                              data-category="@article.Category"
@@ -156,10 +156,7 @@
                                         <i class="fas fa-clock"></i>
                                         @readTime min read
                                     </span>
-                                    @* <span class="views">
-                                        <i class="fas fa-eye"></i>
-                                        @views.ToString("N0")
-                                    </span> *@
+                                    
                                 </div>
                             </div>
 
@@ -260,17 +257,17 @@
                 lastScrollTop = scrollTop;
             });
 
-            // Also reset header on page load
+           
             resetHeader();
 
-            // Reset header after any clicks on the page
+            
             $(document).on('click', function() {
                 if (!headerFixed) {
                     setTimeout(resetHeader, 100);
                 }
             });
 
-            // Force header reset every 5 seconds
+           
             setInterval(function() {
                 if ($(window).scrollTop() < 200) {
                     resetHeader();

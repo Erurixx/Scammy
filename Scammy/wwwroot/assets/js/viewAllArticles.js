@@ -8,8 +8,8 @@
     const articlesCount = document.getElementById('articlesCount');
     const backToTopBtn = document.getElementById('backToTop');
     const loadMoreBtn = document.getElementById('loadMoreBtn');
-    //const newsletterInput = document.querySelector('.newsletter-input');
-    const newsletterBtn = document.querySelector('.newsletter-btn');
+    
+    
 
     let allArticles = Array.from(document.querySelectorAll('.article-card'));
     let filteredArticles = [...allArticles];
@@ -51,17 +51,6 @@
         loadMoreBtn.addEventListener('click', loadMoreArticles);
     }
 
-    //// Newsletter subscription
-    //if (newsletterBtn) {
-    //    newsletterBtn.addEventListener('click', handleNewsletterSignup);
-    //}
-
-    // Bookmark functionality
-    //document.addEventListener('click', function (e) {
-    //    if (e.target.closest('.bookmark')) {
-    //        handleBookmark(e.target.closest('.bookmark'));
-    //    }
-    //});
 
     // Functions
     function handleSearch() {
@@ -240,23 +229,7 @@
         });
     }
 
-    //function handleBookmark(btn) {
-    //    const icon = btn.querySelector('i');
-
-    //    if (icon.classList.contains('far')) {
-    //        // Add bookmark
-    //        icon.classList.remove('far');
-    //        icon.classList.add('fas');
-    //        btn.style.color = '#f59e0b';
-    //        showToast('Article bookmarked!', 'success');
-    //    } else {
-    //        // Remove bookmark
-    //        icon.classList.remove('fas');
-    //        icon.classList.add('far');
-    //        btn.style.color = '';
-    //        showToast('Bookmark removed!', 'info');
-    //    }
-    //}
+  
 
     
    

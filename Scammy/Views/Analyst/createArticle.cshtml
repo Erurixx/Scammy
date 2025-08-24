@@ -59,9 +59,7 @@
             <div class="form-group">
                 <label class="form-label" for="excerpt">Excerpt * <span style="color: #6b7280; font-weight: 400;">(Brief summary for article previews)</span></label>
                     <textarea id="excerpt" name="Excerpt" class="form-textarea" rows="3" maxlength="200" placeholder="Write a brief excerpt that summarizes your article (max 200 characters)">@Model?.Excerpt</textarea>
-                <div class="char-counter">
-                    <span id="excerptCount">0</span>/200
-                </div>
+                
                 <div class="error-text hidden" id="excerptError">Excerpt is required</div>
             </div>
 
@@ -69,9 +67,7 @@
                 <label class="form-label" for="content">Content *</label>
                     <textarea id="content" name="Content" class="form-textarea" rows="15" placeholder="Write your article content here. You can use markdown formatting...">@Model?.Content</textarea>
                 <div class="error-text hidden" id="contentError">Content is required</div>
-                <div style="margin-top: 8px; font-size: 12px; color: #6b7280;">
-                    💡 Tip: You can use markdown formatting (**, *, ##, etc.) for rich text
-                </div>
+                
             </div>
         </div>
     </div>
@@ -334,7 +330,7 @@
                 $(window).scroll(function() {
                     let scrollTop = $(this).scrollTop();
 
-                    // Reset header when scrolling back to top
+                   
                     if (scrollTop < 200 && !headerFixed) {
                         resetHeader();
                     } else if (scrollTop > 200) {
@@ -344,17 +340,17 @@
                     lastScrollTop = scrollTop;
                 });
 
-                // Also reset header on page load
+               
                 resetHeader();
 
-                // Reset header after any clicks on the page
+                
                 $(document).on('click', function() {
                     if (!headerFixed) {
                         setTimeout(resetHeader, 100);
                     }
                 });
 
-                // Force header reset every 5 seconds (emergency backup)
+               
                 setInterval(function() {
                     if ($(window).scrollTop() < 200) {
                         resetHeader();

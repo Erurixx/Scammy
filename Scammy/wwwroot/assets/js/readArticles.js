@@ -114,11 +114,4 @@ if (darkModeBtn) {
     });
 }
 
-// ================== Focus Mode ==================
-const focusModeBtn = document.getElementById("focusModeBtn");
-if (focusModeBtn) {
-    focusModeBtn.addEventListener("click", () => {
-        document.querySelector(".table-of-contents").classList.toggle("hidden");
-        document.querySelector(".reading-tools").classList.toggle("hidden");
-    });
-}
+

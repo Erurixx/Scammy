@@ -1,8 +1,7 @@
 ﻿/* Container */
 #view-articles {
     padding: 4rem 2rem;
-/*    background: #f9fafb;*/
-/*    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+
 }
 
     #view-articles .section-header {
@@ -104,7 +103,7 @@
 
     .scam-meta-item i {
         color: #3182ce;
-        margin-right: 10px; /* adjust the spacing as you like */
+        margin-right: 10px; 
     }
 
 /* Description */

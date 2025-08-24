@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Optional: Redirect to dashboard after alert
         setTimeout(function () {
-            window.location.href = 'dashboard.html'; // Change to your dashboard URL
+            window.location.href = 'dashboard.html';
         }, 1000);
     }
 

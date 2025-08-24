@@ -2,8 +2,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 25px; /* matches main-green-button padding */
-    border-radius: 23px; /* matches the rounded look */
+    padding: 12px 25px; 
+    border-radius: 23px; /
     font-size: 15px;
     font-weight: 400;
     cursor: pointer;

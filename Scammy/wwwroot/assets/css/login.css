@@ -259,20 +259,5 @@ footer {
         text-decoration: none;
     }
 
-/* Custom SweetAlert icon size */
-/*.swal-icon-small {
-    font-size: 20px !important;*/  /* Reduce the size of the icon */
-    /*width: 40px !important;*/       /* Optional: adjust container width */
-    /*height: 40px !important;*/      /* Optional: adjust container height */
-/*}
 
-.swal-icon-small svg {
-    width: 40px !important;
-    height: 40px !important;
-}*/
-
-/*.swal-icon-small {
-    transform: scale(0.6);*/ /* shrink entire icon proportionally */
-    /*margin: auto;
-}*/
 
