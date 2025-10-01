@@ -26,7 +26,11 @@ namespace Scammy.Models
         [StringLength(100)]
         public string Author { get; set; }
 
+        // UPDATED: Now stores S3 URL instead of local path
         public string ImagePath { get; set; }
+
+        // NEW: Store S3 key for reference (optional but useful)
+        public string? ImageS3Key { get; set; }
 
         public string Tags { get; set; }
 
@@ -37,7 +41,6 @@ namespace Scammy.Models
         public bool IsApproved { get; set; } = false;
 
         public string AdminComment { get; set; } = string.Empty;
-
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

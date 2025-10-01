@@ -1,6 +1,7 @@
-﻿using Scammy.Data;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Scammy.Data;
+using Scammy.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
         options.LogoutPath = "/Account/Logout";
     });
+
+// Register FileUploadService for dependency injection
+builder.Services.AddHttpClient<FileUploadService>();
 
 var app = builder.Build();
 
