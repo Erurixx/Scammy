@@ -29,7 +29,7 @@ namespace Scammy.Models
         // UPDATED: Now stores S3 URL instead of local path
         public string ImagePath { get; set; }
 
-        // NEW: Store S3 key for reference (optional but useful)
+        // NEW: Store S3 key for reference 
         public string? ImageS3Key { get; set; }
 
         public string Tags { get; set; }
